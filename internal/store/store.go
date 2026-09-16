@@ -29,6 +29,7 @@ type Store interface {
 	FindUserByID(id int64) (models.User, error)
 	CreatePunch(userID int64, at time.Time, kind string) (int64, error)
 	ListPunches(userID int64, from, to time.Time) ([]models.Punch, error)
+	DeletePunch(userID, punchID int64) error
 	GetSettings(userID int64) (map[string]string, error)
 	SetSettings(userID int64, kv map[string]string) error
 	DeleteSettings(userID int64) error
