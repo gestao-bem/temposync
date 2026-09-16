@@ -38,6 +38,8 @@ func registerRoutes(r *cais.Router, deps Deps, cfg cais.Config) {
 
 	blog := handlers.NewBlogHandler(deps.Views, deps.Site, deps.Catalog, cfg)
 	r.Get("/blog", blog.ServeHTTP)
+	espelho := handlers.NewEspelhoHandler(deps.Views, deps.Store, deps.Site, deps.Catalog, cfg)
+	r.Get("/espelho", middleware.RequireAuthFunc("/login", espelho.ServeHTTP))
 }
 
 func registerLiveViews(hub *live.Hub, deps Deps) {

@@ -1,0 +1,389 @@
+{{ define "content" }}
+<div id="amarra-main" data-testid="temposync-espelho">
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between p-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-xs"><img alt="TempoSync Logo" class="h-8 w-auto object-contain" src="/static/img/stitch/logo.png"/><div class="flex flex-col"><span class="font-headline-md text-headline-md text-primary tracking-tight font-bold">TempoSync</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Controle de Jornada</span></div></div><div class="h-[1px] w-full bg-surface-container-highest/60"></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="dashboard-e-ponto-diario" href="/dashboard"><span class="material-symbols-outlined text-[20px]">schedule</span><span class="font-label-md text-label-md">Dashboard &amp; Ponto Diário</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl bg-primary-container text-on-primary-container font-semibold shadow-sm" data-path="espelho-de-ponto-e-relatorios" href="/espelho"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Espelho de Ponto &amp; Relatórios</span></a><a data-amarra-skip class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="analise-e-metricas" href="#"><span class="material-symbols-outlined text-[20px]">query_stats</span><span class="font-label-md text-label-md">Análise &amp; Métricas</span></a><a data-amarra-skip class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="banco-de-horas" href="#"><span class="material-symbols-outlined text-[20px]">timelapse</span><span class="font-label-md text-label-md">Banco de Horas</span></a><a data-amarra-skip class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="configuracoes-de-jornada" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span class="font-label-md text-label-md">Configurações de Jornada</span></a></nav></div><div class="flex flex-col gap-space-sm pt-space-md border-t border-surface-container-highest/60"><div class="flex items-center justify-between px-space-xs"><div class="flex items-center gap-space-xs"><span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant">Nuvem sincronizada</span></div><span class="material-symbols-outlined text-secondary text-[16px]">cloud_done</span></div><div class="flex items-center justify-between px-space-xs text-outline"><span class="font-label-sm text-label-sm">Versão 2.4.0 (Enterprise)</span><span class="font-label-sm text-label-sm font-metric-tabular">STABLE</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)] z-40 px-gutter-desktop"><div class="h-20 w-full flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex flex-col"><span class="font-headline-md text-headline-md font-semibold text-on-surface">{{ .TodayLong }}</span><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[15px] text-on-surface-variant">save_as</span><span class="font-metric-tabular text-metric-tabular text-on-surface-variant">{{ .NowClock }} • UTC-3</span></div></div><div class="h-8 w-[1px] bg-surface-container-highest"></div><div class="inline-flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-secondary-container/40 text-on-secondary-container"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">Em expediente</span></div></div><div class="flex items-center gap-space-md"><a href="/dashboard" class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-[0_4px_12px_rgba(0,74,198,0.2)] active:scale-95" ><span class="material-symbols-outlined text-[18px]">fingerprint</span><span>Registrar Ponto</span></a><button aria-label="Notificações" class="relative p-space-sm rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span></button><div class="h-8 w-[1px] bg-surface-container-highest"></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="/static/img/stitch/avatar-demo.jpg"/><div class="flex flex-col text-left"><span class="font-label-md text-label-md font-bold text-on-surface leading-tight">{{ .UserEmail }}</span><span class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Minha jornada</span></div></div></div></div></header><main class="w-full pt-20 px-gutter-desktop min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="flex flex-col gap-space-xl pb-space-xl">
+<!-- Top Action & Context Bar -->
+<section class="flex flex-col gap-space-md pt-space-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase tracking-wider">Gestão Trabalhista Auditável</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Portaria MTE nº 671/2021</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl font-bold text-on-surface tracking-tight">Espelho de Ponto &amp; Relatórios</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Visão consolidada de jornadas, controle de frequência e extrato auditável de banco de horas.</p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">sim_card_download</span>
+<span>Exportar XLS/CSV</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-md text-label-md transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+<span>Espelho PDF (Portaria 671)</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-md active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+<span>Solicitar Ajuste / Inclusão</span>
+</button>
+</div>
+</div>
+<!-- Filter Controls Strip -->
+<div class="flex flex-wrap items-center justify-between gap-space-md p-space-md rounded-2xl bg-surface-container-lowest shadow-sm">
+<!-- Month Navigator -->
+<div class="flex items-center gap-space-xs">
+<div class="flex items-center bg-surface-container-low rounded-xl p-0.5">
+<a href="/espelho?month={{ .PrevMonth }}" aria-label="Mês Anterior" class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</a>
+<div class="flex items-center gap-space-xs px-space-md py-1">
+<span class="material-symbols-outlined text-[18px] text-primary">calendar_month</span>
+<span class="font-headline-md text-headline-md font-semibold text-on-surface">{{ .MonthLabel }}</span>
+</div>
+{{ if .HasNext }}<a href="/espelho?month={{ .NextMonth }}" aria-label="Próximo Mês" class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">{{ else }}<span aria-label="Próximo Mês" class="p-1.5 rounded-lg text-on-surface-variant opacity-40">{{ end }}
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+{{ if .HasNext }}</a>{{ else }}</span>{{ end }}
+</div>
+<a href="/espelho" class="px-space-md py-space-xs rounded-xl bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors">Mês Atual</a>
+</div>
+<!-- Quick Filters -->
+<div class="flex flex-wrap items-center gap-space-xs" id="quickFilterPills">
+<button class="filter-pill px-space-md py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold transition-all shadow-sm" data-filter="all" type="button">
+            Todos os dias ({{ .DayCount }})
+          </button>
+<button class="filter-pill px-space-md py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-all" data-filter="extra" type="button">
+            Com horas extras (6)
+          </button>
+<button class="filter-pill px-space-md py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-all" data-filter="divergence" type="button">
+            Atrasos / Incompletos (1)
+          </button>
+<button class="filter-pill px-space-md py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-all" data-filter="justified" type="button">
+            Com justificativa (2)
+          </button>
+</div>
+</div>
+</section>
+<!-- KPI Metric Cards Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Card 1 -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+<div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-surface-container-high/40 group-hover:scale-125 transition-transform duration-500"></div>
+<div class="flex items-center justify-between z-10">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">Carga Prevista</span>
+<span class="material-symbols-outlined text-[20px] text-primary">event_available</span>
+</div>
+<div class="my-space-md z-10">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-time-mobile text-display-time-mobile text-on-surface">{{ .ExpectedHM }}</span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="inline-block w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">{{ .BusinessDays }} dias úteis no mês</span>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden z-10">
+<div class="bg-primary h-full rounded-full w-[82%]"></div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+<div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-secondary-container/30 group-hover:scale-125 transition-transform duration-500"></div>
+<div class="flex items-center justify-between z-10">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">Horas Efetivadas</span>
+<span class="material-symbols-outlined text-[20px] text-secondary">work_history</span>
+</div>
+<div class="my-space-md z-10">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-time-mobile text-display-time-mobile text-on-surface">{{ .DoneHM.H }}<span class="text-headline-lg font-body-lg text-on-surface-variant">h</span> {{ .DoneHM.M }}<span class="text-headline-lg font-body-lg text-on-surface-variant">m</span></span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="px-space-xs py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">{{ .DoneExtra }}</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">além do regime base</span>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden z-10">
+<div class="bg-secondary h-full rounded-full w-full"></div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+<div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-primary-fixed/40 group-hover:scale-125 transition-transform duration-500"></div>
+<div class="flex items-center justify-between z-10">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">Banco de Horas</span>
+<span class="material-symbols-outlined text-[20px] text-primary">account_balance_wallet</span>
+</div>
+<div class="my-space-md z-10">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-time-mobile text-display-time-mobile text-secondary font-bold">{{ .BankMonth }}</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant mt-1">
+<span>Mês atual: <strong class="font-metric-tabular text-secondary">{{ .BankMonth }}</strong></span>
+<span>Total acumulado</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs text-label-sm text-label-sm font-medium text-on-surface-variant z-10">
+<span>Acordo Coletivo 2024</span>
+<span class="text-secondary font-bold">Positivo</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+<div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-surface-container-highest/40 group-hover:scale-125 transition-transform duration-500"></div>
+<div class="flex items-center justify-between z-10">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">Pontualidade &amp; Regras</span>
+<span class="material-symbols-outlined text-[20px] text-primary">verified_user</span>
+</div>
+<div class="my-space-md z-10">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-time-mobile text-display-time-mobile text-on-surface">{{ .Punctuality }}<span class="text-headline-md font-body-md text-on-surface-variant">%</span></span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">{{ .Faults }} Faltas</span>
+<span class="px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">0 Ajustes pendentes</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-body-sm text-body-sm text-on-surface-variant z-10">
+<span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span>
+<span>Em total conformidade legal</span>
+</div>
+</div>
+</section>
+<!-- Timesheet Table Section -->
+<section class="flex flex-col rounded-3xl bg-surface-container-lowest shadow-sm overflow-hidden">
+<!-- Table Header Title & Tools -->
+<div class="flex flex-wrap items-center justify-between p-space-lg bg-surface-container-lowest">
+<div class="flex items-center gap-space-md">
+<div class="flex flex-col">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Registros Diários da Folha</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Jornada contratual padrão de 8h diárias com 1h de intervalo para almoço.</p>
+</div>
+<span class="px-space-sm py-1 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-label-sm font-semibold">
+            Auditado &amp; Certificado
+          </span>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="relative">
+<form method="get" action="/espelho"><input type="hidden" name="month" value="{{ .MonthParam }}"/><input name="q" value="{{ .Query }}" class="pl-9 pr-4 py-2 rounded-xl bg-surface-container-low text-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container w-64 transition-all" placeholder="Filtrar por data ou ocorrência..." type="text"/></form>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant absolute left-3 top-2.5">search</span>
+</div>
+<button class="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Personalizar colunas" type="button">
+<span class="material-symbols-outlined text-[20px]">view_column</span>
+</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-3.5 px-space-lg font-semibold">Data / Dia</th>
+<th class="py-3.5 px-space-md font-semibold text-center">Entrada 1</th>
+<th class="py-3.5 px-space-md font-semibold text-center">Intervalo Saída</th>
+<th class="py-3.5 px-space-md font-semibold text-center">Intervalo Retorno</th>
+<th class="py-3.5 px-space-md font-semibold text-center">Saída 2</th>
+<th class="py-3.5 px-space-md font-semibold text-right">Líquido</th>
+<th class="py-3.5 px-space-md font-semibold text-center">Saldo</th>
+<th class="py-3.5 px-space-md font-semibold">Status &amp; Ocorrência</th>
+<th class="py-3.5 px-space-lg font-semibold text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-on-surface">
+{{ range .Days }}
+<tr class="hover:bg-surface-container-low/60 transition-colors {{ if .Today }}bg-primary-fixed/15{{ end }}">
+<td class="py-4 px-space-lg font-medium">
+<div class="flex items-center gap-space-sm">
+{{ if .Today }}<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>{{ end }}
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold {{ if .Today }}text-primary font-headline-md text-headline-md{{ end }}">{{ .Top }}</span>
+<span class="font-body-sm text-body-sm {{ .SubClass }}">{{ .Sub }}</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center font-metric-tabular text-metric-tabular">{{ .In1 }}</td>
+<td class="py-3.5 px-space-md text-center font-metric-tabular text-metric-tabular">{{ .BrkOut }}</td>
+<td class="py-3.5 px-space-md text-center font-metric-tabular text-metric-tabular">{{ .BrkBack }}</td>
+<td class="py-3.5 px-space-md text-center font-metric-tabular text-metric-tabular">{{ .Out2 }}</td>
+<td class="py-3.5 px-space-md text-right font-metric-tabular text-metric-tabular font-semibold">{{ .Liquid }}</td>
+<td class="py-3.5 px-space-md text-center">
+{{ if .BalancePos }}<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-metric-tabular text-label-sm font-bold">{{ .Balance }}</span>{{ else }}{{ if .BalanceNeg }}<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-metric-tabular text-label-sm font-bold">{{ .Balance }}</span>{{ else }}<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-metric-tabular text-label-sm font-semibold">{{ .Balance }}</span>{{ end }}{{ end }}
+</td>
+<td class="py-3.5 px-space-md">
+<div class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded-full {{ .StatusCls }}">
+<span class="material-symbols-outlined text-[14px]">{{ .StatusIcon }}</span>
+<span class="font-label-sm text-label-sm font-medium">{{ .StatusText }}</span>
+</div>
+</td>
+<td class="py-3.5 px-space-lg text-right">
+<span class="material-symbols-outlined text-[18px] text-secondary" title="Registro íntegro">verified</span>
+</td>
+</tr>
+{{ else }}
+<tr><td colspan="9" class="py-8 px-space-lg text-center font-body-md text-body-md text-on-surface-variant">Nenhum dia encontrado para este filtro.</td></tr>
+{{ end }}
+</tbody>
+</table>
+</div>
+<!-- Pagination & Totals Footer -->
+<div class="flex flex-wrap items-center justify-between p-space-md bg-surface-container-low text-on-surface-variant">
+<div class="flex items-center gap-space-md text-body-sm text-body-sm">
+<span>Mostrando <strong class="text-on-surface">1 a {{ .DayCount }}</strong> de {{ .DayCount }} dias apurados</span>
+<div class="flex items-center gap-space-xs">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary"></span>
+<span>100% dos comprovantes com selo ICP-Brasil</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm disabled:opacity-40" disabled="" type="button">
+            Anterior
+          </button>
+<button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold" type="button">
+            1
+          </button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm" type="button">
+            2
+          </button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm" type="button">
+            Próximo
+          </button>
+</div>
+</div>
+</section>
+<!-- Bottom Split Section: Banco de Horas Extrato & Compliance Card -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left (7 Cols): Extrato Gráfico & Compensações -->
+<div class="lg:col-span-7 flex flex-col gap-space-md p-space-lg rounded-3xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Evolução do Saldo Diário ({{ .MonthLabel }})</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Créditos e débitos diários apurados em banco de horas</span>
+</div>
+<div class="flex items-center gap-space-sm text-label-sm text-label-sm">
+<div class="flex items-center gap-1">
+<span class="w-3 h-3 rounded bg-secondary"></span>
+<span class="text-on-surface-variant">Crédito (+)</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-3 h-3 rounded bg-error"></span>
+<span class="text-on-surface-variant">Débito (-)</span>
+</div>
+</div>
+</div>
+<!-- Inline SVG Balance Chart Visualization -->
+<div class="w-full bg-surface-container-low/40 rounded-2xl p-space-md relative">
+<svg class="w-full h-32 overflow-visible" fill="none" viewbox="0 0 540 130" xmlns="http://www.w3.org/2000/svg">
+<!-- Grid Lines -->
+<line class="text-outline-variant/60" stroke="currentColor" stroke-dasharray="3 3" x1="0" x2="540" y1="65" y2="65"></line>
+<text class="text-[9px] fill-on-surface-variant font-metric-tabular font-medium" x="5" y="60">0h Linha Base</text>
+<text class="text-[9px] fill-secondary font-metric-tabular font-bold" x="5" y="20">+1h30m</text>
+<text class="text-[9px] fill-error font-metric-tabular font-bold" x="5" y="115">-1h00m</text>
+<!-- Bars for days -->
+{{ range .ChartBars }}<rect class="{{ .Class }}" height="{{ .H }}" rx="3" width="14" x="{{ .X }}" y="{{ .Y }}"></rect>
+{{ end }}<!-- Labels X axis -->
+{{ range $i, $b := .ChartBars }}{{ if or (eq $i 0) $b.Bold }}<text class="text-[9px] fill-on-surface-variant font-metric-tabular" x="{{ $b.X }}" y="125">{{ $b.Day }}{{ if $b.Bold }} (Hoje){{ end }}</text>{{ end }}{{ end }}</svg>
+</div>
+<!-- Expiration Alert Callout -->
+<div class="flex items-start gap-space-sm p-space-md rounded-2xl bg-tertiary-fixed/20 text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined text-[24px] text-tertiary shrink-0">alarm</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-tertiary">Alerta de Vencimento de Horas Acumuladas</span>
+<p class="font-body-sm text-body-sm">
+              Um montante de <strong>12h 15m</strong> acumuladas no primeiro semestre atingirá o prazo limite de compensação em <strong>60 dias</strong> (31 de Dezembro de 2024), de acordo com a Cláusula 14ª da CCT Vigente. Planeje sua folga compensatória.
+            </p>
+</div>
+</div>
+</div>
+<!-- Right (5 Cols): Auditability, Digital Signature & Monthly Closure -->
+<div class="lg:col-span-5 flex flex-col justify-between p-space-lg rounded-3xl bg-surface-container-lowest shadow-sm">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[22px] text-primary">gavel</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Fechamento &amp; Assinatura</h3>
+</div>
+<span class="px-space-sm py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold">
+              Pendente
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            O espelho de ponto eletrônico mensal requer validação bilateral com certificado digital para fins de homologação trabalhista.
+          </p>
+<!-- Audit Box -->
+<div class="flex flex-col gap-space-xs p-space-md rounded-2xl bg-surface-container-low font-metric-tabular text-body-sm text-on-surface">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Dispositivo Emissor:</span>
+<span class="font-semibold">TempoSync Cloud REP-P</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Portaria Responsável:</span>
+<span class="font-semibold text-primary">MTE 671/2021 (Art. 83)</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Registro INPI/MTE:</span>
+<span>002891-TSYNC</span>
+</div>
+<div class="flex flex-col pt-1">
+<span class="text-on-surface-variant text-[11px]">Hash SHA-256 da Folha Provisória:</span>
+<span class="text-[10px] text-outline truncate select-all">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+</div>
+</div>
+<!-- Signers State -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline">radio_button_unchecked</span>
+<span>Assinatura do Colaborador (Você)</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">Aguardando</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline">radio_button_unchecked</span>
+<span>Assinatura do Gestor Responsável</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-bold">Bloqueado</span>
+</div>
+</div>
+</div>
+<!-- Action Footer in Card -->
+<div class="flex flex-col gap-space-xs pt-space-md">
+<button class="w-full flex items-center justify-center gap-space-xs py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-md active:scale-98" type="button">
+<span class="material-symbols-outlined text-[18px]">draw</span>
+<span>Pré-visualizar &amp; Assinar Espelho</span>
+</button>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">
+            Disponível para homologação final em 31/10 às 18:00
+          </span>
+</div>
+</div>
+</section>
+</div>
+</div>
+<script>
+  (function() {
+    // Interactive Sidebar Highlight Fix to match target route
+    try {
+      const links = document.querySelectorAll('aside nav a');
+      links.forEach(link => {
+        if (link.getAttribute('data-path') === 'espelho-de-ponto-e-relatorios') {
+          link.className = 'flex items-center gap-space-sm px-space-md py-space-sm rounded-xl bg-primary-container text-on-primary-container font-semibold shadow-sm transition-all duration-150';
+        } else {
+          link.className = 'flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150';
+        }
+      });
+    } catch (e) {}
+
+    // Filter pills active toggle
+    const pills = document.querySelectorAll('.filter-pill');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => {
+          p.className = 'filter-pill px-space-md py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-all';
+        });
+        pill.className = 'filter-pill px-space-md py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold transition-all shadow-sm';
+      });
+    });
+  })();
+</script></main></div>
+</div>
+{{ end }}
