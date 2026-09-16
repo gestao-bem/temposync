@@ -1,11 +1,11 @@
 {
-  "name": "temposync",
-  "short_name": "temposync",
-  "description": "temposync — powered by Cais",
+  "name": "TempoSync",
+  "short_name": "TempoSync",
+  "description": "Controle de ponto inteligente com previsão exata de saída",
   "start_url": "/",
   "display": "fullscreen",
-  "background_color": "#081014",
-  "theme_color": "#c9893a",
+  "background_color": "#faf8ff",
+  "theme_color": "#004ac6",
   "orientation": "portrait-primary",
   "icons": [
     {
