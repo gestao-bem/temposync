@@ -127,6 +127,17 @@ amarra-cais jobs work | status
 
 `GET /jobs` — localhost queue dashboard (heartbeats, retry/discard, prune, `?kind=`). Production: SSH tunnel.
 
+## Change flow (mandatory)
+
+1. Branch off `main`: `feat/…`, `fix/…`, `chore/…`
+2. Commit + `git push -u origin <branch>`
+3. `gh pr create --repo gestao-bem/temposync`
+4. Wait for CI (`Lint`, `Test`, `JS`) — `gh run list`/`gh run watch`
+5. Green → `gh pr merge <n> --merge`; red → fix on the branch and repeat
+6. Back to `main`: `git pull --ff-only`, delete the branch locally and on origin
+
+Never push feature work straight to `main`. Exception: docs-only tweaks at the user's explicit request.
+
 ## Do not
 
 - Parse templates per request (`view.Load` once at boot)
