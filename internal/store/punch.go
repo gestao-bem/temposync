@@ -29,7 +29,7 @@ func (s *SQLiteStore) ListPunches(userID int64, from, to time.Time) ([]models.Pu
 	if err != nil {
 		return nil, fmt.Errorf("list punches: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var out []models.Punch
 	for rows.Next() {

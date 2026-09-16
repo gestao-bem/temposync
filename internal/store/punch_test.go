@@ -3,8 +3,6 @@ package store
 import (
 	"testing"
 	"time"
-
-	"github.com/gestao-bem/temposync/internal/models"
 )
 
 func TestStore_CreatePunch(t *testing.T) {
@@ -57,7 +55,6 @@ func TestStore_ListPunchesDay(t *testing.T) {
 			t.Errorf("punches not ordered at %d", i)
 		}
 	}
-	var _ models.Punch = got[0]
 }
 
 func TestStore_FindUserByID(t *testing.T) {
