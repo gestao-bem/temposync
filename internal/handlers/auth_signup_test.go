@@ -89,7 +89,35 @@ func TestAuth_SignUp_RendersForm(t *testing.T) {
 	if rr.Code != http.StatusOK {
 		t.Errorf("status = %d, want 200", rr.Code)
 	}
-	if !strings.Contains(rr.Body.String(), `action="/signup"`) {
-		t.Errorf("missing signup form, got: %s", rr.Body.String())
+	body := rr.Body.String()
+	for _, want := range []string{
+		`data-testid="temposync-login"`,
+		`data-signup-mode="true"`,
+		`action="/signup"`,
+		"Comece a controlar sua jornada gratuitamente",
+		"Criar Minha Conta Grátis",
+		"Já possui conta? Fazer Login",
+	} {
+		if !strings.Contains(body, want) {
+			t.Errorf("body missing %q", want)
+		}
+	}
+	// SSR do título: o h2 não pode trazer o texto do modo login (o JS contém
+	// ambos os textos para a troca de abas, por isso checamos o bloco do h2).
+	start := strings.Index(body, `id="formTitle"`)
+	if start == -1 {
+		t.Fatal("formTitle not found")
+	}
+	h2 := body[start:]
+	end := strings.Index(h2, "</h2>")
+	if end == -1 {
+		t.Fatal("formTitle not closed")
+	}
+	h2 = h2[:end]
+	if !strings.Contains(h2, "Comece a controlar sua jornada gratuitamente") {
+		t.Errorf("formTitle not in signup mode: %s", h2)
+	}
+	if strings.Contains(h2, "Bem-vindo de volta") {
+		t.Errorf("formTitle leaked login mode: %s", h2)
 	}
 }

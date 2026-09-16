@@ -1,5 +1,5 @@
 {{ define "content" }}
-<div id="amarra-main" data-testid="temposync-login">
+<div id="amarra-main" data-testid="temposync-login" data-signup-mode="{{ .SignupMode }}">
 <header class="w-full z-20 bg-surface/80 backdrop-blur-xl">
   <div class="w-full max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop h-16 flex items-center justify-between">
     <a class="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="/">
@@ -138,27 +138,27 @@
               </span>
             </div>
             <h2 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight" id="formTitle">
-              Bem-vindo de volta ao TempoSync
+              {{ if .SignupMode }}Comece a controlar sua jornada gratuitamente{{ else }}Bem-vindo de volta ao TempoSync{{ end }}
             </h2>
             <p class="font-body-md text-body-md text-on-surface-variant" id="formSubtitle">
-              Acesse seu espelho de ponto diário, previsões e banco de horas.
+              {{ if .SignupMode }}Previsão instantânea de saída e espelho de ponto 100% legal em 1 minuto.{{ else }}Acesse seu espelho de ponto diário, previsões e banco de horas.{{ end }}
             </p>
           </div>
           <div class="grid grid-cols-2 p-1 bg-surface-container-low rounded-lg mb-space-lg text-center select-none">
-            <button class="py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 bg-surface-container-lowest text-primary shadow-sm font-bold flex items-center justify-center gap-2" id="tabSignIn" onclick="switchAuthTab('signin')" type="button">
+            <button class="py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 {{ if .SignupMode }}text-on-surface-variant hover:text-on-surface{{ else }}bg-surface-container-lowest text-primary shadow-sm font-bold{{ end }} flex items-center justify-center gap-2" id="tabSignIn" onclick="switchAuthTab('signin')" type="button">
               <span class="material-symbols-outlined text-[18px]">login</span>
               Entrar
             </button>
-            <button class="py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-2" id="tabSignUp" onclick="switchAuthTab('signup')" type="button">
+            <button class="py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 {{ if .SignupMode }}bg-surface-container-lowest text-primary shadow-sm font-bold{{ else }}text-on-surface-variant hover:text-on-surface{{ end }} flex items-center justify-center gap-2" id="tabSignUp" onclick="switchAuthTab('signup')" type="button">
               <span class="material-symbols-outlined text-[18px]">person_add</span>
               Criar Conta
               <span class="bg-secondary text-on-secondary px-1.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Grátis</span>
             </button>
           </div>
-          <form class="flex flex-col gap-space-md" id="authForm" action="/login" method="post" onsubmit="return syncAuthSubmit(event);">
+          <form class="flex flex-col gap-space-md" id="authForm" action="{{ if .SignupMode }}/signup{{ else }}/login{{ end }}" method="post" onsubmit="return syncAuthSubmit(event);">
             <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" />
             <input type="hidden" name="password_confirmation" id="passwordConfirmInput" value="" />
-            <div class="hidden flex-col gap-1" id="fieldFullName">
+            <div class="{{ if .SignupMode }}flex{{ else }}hidden{{ end }} flex-col gap-1" id="fieldFullName">
               <label class="font-label-md text-label-md text-on-surface font-semibold" for="fullName">Nome Completo</label>
               <div class="relative flex items-center">
                 <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px] pointer-events-none">person</span>
@@ -173,7 +173,7 @@
               </div>
               {{ with fieldError .Errors "email" }}<p class="font-body-sm text-body-sm text-error">{{ . }}</p>{{ end }}
             </div>
-            <div class="hidden flex-col gap-1" id="fieldShiftType">
+            <div class="{{ if .SignupMode }}flex{{ else }}hidden{{ end }} flex-col gap-1" id="fieldShiftType">
               <label class="font-label-md text-label-md text-on-surface font-semibold" for="shiftType">Regime de Ponto CLT / PJ</label>
               <div class="relative flex items-center">
                 <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px] pointer-events-none">badge</span>
@@ -189,7 +189,7 @@
             <div class="flex flex-col gap-1">
               <div class="flex items-center justify-between">
                 <label class="font-label-md text-label-md text-on-surface font-semibold" for="passwordInput">Senha de Acesso</label>
-                <a class="font-label-sm text-label-sm text-primary hover:underline" href="/forgot-password" id="forgotPasswordLink">Esqueceu a senha?</a>
+                <a class="font-label-sm text-label-sm text-primary hover:underline{{ if .SignupMode }} hidden{{ end }}" href="/forgot-password" id="forgotPasswordLink">Esqueceu a senha?</a>
               </div>
               <div class="relative flex items-center">
                 <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px] pointer-events-none">lock</span>
@@ -199,7 +199,7 @@
                 </button>
               </div>
               {{ with fieldError .Errors "password" }}<p class="font-body-sm text-body-sm text-error">{{ . }}</p>{{ end }}
-              <div class="hidden flex-col gap-1 mt-1.5" id="passwordStrengthBlock">
+              <div class="{{ if .SignupMode }}flex{{ else }}hidden{{ end }} flex-col gap-1 mt-1.5" id="passwordStrengthBlock">
                 <div class="grid grid-cols-4 gap-1.5 h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
                   <div class="bg-secondary rounded-full"></div>
                   <div class="bg-secondary rounded-full"></div>
@@ -214,11 +214,11 @@
             <div class="flex items-start gap-2 pt-1">
               <input checked="" class="mt-1 w-4 h-4 rounded text-primary focus:ring-primary border-outline-variant cursor-pointer" id="rememberMe" type="checkbox" />
               <label class="font-body-sm text-body-sm text-on-surface-variant cursor-pointer select-none" for="rememberMe" id="termsLabel">
-                Manter sessão ativa por 30 dias neste dispositivo de confiança.
+                {{ if .SignupMode }}Li e concordo com os <a data-amarra-skip href="#" class="text-primary underline">Termos de Uso</a> e <a data-amarra-skip href="#" class="text-primary underline">Política de Privacidade</a> segundo a Portaria 671 MTE.{{ else }}Manter sessão ativa por 30 dias neste dispositivo de confiança.{{ end }}
               </label>
             </div>
             <button class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold rounded-full shadow-md flex items-center justify-center gap-2 transition-all transform active:scale-[0.99]" id="submitBtn" type="submit">
-              <span id="submitBtnText">Entrar no TempoSync</span>
+              <span id="submitBtnText">{{ if .SignupMode }}Criar Minha Conta Grátis{{ else }}Entrar no TempoSync{{ end }}</span>
               <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
             </button>
           </form>
@@ -229,7 +229,7 @@
             <span>Sistemas operacionais e sincronização ativa</span>
           </div>
           <a class="text-primary hover:underline font-semibold" href="#" id="alternativeToggleLink" onclick="toggleAuthAlternative(event)">
-            Não tem conta? Crie grátis
+            {{ if .SignupMode }}Já possui conta? Fazer Login{{ else }}Não tem conta? Crie grátis{{ end }}
           </a>
         </div>
       </div>
@@ -320,6 +320,10 @@
         document.getElementById('passwordConfirmInput').value = document.getElementById('passwordInput').value;
       }
       return true;
+    }
+
+    if (document.getElementById('amarra-main').dataset.signupMode === 'true') {
+      switchAuthTab('signup');
     }
   </script>
 </main>

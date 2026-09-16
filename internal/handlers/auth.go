@@ -95,7 +95,11 @@ func (h *AuthHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 		return
 	}
-	h.renderAuth(w, r, "signup", map[string]any{"Title": h.catalog.T("auth.signup_title")}, 0)
+	h.renderAuth(w, r, "login", map[string]any{
+		"Title":      h.catalog.T("auth.signup_title"),
+		"ActiveNav":  "login",
+		"SignupMode": true,
+	}, 0)
 }
 
 func (h *AuthHandler) SignUpPost(w http.ResponseWriter, r *http.Request) {
@@ -119,10 +123,12 @@ func (h *AuthHandler) SignUpPost(w http.ResponseWriter, r *http.Request) {
 		errs.Add("password_confirmation", h.catalog.T("auth.password_mismatch"))
 	}
 	if errs.Any() {
-		h.renderAuth(w, r, "signup", map[string]any{
-			"Title":  h.catalog.T("auth.signup_title"),
-			"Email":  email,
-			"Errors": errs,
+		h.renderAuth(w, r, "login", map[string]any{
+			"Title":      h.catalog.T("auth.signup_title"),
+			"ActiveNav":  "login",
+			"SignupMode": true,
+			"Email":      email,
+			"Errors":     errs,
 		}, http.StatusUnprocessableEntity)
 		return
 	}
@@ -135,10 +141,12 @@ func (h *AuthHandler) SignUpPost(w http.ResponseWriter, r *http.Request) {
 	userID, err := h.store.CreateUser(email, hash)
 	if err != nil {
 		if errors.Is(err, store.ErrEmailTaken) {
-			h.renderAuth(w, r, "signup", map[string]any{
-				"Title":  h.catalog.T("auth.signup_title"),
-				"Email":  email,
-				"Errors": validate.FieldErrors{"email": h.catalog.T("auth.email_taken")},
+			h.renderAuth(w, r, "login", map[string]any{
+				"Title":      h.catalog.T("auth.signup_title"),
+				"ActiveNav":  "login",
+				"SignupMode": true,
+				"Email":      email,
+				"Errors":     validate.FieldErrors{"email": h.catalog.T("auth.email_taken")},
 			}, http.StatusUnprocessableEntity)
 			return
 		}
