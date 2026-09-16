@@ -44,6 +44,10 @@ func registerRoutes(r *cais.Router, deps Deps, cfg cais.Config) {
 	r.Get("/metricas", middleware.RequireAuthFunc("/login", metricas.ServeHTTP))
 	bancoHoras := handlers.NewBancoHorasHandler(deps.Views, deps.Store, deps.Site, deps.Catalog, cfg)
 	r.Get("/banco-horas", middleware.RequireAuthFunc("/login", bancoHoras.ServeHTTP))
+	configuracoes := handlers.NewConfiguracoesHandler(deps.Views, deps.Store, deps.Site, deps.Catalog, cfg)
+	r.Get("/configuracoes", middleware.RequireAuthFunc("/login", configuracoes.ServeHTTP))
+	r.Post("/configuracoes", middleware.RequireAuthFunc("/login", configuracoes.Save))
+	r.Post("/configuracoes/reset", middleware.RequireAuthFunc("/login", configuracoes.Reset))
 }
 
 func registerLiveViews(hub *live.Hub, deps Deps) {
