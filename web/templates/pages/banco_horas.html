@@ -342,6 +342,49 @@
 <span>Enviar Solicitação ao Gestor</span>
 </button>
 </div>
+<!-- Solicitações (auto-gestão) -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[22px] text-primary">pending_actions</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Minhas Solicitações</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Aprovação e cancelamento com 1 clique</span>
+</div>
+<div class="flex flex-col gap-space-sm">
+{{ range .Solicitacoes }}
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col gap-space-xs">
+<div class="flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">{{ .KindIcon }}</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">{{ .KindLabel }}</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">{{ .Day }} • {{ .Hours }}</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full {{ .StatusCls }} font-label-sm font-semibold">{{ .Status }}</span>
+</div>
+{{ if .Reason }}<span class="font-body-sm text-body-sm text-on-surface-variant">{{ .Reason }}</span>{{ end }}
+{{ if .Pendente }}
+<div class="flex items-center gap-space-xs pt-1">
+<form action="/banco-horas/solicitacoes" method="post">
+<input type="hidden" name="csrf_token" value="{{ $.CSRFToken }}" />
+<input type="hidden" name="acao" value="aprovar" />
+<input type="hidden" name="id" value="{{ .ID }}" />
+<button type="submit" class="px-space-sm py-1 rounded-lg bg-secondary-container text-on-secondary-container font-label-sm font-semibold hover:bg-secondary hover:text-on-secondary transition-colors">Aprovar</button>
+</form>
+<form action="/banco-horas/solicitacoes" method="post">
+<input type="hidden" name="csrf_token" value="{{ $.CSRFToken }}" />
+<input type="hidden" name="acao" value="cancelar" />
+<input type="hidden" name="id" value="{{ .ID }}" />
+<button type="submit" class="px-space-sm py-1 rounded-lg bg-surface-container text-on-surface-variant font-label-sm font-semibold hover:text-on-surface transition-colors">Cancelar</button>
+</form>
+</div>
+{{ end }}
+</div>
+{{ else }}
+<p class="font-body-sm text-body-sm text-on-surface-variant">Nenhuma solicitação registrada. Use o botão acima para planejar uma folga.</p>
+{{ end }}
+</div>
+</div>
 <!-- Legal Accordion / CCT & CLT Compliance Box -->
 <div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
 <div class="flex items-center justify-between">
@@ -429,45 +472,40 @@
 <span class="material-symbols-outlined text-[20px]">close</span>
 </button>
 </div>
-<div class="flex flex-col gap-space-sm">
+<form action="/banco-horas/solicitacoes" method="post" class="flex flex-col gap-space-sm">
+<input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" />
+<input type="hidden" name="acao" value="criar" />
+<input type="hidden" name="kind" value="folga" />
 <div class="flex flex-col gap-1">
-<label class="font-label-md text-label-md text-on-surface font-semibold">Tipo de Compensação</label>
-<select class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none">
-<option>Dia Útil Completo (8h 00m)</option>
-<option>Meio Período - Matutino (4h 00m)</option>
-<option>Meio Período - Vespertino (4h 00m)</option>
-<option>Ponte / Emenda de Feriado (16h 00m)</option>
-<option>Horário Flexível Customizado</option>
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="req-hours">Horas a deduzir</label>
+<select id="req-hours" name="hours" class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none">
+<option value="8">Dia útil completo (8h 00m)</option>
+<option value="4">Meio período (4h 00m)</option>
+<option value="16">Ponte / emenda de feriado (16h 00m)</option>
+<option value="6">Turno reduzido (6h 00m)</option>
 </select>
 </div>
-<div class="grid grid-cols-2 gap-space-sm">
 <div class="flex flex-col gap-1">
-<label class="font-label-md text-label-md text-on-surface font-semibold">Data da Folga</label>
-<input class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none font-metric-tabular" type="date" value="{{ .TodayISO }}"/>
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="req-day">Data da folga</label>
+<input id="req-day" name="day" class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none font-metric-tabular" type="date" value="{{ .NextMonthISO }}" required />
 </div>
 <div class="flex flex-col gap-1">
-<label class="font-label-md text-label-md text-on-surface font-semibold">Horas a Deduzir</label>
-<input class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none font-metric-tabular" readonly="" type="text" value="08:00"/>
-</div>
-</div>
-<div class="flex flex-col gap-1">
-<label class="font-label-md text-label-md text-on-surface font-semibold">Justificativa / Observação (Opcional)</label>
-<textarea class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none placeholder:text-outline resize-none" placeholder="Ex: Compensação antecipada do plantão do dia 10/10 com alinhamento da squad de engenharia..." rows="3"></textarea>
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="req-reason">Justificativa / observação (opcional)</label>
+<textarea id="req-reason" name="reason" class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none placeholder:text-outline resize-none" placeholder="Ex: Compensação antecipada do plantão do dia 10/10..." rows="3"></textarea>
 </div>
 <div class="p-space-sm rounded-xl bg-surface-container flex items-center gap-space-xs text-on-surface-variant font-body-sm">
 <span class="material-symbols-outlined text-[20px] text-secondary">check_circle</span>
 <span>Seu saldo atual de <strong>{{ .SaldoHM }}</strong> é suficiente para cobrir esta solicitação.</span>
 </div>
-</div>
 <div class="flex items-center justify-end gap-space-sm mt-space-xs">
 <button class="px-space-md py-space-sm rounded-xl bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" id="cancelModalBtn" type="button">
           Cancelar
         </button>
-<button class="px-space-lg py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold shadow-md hover:bg-primary-container transition-all" id="confirmModalBtn" type="button">
+<button class="px-space-lg py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold shadow-md hover:bg-primary-container transition-all" type="submit">
           Protocolar Solicitação
         </button>
 </div>
-</div>
+</form>
 </div>
 </div>
 
@@ -632,5 +670,6 @@
     });
   });
 </script></main></div>
+</div>
 </div>
 {{ end }}

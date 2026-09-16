@@ -8,5 +8,6 @@ type Punch struct {
 	HappenedAt time.Time
 	Kind       string
 	Note       string
+	Minutes    int
 	CreatedAt  time.Time
 }

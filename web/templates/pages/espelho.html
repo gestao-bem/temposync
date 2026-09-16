@@ -23,10 +23,28 @@
 <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
 <span>Espelho PDF (Portaria 671)</span>
 </button>
-<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-md active:scale-95" type="button">
+<details class="relative">
+<summary class="flex cursor-pointer list-none items-center gap-space-xs px-space-lg py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-md">
 <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
 <span>Solicitar Ajuste / Inclusão</span>
-</button>
+</summary>
+<form action="/espelho/ajustes" method="post" class="absolute right-0 z-30 mt-2 w-80 p-space-md rounded-2xl bg-surface-container-lowest shadow-xl border border-surface-container-high flex flex-col gap-space-sm">
+<input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" />
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm font-semibold text-on-surface" for="aj-day">Data da batida</label>
+<input id="aj-day" name="day" type="date" required class="px-space-sm py-2 rounded-lg bg-surface-container-low font-metric-tabular text-body-md focus:outline-none focus:ring-2 focus:ring-primary" />
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm font-semibold text-on-surface" for="aj-at">Horário</label>
+<input id="aj-at" name="at" type="time" required class="px-space-sm py-2 rounded-lg bg-surface-container-low font-metric-tabular text-body-md focus:outline-none focus:ring-2 focus:ring-primary" />
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm font-semibold text-on-surface" for="aj-reason">Motivo</label>
+<textarea id="aj-reason" name="reason" rows="2" required placeholder="Ex: esqueci de registrar o retorno do almoço" class="px-space-sm py-2 rounded-lg bg-surface-container-low font-body-md focus:outline-none focus:ring-2 focus:ring-primary resize-none"></textarea>
+</div>
+<button type="submit" class="py-2 rounded-xl bg-primary text-on-primary font-label-sm font-semibold hover:bg-primary-container transition-colors">Enviar solicitação</button>
+</form>
+</details>
 </div>
 </div>
 <!-- Filter Controls Strip -->

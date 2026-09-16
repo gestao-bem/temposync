@@ -3,10 +3,14 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/puppe1990/amarra-cais/pkg/amarra/view"
 	"github.com/puppe1990/amarra-cais/pkg/cais"
+	"github.com/puppe1990/amarra-cais/pkg/cais/flash"
+	"github.com/puppe1990/amarra-cais/pkg/cais/httpx"
 	"github.com/puppe1990/amarra-cais/pkg/cais/i18n"
 	"github.com/puppe1990/amarra-cais/pkg/cais/meta"
 	"github.com/puppe1990/amarra-cais/pkg/cais/session"
@@ -62,6 +66,19 @@ type bancoChartMonth struct {
 	LineX   int
 	LineY   int
 	Current bool
+}
+
+type bancoSolicitacao struct {
+	ID        string
+	Kind      string
+	KindIcon  string
+	KindLabel string
+	Day       string
+	Hours     string
+	Reason    string
+	Status    string
+	StatusCls string
+	Pendente  bool
 }
 
 type bancoMonthAgg struct {
@@ -135,6 +152,7 @@ func (h *BancoHorasHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		"LancTotal":       len(jornada.Lancamentos(days)),
 		"Filtrando":       tipo,
 		"ChartMonths":     chartMonths(days, cyStart, now),
+		"Solicitacoes":    h.solicitacoes(uid),
 		"Meses":           monthsOfCycle(cyStart),
 		"MediaHM":         jornada.FmtSignedHM(media),
 		"TodayISO":        now.Format("2006-01-02"),
@@ -330,6 +348,128 @@ func chartMonths(days []jornada.DayBalance, cyStart, now time.Time) []bancoChart
 		out = append(out, item)
 	}
 	return out
+}
+
+func (h *BancoHorasHandler) solicitacoes(uid int64) []bancoSolicitacao {
+	list, err := h.store.ListRequests(uid)
+	if err != nil {
+		return nil
+	}
+	out := make([]bancoSolicitacao, 0, len(list))
+	for _, r := range list {
+		item := bancoSolicitacao{
+			ID:     fmt.Sprintf("%d", r.ID),
+			Day:    r.Day.In(saoPauloNow().Location()).Format("02/01/2006"),
+			Hours:  jornada.FmtHM(time.Duration(r.Minutes) * time.Minute),
+			Reason: r.Reason,
+		}
+		switch r.Kind {
+		case "ajuste":
+			item.Kind, item.KindLabel, item.KindIcon = "ajuste", "Ajuste de ponto", "edit_calendar"
+		default:
+			item.Kind, item.KindLabel, item.KindIcon = "folga", "Folga compensatória", "event_available"
+		}
+		switch r.Status {
+		case "aprovada":
+			item.Status, item.StatusCls = "Aprovada", "bg-secondary-container/50 text-on-secondary-container"
+		case "cancelada":
+			item.Status, item.StatusCls = "Cancelada", "bg-surface-container text-on-surface-variant"
+		default:
+			item.Status, item.StatusCls, item.Pendente = "Pendente", "bg-tertiary-fixed/60 text-on-tertiary-fixed", true
+		}
+		out = append(out, item)
+	}
+	if len(out) > 8 {
+		out = out[:8]
+	}
+	return out
+}
+
+// SolicitacoesPost cria/decide solicitações de folga (auto-gestão).
+func (h *BancoHorasHandler) SolicitacoesPost(w http.ResponseWriter, r *http.Request) {
+	uid, ok := session.UserID(r)
+	if !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	if err := httpx.ParseFormOrJSON(r); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	action := r.FormValue("acao")
+	switch action {
+	case "criar":
+		day, err := time.ParseInLocation("2006-01-02", r.FormValue("day"), saoPauloNow().Location())
+		if err != nil {
+			flash.Set(w, "error", "Data inválida para a solicitação", h.cfg.CookieSecure())
+			http.Redirect(w, r, "/banco-horas", http.StatusSeeOther)
+			return
+		}
+		hours, _ := strconv.Atoi(r.FormValue("hours"))
+		if hours < 1 || hours > 80 {
+			flash.Set(w, "error", "Informe entre 1 e 80 horas", h.cfg.CookieSecure())
+			http.Redirect(w, r, "/banco-horas", http.StatusSeeOther)
+			return
+		}
+		kind := "folga"
+		if r.FormValue("kind") == "ajuste" {
+			kind = "ajuste"
+		}
+		reason := strings.TrimSpace(r.FormValue("reason"))
+		if _, err := h.store.CreateRequest(uid, kind, day, hours*60, reason); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		flash.Set(w, "notice", "Solicitação registrada", h.cfg.CookieSecure())
+	case "aprovar", "cancelar":
+		id, err := strconv.ParseInt(r.FormValue("id"), 10, 64)
+		if err != nil {
+			http.Error(w, "id inválido", http.StatusUnprocessableEntity)
+			return
+		}
+		status := "aprovada"
+		if action == "cancelar" {
+			status = "cancelada"
+		}
+		if err := h.store.DecideRequest(uid, id, status); err != nil {
+			flash.Set(w, "error", "Solicitação não encontrada ou já decidida", h.cfg.CookieSecure())
+			http.Redirect(w, r, "/banco-horas", http.StatusSeeOther)
+			return
+		}
+		if status == "aprovada" {
+			h.registrarFolga(uid, id, w, r)
+			return
+		}
+		flash.Set(w, "notice", "Solicitação cancelada", h.cfg.CookieSecure())
+	default:
+		http.Error(w, "ação inválida", http.StatusUnprocessableEntity)
+		return
+	}
+	http.Redirect(w, r, "/banco-horas", http.StatusSeeOther)
+}
+
+// registrarFolga materializa a folga aprovada como batida kind=folga.
+func (h *BancoHorasHandler) registrarFolga(uid, requestID int64, w http.ResponseWriter, r *http.Request) {
+	list, err := h.store.ListRequests(uid)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	for _, req := range list {
+		if req.ID != requestID {
+			continue
+		}
+		at := req.Day.In(saoPauloNow().Location())
+		if _, err := h.store.CreateFolga(uid, at, req.Minutes, req.Reason); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		flash.Set(w, "notice", "Folga aprovada e lançada no banco de horas", h.cfg.CookieSecure())
+		http.Redirect(w, r, "/banco-horas", http.StatusSeeOther)
+		return
+	}
+	flash.Set(w, "error", "Solicitação não encontrada", h.cfg.CookieSecure())
+	http.Redirect(w, r, "/banco-horas", http.StatusSeeOther)
 }
 
 func (h *BancoHorasHandler) userEmail(uid int64) string {

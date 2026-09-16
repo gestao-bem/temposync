@@ -113,9 +113,22 @@ func splitPunches(punches []models.Punch) (main, pauses []models.Punch) {
 			pauses = append(pauses, p)
 			continue
 		}
+		if p.Kind == "folga" {
+			continue
+		}
 		main = append(main, p)
 	}
 	return main, pauses
+}
+
+func folgaMinutes(punches []models.Punch) int {
+	total := 0
+	for _, p := range punches {
+		if p.Kind == "folga" {
+			total += p.Minutes
+		}
+	}
+	return total
 }
 
 func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -247,7 +260,7 @@ func (h *DashboardHandler) weekSummary(uid int64, now time.Time) ([]weekDay, tim
 			if punches, err := h.store.ListPunches(uid, day, end); err == nil && len(punches) > 0 {
 				worked = jornada.Worked(toJP(punches, day.Location()), ref)
 				done = true
-				total += worked - jornada.Goal
+				total += worked - jornada.Goal - time.Duration(folgaMinutes(punches))*time.Minute
 			}
 		}
 		hm := "--:--"
@@ -280,7 +293,7 @@ func (h *DashboardHandler) monthBank(uid int64, now time.Time) time.Duration {
 		if d.Before(dayStart(now)) {
 			ref = d.Add(24 * time.Hour)
 		}
-		total += jornada.Worked(toJP(punches, d.Location()), ref) - jornada.Goal
+		total += jornada.Worked(toJP(punches, d.Location()), ref) - jornada.Goal - time.Duration(folgaMinutes(punches))*time.Minute
 	}
 	return total
 }
