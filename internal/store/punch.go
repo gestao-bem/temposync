@@ -23,7 +23,7 @@ func (s *SQLiteStore) CreatePunch(userID int64, at time.Time, kind string) (int6
 
 func (s *SQLiteStore) ListPunches(userID int64, from, to time.Time) ([]models.Punch, error) {
 	rows, err := s.db.Query(
-		"SELECT id, user_id, happened_at, kind, note, created_at FROM punches "+
+		"SELECT id, user_id, happened_at, kind, note, minutes, created_at FROM punches "+
 			"WHERE user_id = ? AND happened_at >= ? AND happened_at < ? ORDER BY happened_at ASC",
 		userID, from.UTC().Format(punchTimeFormat), to.UTC().Format(punchTimeFormat),
 	)
@@ -35,7 +35,7 @@ func (s *SQLiteStore) ListPunches(userID int64, from, to time.Time) ([]models.Pu
 	var out []models.Punch
 	for rows.Next() {
 		var p models.Punch
-		if err := rows.Scan(&p.ID, &p.UserID, &p.HappenedAt, &p.Kind, &p.Note, &p.CreatedAt); err != nil {
+		if err := rows.Scan(&p.ID, &p.UserID, &p.HappenedAt, &p.Kind, &p.Note, &p.Minutes, &p.CreatedAt); err != nil {
 			return nil, fmt.Errorf("scan punch: %w", err)
 		}
 		out = append(out, p)

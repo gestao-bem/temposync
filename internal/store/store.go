@@ -30,6 +30,10 @@ type Store interface {
 	CreatePunch(userID int64, at time.Time, kind string) (int64, error)
 	ListPunches(userID int64, from, to time.Time) ([]models.Punch, error)
 	DeletePunch(userID, punchID int64) error
+	CreateFolga(userID int64, day time.Time, minutes int, note string) (int64, error)
+	CreateRequest(userID int64, kind string, day time.Time, minutes int, reason string) (int64, error)
+	ListRequests(userID int64) ([]models.Request, error)
+	DecideRequest(userID, requestID int64, status string) error
 	GetSettings(userID int64) (map[string]string, error)
 	SetSettings(userID int64, kv map[string]string) error
 	DeleteSettings(userID int64) error

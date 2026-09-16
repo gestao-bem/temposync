@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -89,5 +90,39 @@ func TestEspelhoHandler_redirectsWhenAnonymous(t *testing.T) {
 
 	if rr.Code != http.StatusSeeOther {
 		t.Errorf("status = %d, want 303", rr.Code)
+	}
+}
+
+func TestEspelho_AjustePost(t *testing.T) {
+	s := setupTestStore(t)
+	h := NewEspelhoHandler(setupTestViews(t), s, testSite(), i18n.DefaultCatalog(), cais.Config{})
+
+	uid, err := s.CreateUser("lucas@example.com", "hash")
+	if err != nil {
+		t.Fatal(err)
+	}
+	form := url.Values{
+		"day":    {"2026-09-10"},
+		"at":     {"08:15"},
+		"reason": {"esqueci de bater na saída para almoço"},
+	}
+	req := httptest.NewRequest(http.MethodPost, "/espelho/ajustes", strings.NewReader(form.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req = session.WithUserID(req, uid)
+	rr := httptest.NewRecorder()
+	h.AjustePost(rr, req)
+
+	if rr.Code != http.StatusSeeOther {
+		t.Fatalf("status = %d, want 303", rr.Code)
+	}
+	list, err := s.ListRequests(uid)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(list) != 1 || list[0].Kind != "ajuste" || list[0].Minutes != 495 || list[0].Status != "pendente" {
+		t.Fatalf("requests = %+v", list)
+	}
+	if !strings.Contains(list[0].Reason, "esqueci") {
+		t.Errorf("reason = %q", list[0].Reason)
 	}
 }

@@ -8,6 +8,8 @@ import (
 
 	"github.com/puppe1990/amarra-cais/pkg/amarra/view"
 	"github.com/puppe1990/amarra-cais/pkg/cais"
+	"github.com/puppe1990/amarra-cais/pkg/cais/flash"
+	"github.com/puppe1990/amarra-cais/pkg/cais/httpx"
 	"github.com/puppe1990/amarra-cais/pkg/cais/i18n"
 	"github.com/puppe1990/amarra-cais/pkg/cais/meta"
 	"github.com/puppe1990/amarra-cais/pkg/cais/session"
@@ -169,6 +171,45 @@ func hmSplit(d time.Duration) map[string]string {
 		"H": fmt.Sprintf("%02d", int(d.Hours())),
 		"M": fmt.Sprintf("%02d", int(d.Minutes())%60),
 	}
+}
+
+// AjustePost registra uma solicitação de ajuste de batida no espelho.
+func (h *EspelhoHandler) AjustePost(w http.ResponseWriter, r *http.Request) {
+	uid, ok := session.UserID(r)
+	if !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	if err := httpx.ParseFormOrJSON(r); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	loc := saoPauloNow().Location()
+	day, err := time.ParseInLocation("2006-01-02", strings.TrimSpace(r.FormValue("day")), loc)
+	if err != nil {
+		flash.Set(w, "error", "Data inválida para o ajuste", h.cfg.CookieSecure())
+		http.Redirect(w, r, "/espelho", http.StatusSeeOther)
+		return
+	}
+	clock, okClock := jornada.ParseHHMM(strings.TrimSpace(r.FormValue("at")))
+	if !okClock {
+		flash.Set(w, "error", "Horário inválido (use HH:MM)", h.cfg.CookieSecure())
+		http.Redirect(w, r, "/espelho", http.StatusSeeOther)
+		return
+	}
+	reason := strings.TrimSpace(r.FormValue("reason"))
+	if reason == "" {
+		flash.Set(w, "error", "Descreva o motivo do ajuste", h.cfg.CookieSecure())
+		http.Redirect(w, r, "/espelho", http.StatusSeeOther)
+		return
+	}
+	minutes := int(clock.Minutes())
+	if _, err := h.store.CreateRequest(uid, "ajuste", day, minutes, reason); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	flash.Set(w, "notice", "Solicitação de ajuste registrada", h.cfg.CookieSecure())
+	http.Redirect(w, r, "/espelho", http.StatusSeeOther)
 }
 
 func (h *EspelhoHandler) userEmail(uid int64) string {

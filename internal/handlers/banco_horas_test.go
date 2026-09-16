@@ -3,6 +3,8 @@ package handlers
 import (
 	"net/http"
 	"net/http/httptest"
+	"net/url"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -10,12 +12,11 @@ import (
 	"github.com/puppe1990/amarra-cais/pkg/cais"
 	"github.com/puppe1990/amarra-cais/pkg/cais/i18n"
 	"github.com/puppe1990/amarra-cais/pkg/cais/session"
+
+	"github.com/gestao-bem/temposync/internal/store"
 )
 
-func newBancoHorasHandler(t *testing.T) (*BancoHorasHandler, interface {
-	CreateUser(string, string) (int64, error)
-	CreatePunch(int64, time.Time, string) (int64, error)
-}) {
+func newBancoHorasHandler(t *testing.T) (*BancoHorasHandler, store.Store) {
 	t.Helper()
 	s := setupTestStore(t)
 	return NewBancoHorasHandler(setupTestViews(t), s, testSite(), i18n.DefaultCatalog(), cais.Config{}), s
@@ -164,5 +165,106 @@ func TestBancoHorasHandler_EmptyState(t *testing.T) {
 	}
 	if !strings.Contains(rr.Body.String(), "Nenhum lançamento") {
 		t.Errorf("sem batidas deve mostrar vazio")
+	}
+}
+
+func TestBancoHoras_SolicitaFolgaEAprova(t *testing.T) {
+	h, s := newBancoHorasHandler(t)
+
+	uid, err := s.CreateUser("lucas@example.com", "hash")
+	if err != nil {
+		t.Fatal(err)
+	}
+	loc, _ := time.LoadLocation("America/Sao_Paulo")
+	nows := time.Now().In(loc)
+	// saldo de +2h hoje para cobrir a folga de 2h
+	day := time.Date(nows.Year(), nows.Month(), nows.Day(), 0, 0, 0, 0, loc)
+	for _, at := range []time.Time{day.Add(8 * time.Hour), day.Add(12 * time.Hour), day.Add(13 * time.Hour), day.Add(19 * time.Hour)} {
+		if _, err := s.CreatePunch(uid, at, ""); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	form := url.Values{
+		"acao":   {"criar"},
+		"kind":   {"folga"},
+		"day":    {nows.AddDate(0, 0, 3).Format("2006-01-02")},
+		"hours":  {"2"},
+		"reason": {"compensar plantão"},
+	}
+	req := httptest.NewRequest(http.MethodPost, "/banco-horas/solicitacoes", strings.NewReader(form.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req = session.WithUserID(req, uid)
+	rr := httptest.NewRecorder()
+	h.SolicitacoesPost(rr, req)
+	if rr.Code != http.StatusSeeOther {
+		t.Fatalf("criar: status = %d, want 303", rr.Code)
+	}
+
+	list, err := s.ListRequests(uid)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(list) != 1 || list[0].Kind != "folga" || list[0].Minutes != 120 || list[0].Status != "pendente" {
+		t.Fatalf("requests = %+v", list)
+	}
+
+	// aprovar
+	form = url.Values{"acao": {"aprovar"}, "id": {strconv.FormatInt(list[0].ID, 10)}}
+	req = httptest.NewRequest(http.MethodPost, "/banco-horas/solicitacoes", strings.NewReader(form.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req = session.WithUserID(req, uid)
+	rr = httptest.NewRecorder()
+	h.SolicitacoesPost(rr, req)
+	if rr.Code != http.StatusSeeOther {
+		t.Fatalf("aprovar: status = %d, want 303", rr.Code)
+	}
+
+	list, _ = s.ListRequests(uid)
+	if list[0].Status != "aprovada" {
+		t.Fatalf("status = %s, want aprovada", list[0].Status)
+	}
+	// folga virou punch kind=folga com 120min
+	folgaDay := nows.AddDate(0, 0, 3)
+	punches, err := s.ListPunches(uid, dayStart(folgaDay), dayStart(folgaDay).Add(24*time.Hour))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(punches) != 1 || punches[0].Kind != "folga" || punches[0].Minutes != 120 {
+		t.Fatalf("folga punch = %+v", punches)
+	}
+}
+
+func TestBancoHoras_CancelarNaoCriaFolga(t *testing.T) {
+	h, s := newBancoHorasHandler(t)
+
+	uid, err := s.CreateUser("lucas@example.com", "hash")
+	if err != nil {
+		t.Fatal(err)
+	}
+	loc, _ := time.LoadLocation("America/Sao_Paulo")
+	day := saoPauloNow().AddDate(0, 0, 2)
+	_ = loc
+
+	form := url.Values{"acao": {"criar"}, "kind": {"folga"}, "day": {day.Format("2006-01-02")}, "hours": {"4"}, "reason": {"x"}}
+	req := httptest.NewRequest(http.MethodPost, "/banco-horas/solicitacoes", strings.NewReader(form.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req = session.WithUserID(req, uid)
+	h.SolicitacoesPost(httptest.NewRecorder(), req)
+
+	list, _ := s.ListRequests(uid)
+	form = url.Values{"acao": {"cancelar"}, "id": {strconv.FormatInt(list[0].ID, 10)}}
+	req = httptest.NewRequest(http.MethodPost, "/banco-horas/solicitacoes", strings.NewReader(form.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req = session.WithUserID(req, uid)
+	h.SolicitacoesPost(httptest.NewRecorder(), req)
+
+	list, _ = s.ListRequests(uid)
+	if list[0].Status != "cancelada" {
+		t.Fatalf("status = %s", list[0].Status)
+	}
+	punches, _ := s.ListPunches(uid, dayStart(day), dayStart(day).Add(24*time.Hour))
+	if len(punches) != 0 {
+		t.Errorf("cancelar não pode criar folga: %+v", punches)
 	}
 }
