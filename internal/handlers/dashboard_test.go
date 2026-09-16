@@ -89,6 +89,39 @@ func TestDashboardHandler_RendersPunches(t *testing.T) {
 	}
 }
 
+func TestDashboardHandler_forecastUsesSaoPauloClock(t *testing.T) {
+	h, s := newDashboardHandler(t)
+
+	uid, err := s.CreateUser("lucas@example.com", "hash")
+	if err != nil {
+		t.Fatal(err)
+	}
+	loc, err := time.LoadLocation("America/Sao_Paulo")
+	if err != nil {
+		t.Fatal(err)
+	}
+	nows := time.Now().In(loc)
+	day := time.Date(nows.Year(), nows.Month(), nows.Day(), 0, 0, 0, 0, loc)
+	entry := day.Add(8*time.Hour + 32*time.Minute)
+	if _, err := s.CreatePunch(uid, entry, "entrada"); err != nil {
+		t.Fatal(err)
+	}
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard", nil)
+	req = session.WithUserID(req, uid)
+	rr := httptest.NewRecorder()
+	h.ServeHTTP(rr, req)
+
+	body := rr.Body.String()
+	// 08:32 + 8h + 1h padrão = 17:32 horário de SP (não 20:32 UTC).
+	if !strings.Contains(body, "17:32") {
+		t.Errorf("missing SP forecast 17:32")
+	}
+	if strings.Contains(body, "20:32") {
+		t.Errorf("forecast leaked UTC clock")
+	}
+}
+
 func TestDashboardHandler_includesFlash(t *testing.T) {
 	h, s := newDashboardHandler(t)
 

@@ -1,4 +1,5 @@
 {{ define "content" }}
+<div id="amarra-main" data-testid="temposync-login">
 <header class="w-full z-20 bg-surface/80 backdrop-blur-xl">
   <div class="w-full max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop h-16 flex items-center justify-between">
     <a class="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="/">
@@ -15,7 +16,7 @@
     </div>
   </div>
 </header>
-<main id="amarra-main" data-testid="temposync-login" class="w-full flex-1 flex flex-col items-center justify-center px-margin md:px-margin-tablet lg:px-margin-desktop py-space-lg">
+<main  class="w-full flex-1 flex flex-col items-center justify-center px-margin md:px-margin-tablet lg:px-margin-desktop py-space-lg">
   <div class="flex flex-col w-full max-w-[1240px] mx-auto my-auto">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-stretch">
       <div class="lg:col-span-6 flex flex-col justify-between p-space-lg lg:p-space-xl bg-surface-container-low rounded-xl shadow-sm relative overflow-hidden">
@@ -344,4 +345,5 @@
     <div class="font-body-sm text-body-sm text-on-surface-variant text-center md:text-right">© 2024 TempoSync Tecnologia S.A.</div>
   </div>
 </footer>
+</div>
 {{ end }}

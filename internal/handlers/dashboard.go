@@ -47,10 +47,10 @@ func dayStart(t time.Time) time.Time {
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 }
 
-func toJP(punches []models.Punch) []jornada.Punch {
+func toJP(punches []models.Punch, loc *time.Location) []jornada.Punch {
 	out := make([]jornada.Punch, 0, len(punches))
 	for _, p := range punches {
-		out = append(out, jornada.Punch{At: p.HappenedAt})
+		out = append(out, jornada.Punch{At: p.HappenedAt.In(loc)})
 	}
 	return out
 }
@@ -107,17 +107,25 @@ func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	now := saoPauloNow()
+	loc := now.Location()
 	start := dayStart(now)
 	punches, err := h.store.ListPunches(uid, start, start.Add(24*time.Hour))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	jp := toJP(punches)
+	jp := toJP(punches, loc)
 	worked := jornada.Worked(jp, now)
 	brk := jornada.BreakTime(jp)
 	forecast, hasForecast := jornada.ForecastExit(jp, jornada.Goal)
 	forecastMinus10, forecastPlus30, forecastAlert := "--:--", "--:--", "--:--"
+	firstEntry, breakCompact := "--:--", "01h00"
+	if len(jp) > 0 {
+		firstEntry = jornada.FmtClock(jp[0].At)
+	}
+	if brk > 0 {
+		breakCompact = fmt.Sprintf("%02dh%02d", int(brk.Hours()), int(brk.Minutes())%60)
+	}
 	if hasForecast {
 		forecastMinus10 = jornada.FmtClock(forecast.Add(-10 * time.Minute))
 		forecastPlus30 = jornada.FmtClock(forecast.Add(30 * time.Minute))
@@ -167,6 +175,8 @@ func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		"ForecastMinus10": forecastMinus10,
 		"ForecastPlus30":  forecastPlus30,
 		"ForecastAlert":   forecastAlert,
+		"FirstEntry":      firstEntry,
+		"BreakCompact":    breakCompact,
 		"Timeline":        items,
 		"WeekDays":        week,
 		"WeekTotal":       jornada.FmtSigned(weekTotal),
@@ -202,7 +212,7 @@ func (h *DashboardHandler) weekSummary(uid int64, now time.Time) ([]weekDay, tim
 				ref = end
 			}
 			if punches, err := h.store.ListPunches(uid, day, end); err == nil && len(punches) > 0 {
-				worked = jornada.Worked(toJP(punches), ref)
+				worked = jornada.Worked(toJP(punches, day.Location()), ref)
 				done = true
 				total += worked - jornada.Goal
 			}
@@ -237,7 +247,7 @@ func (h *DashboardHandler) monthBank(uid int64, now time.Time) time.Duration {
 		if d.Before(dayStart(now)) {
 			ref = d.Add(24 * time.Hour)
 		}
-		total += jornada.Worked(toJP(punches), ref) - jornada.Goal
+		total += jornada.Worked(toJP(punches, d.Location()), ref) - jornada.Goal
 	}
 	return total
 }
