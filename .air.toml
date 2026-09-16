@@ -8,6 +8,10 @@ tmp_dir = "tmp"
   exclude_dir = ["tmp", "data", "bin", "node_modules"]
   include_ext = ["go", "html", "css"]
   stop_on_error = true
+  # SIGINT o tmp/main antigo e espera antes do SIGKILL, senão o zumbi segura
+  # :8080 e o sqlite WAL e o próximo boot troca de porta / trava (#77).
+  send_interrupt = true
+  kill_delay = 1000
 
 [log]
   time = false
