@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -88,10 +89,33 @@ var punchLabels = []string{
 }
 
 type timelineItem struct {
+	ID      int64
 	Label   string
 	Clock   string
 	Detail  string
 	Pending bool
+	Pause   bool
+}
+
+var pauseLabels = map[string]string{
+	"pausa_cafe":    "Pausa Café • NR-17",
+	"pausa_tecnica": "Pausa Técnica • NR-17",
+}
+
+func isPauseKind(kind string) bool {
+	_, ok := pauseLabels[kind]
+	return ok
+}
+
+func splitPunches(punches []models.Punch) (main, pauses []models.Punch) {
+	for _, p := range punches {
+		if isPauseKind(p.Kind) {
+			pauses = append(pauses, p)
+			continue
+		}
+		main = append(main, p)
+	}
+	return main, pauses
 }
 
 func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +138,8 @@ func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	jp := toJP(punches, loc)
+	mainPunches, _ := splitPunches(punches)
+	jp := toJP(mainPunches, loc)
 	worked := jornada.Worked(jp, now)
 	brk := jornada.BreakTime(jp)
 	forecast, hasForecast := jornada.ForecastExit(jp, jornada.Goal)
@@ -133,15 +158,22 @@ func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	items := make([]timelineItem, 0, len(punches)+1)
-	for i, p := range punches {
-		label := fmt.Sprintf("%dº Registro", i+1)
-		if i < len(punchLabels) {
-			label = punchLabels[i]
+	mainIdx := 0
+	for _, p := range punches {
+		clock := jornada.FmtClockS(p.HappenedAt.In(loc))
+		if label, ok := pauseLabels[p.Kind]; ok {
+			items = append(items, timelineItem{ID: p.ID, Label: label, Clock: clock, Detail: "Pausa rápida que não deduz da jornada", Pause: true})
+			continue
 		}
-		items = append(items, timelineItem{Label: label, Clock: jornada.FmtClockS(p.HappenedAt.In(now.Location())), Detail: "Confirmado • " + now.Location().String()})
+		label := fmt.Sprintf("%dº Registro", mainIdx+1)
+		if mainIdx < len(punchLabels) {
+			label = punchLabels[mainIdx]
+		}
+		items = append(items, timelineItem{ID: p.ID, Label: label, Clock: clock, Detail: "Confirmado • " + loc.String()})
+		mainIdx++
 	}
-	if hasForecast && len(punches) < 4 {
-		items = append(items, timelineItem{Label: fmt.Sprintf("%dº Registro • Saída Tarde (Projeção)", len(punches)+1), Clock: jornada.FmtClockS(forecast), Detail: "Previsão automatizada para bater 8h líquidas", Pending: true})
+	if hasForecast && len(mainPunches) < 4 {
+		items = append(items, timelineItem{Label: fmt.Sprintf("%dº Registro • Saída Tarde (Projeção)", len(mainPunches)+1), Clock: jornada.FmtClockS(forecast), Detail: "Previsão automatizada para bater 8h líquidas", Pending: true})
 	}
 
 	week, weekTotal := h.weekSummary(uid, now)
@@ -161,9 +193,10 @@ func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		"Greeting":        greeting(now.Hour()),
 		"TodayLong":       fmt.Sprintf("%s, %d de %s de %d", ptWeekdays[now.Weekday()], now.Day(), ptMonths[now.Month()-1], now.Year()),
 		"NowClock":        now.Format("15:04:05"),
-		"HasPunches":      len(punches) > 0,
-		"PunchCount":      len(punches),
-		"NextLabel":       jornada.NextLabel(len(punches)),
+		"HasPunches":      len(mainPunches) > 0,
+		"PunchCount":      len(mainPunches),
+		"TodayISO":        now.Format("2006-01-02"),
+		"NextLabel":       jornada.NextLabel(len(mainPunches)),
 		"WorkedHM":        jornada.FmtHM(worked),
 		"BreakHM":         jornada.FmtHM(brk),
 		"BreakNote":       breakNote,
@@ -252,6 +285,11 @@ func (h *DashboardHandler) monthBank(uid int64, now time.Time) time.Duration {
 	return total
 }
 
+var validPunchKinds = map[string]bool{
+	"entrada": true, "saida_almoco": true, "retorno_almoco": true, "saida": true,
+	"pausa_cafe": true, "pausa_tecnica": true,
+}
+
 func (h *DashboardHandler) PunchPost(w http.ResponseWriter, r *http.Request) {
 	uid, ok := session.UserID(r)
 	if !ok {
@@ -269,10 +307,59 @@ func (h *DashboardHandler) PunchPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if _, err := h.store.CreatePunch(uid, now, jornada.NextKind(len(existing))); err != nil {
+	main, _ := splitPunches(existing)
+
+	kind := strings.TrimSpace(r.FormValue("tipo"))
+	if kind == "" {
+		kind = jornada.NextKind(len(main))
+	}
+	if !validPunchKinds[kind] {
+		http.Error(w, "tipo de registro inválido", http.StatusUnprocessableEntity)
+		return
+	}
+
+	at := now
+	if v := strings.TrimSpace(r.FormValue("at")); v != "" {
+		if d, ok := jornada.ParseHHMM(v); ok {
+			at = start.Add(d)
+			if at.After(now) {
+				at = now
+			}
+		}
+	}
+
+	if _, err := h.store.CreatePunch(uid, at, kind); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	flash.Set(w, "notice", fmt.Sprintf("Ponto registrado às %s", now.Format("15:04:05")), h.cfg.CookieSecure())
+	msg := fmt.Sprintf("Ponto registrado às %s", at.Format("15:04:05"))
+	if isPauseKind(kind) {
+		msg = fmt.Sprintf("Pausa registrada às %s", at.Format("15:04:05"))
+	}
+	flash.Set(w, "notice", msg, h.cfg.CookieSecure())
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+}
+
+func (h *DashboardHandler) PunchDelete(w http.ResponseWriter, r *http.Request) {
+	uid, ok := session.UserID(r)
+	if !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	if err := httpx.ParseFormOrJSON(r); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	id, err := strconv.ParseInt(strings.TrimSpace(r.FormValue("id")), 10, 64)
+	if err != nil {
+		http.Error(w, "id inválido", http.StatusUnprocessableEntity)
+		return
+	}
+	if err := h.store.DeletePunch(uid, id); err != nil {
+		flash.Set(w, "error", "Não foi possível remover o registro", h.cfg.CookieSecure())
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		return
+	}
+	flash.Set(w, "notice", "Registro removido", h.cfg.CookieSecure())
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }

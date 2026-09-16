@@ -81,15 +81,15 @@
 </button></form>
 <!-- Fast Preset Sub-actions -->
 <div class="grid grid-cols-3 gap-space-sm mt-1">
-<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="button">
+<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="submit" form="punch-form" name="tipo" value="pausa_cafe">
 <span class="material-symbols-outlined text-[18px] text-tertiary">coffee</span>
 <span>Pausa Café</span>
 </button>
-<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="button">
+<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="submit" form="punch-form" name="tipo" value="pausa_tecnica">
 <span class="material-symbols-outlined text-[18px] text-primary">more_time</span>
 <span>Pausa Técnica</span>
 </button>
-<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="button">
+<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="submit" form="punch-form" name="tipo" value="saida">
 <span class="material-symbols-outlined text-[18px] text-error">logout</span>
 <span>Fim de Turno</span>
 </button>
@@ -250,10 +250,29 @@
               Registros verificados e com geolocalização aprovada
             </span>
 </div>
-<button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold transition-colors" type="button">
+<details class="relative">
+<summary class="inline-flex cursor-pointer list-none items-center gap-1.5 px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold transition-colors">
 <span class="material-symbols-outlined text-[16px]">edit_calendar</span>
 <span>+ Adicionar Batida Esquecida</span>
-</button>
+</summary>
+<form action="/dashboard/punch" method="post" class="absolute right-0 z-20 mt-2 w-72 p-space-md rounded-2xl bg-surface-container-lowest shadow-xl border border-surface-container-high flex flex-col gap-space-sm">
+<input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" />
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm font-semibold text-on-surface" for="manual-at">Horário de hoje</label>
+<input id="manual-at" name="at" type="time" required class="px-space-sm py-2 rounded-lg bg-surface-container-low font-metric-tabular text-body-md focus:outline-none focus:ring-2 focus:ring-primary" />
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm font-semibold text-on-surface" for="manual-tipo">Tipo de registro</label>
+<select id="manual-tipo" name="tipo" class="px-space-sm py-2 rounded-lg bg-surface-container-low font-body-md focus:outline-none focus:ring-2 focus:ring-primary">
+<option value="entrada">Entrada</option>
+<option value="saida_almoco">Início do almoço</option>
+<option value="retorno_almoco">Retorno do almoço</option>
+<option value="saida">Saída</option>
+</select>
+</div>
+<button type="submit" class="py-2 rounded-xl bg-primary text-on-primary font-label-sm font-semibold hover:bg-primary-container transition-colors">Registrar batida</button>
+</form>
+</details>
 </div>
 <!-- Vertical Connecting Timeline Checklist -->
 <div class="relative flex flex-col gap-space-lg pl-3">
@@ -268,6 +287,15 @@
 <p class="font-headline-md text-headline-md font-bold {{ if .Pending }}text-primary{{ else }}text-on-surface{{ end }} font-metric-tabular">{{ .Clock }}</p>
 <span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">{{ .Detail }}</span>
 </div>
+{{ if not .Pending }}
+<form action="/dashboard/punch/delete" method="post" class="shrink-0" onsubmit="return confirm('Remover este registro?')">
+<input type="hidden" name="csrf_token" value="{{ $.CSRFToken }}" />
+<input type="hidden" name="id" value="{{ .ID }}" />
+<button type="submit" title="Remover registro" class="p-1.5 rounded-lg text-on-surface-variant hover:bg-error-container/60 hover:text-on-error-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</form>
+{{ end }}
 </div>
 {{ end }}
 {{ if not .Timeline }}

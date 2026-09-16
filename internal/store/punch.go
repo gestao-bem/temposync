@@ -1,6 +1,7 @@
 package store
 
 import (
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -55,4 +56,15 @@ func (s *SQLiteStore) FindUserByID(id int64) (models.User, error) {
 		return models.User{}, fmt.Errorf("find user: %w", err)
 	}
 	return u, nil
+}
+
+func (s *SQLiteStore) DeletePunch(userID, punchID int64) error {
+	result, err := s.db.Exec("DELETE FROM punches WHERE id = ? AND user_id = ?", punchID, userID)
+	if err != nil {
+		return fmt.Errorf("delete punch: %w", err)
+	}
+	if n, err := result.RowsAffected(); err == nil && n == 0 {
+		return fmt.Errorf("delete punch: %w", sql.ErrNoRows)
+	}
+	return nil
 }
