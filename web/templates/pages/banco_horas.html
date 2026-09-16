@@ -1,0 +1,604 @@
+{{ define "content" }}
+<div id="amarra-main" data-testid="temposync-banco-horas">
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between p-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-xs"><img alt="TempoSync Logo" class="h-8 w-auto object-contain" src="/static/img/stitch/logo.png"/></div><div class="h-[1px] w-full bg-surface-container-highest/60"></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="dashboard-e-ponto-diario" href="/dashboard"><span class="material-symbols-outlined text-[20px]">schedule</span><span class="font-label-md text-label-md">Dashboard &amp; Ponto Diário</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="espelho-de-ponto-e-relatorios" href="/espelho"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Espelho de Ponto &amp; Relatórios</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="analise-e-metricas" href="/metricas"><span class="material-symbols-outlined text-[20px]">query_stats</span><span class="font-label-md text-label-md">Análise &amp; Métricas</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl bg-primary-container text-on-primary-container font-semibold shadow-sm" data-path="banco-de-horas" href="/banco-horas"><span class="material-symbols-outlined text-[20px]">timelapse</span><span class="font-label-md text-label-md">Banco de Horas</span></a><a data-amarra-skip class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="configuracoes-de-jornada" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span class="font-label-md text-label-md">Configurações de Jornada</span></a></nav></div><div class="flex flex-col gap-space-sm pt-space-md border-t border-surface-container-highest/60"><div class="flex items-center justify-between px-space-xs"><div class="flex items-center gap-space-xs"><span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant">Nuvem sincronizada</span></div><span class="material-symbols-outlined text-secondary text-[16px]">cloud_done</span></div><div class="flex items-center justify-between px-space-xs text-outline"><span class="font-label-sm text-label-sm">Versão 2.4.0 (Enterprise)</span><span class="font-label-sm text-label-sm font-metric-tabular">STABLE</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)] z-40 px-gutter-desktop"><div class="h-20 w-full flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex flex-col"><span class="font-headline-md text-headline-md font-semibold text-on-surface">{{ .TodayLong }}</span><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[15px] text-on-surface-variant">save_as</span><span class="font-metric-tabular text-metric-tabular text-on-surface-variant">{{ .NowClock }} • UTC-3</span></div></div><div class="h-8 w-[1px] bg-surface-container-highest"></div><div class="inline-flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-secondary-container/40 text-on-secondary-container"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">Em expediente</span></div></div><div class="flex items-center gap-space-md"><form action="/dashboard/punch" method="post" class="inline"><input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" /><button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-[0_4px_12px_rgba(0,74,198,0.2)] active:scale-95" type="submit"><span class="material-symbols-outlined text-[18px]">fingerprint</span><span>Registrar Ponto</span></button></form><button aria-label="Notificações" class="relative p-space-sm rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span></button><div class="h-8 w-[1px] bg-surface-container-highest"></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="/static/img/stitch/avatar-demo.jpg"/><div class="flex flex-col text-left"><span class="font-label-md text-label-md font-bold text-on-surface leading-tight">{{ .UserEmail }}</span><span class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Minha jornada</span></div></div></div></div></header><main class="w-full pt-20 px-gutter-desktop min-h-screen bg-surface"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Section / Page Header -->
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md py-space-md">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-primary-fixed/60 text-on-primary-fixed font-label-sm uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          Regime CLT • Art. 59
+        </span>
+<span class="text-outline font-label-sm">•</span>
+<span class="font-label-sm text-on-surface-variant font-medium">Acordo Coletivo vigente • vence {{ .DueLabel }}</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">Banco de Horas &amp; Compensações</h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        Acompanhamento transparente de saldo acumulado, prazos legais de expiração conforme Acordo Coletivo (CCT) e solicitação de folgas ou compensações.
+      </p>
+</div>
+<!-- Action Deck & Period Picker -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">calendar_month</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-on-surface-variant text-[10px] uppercase font-semibold">Ciclo Vigente</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">{{ .CycleLabel }}</span>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline ml-space-xs">expand_more</span>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">download</span>
+<span>Exportar Extrato</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-[0_4px_14px_rgba(0,74,198,0.25)] hover:bg-primary-container transition-all active:scale-95" id="openRequestModal" type="button">
+<span class="material-symbols-outlined text-[18px]">event_available</span>
+<span>Solicitar Folga Compensatória</span>
+</button>
+</div>
+</div>
+<!-- KPI Summary Cards (4 Columns) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-gutter mt-space-md">
+<!-- KPI 1: Saldo Acumulado -->
+<div class="relative overflow-hidden bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-secondary/5 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Saldo Acumulado Atual</span>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-time-mobile text-display-time-mobile font-semibold text-secondary tracking-tight">{{ .SaldoHM }}</span>
+</div>
+</div>
+<div class="p-space-xs rounded-xl bg-secondary-container/40 text-on-secondary-container">
+<span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/50 text-on-secondary-container font-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Crédito Positivo
+          </span>
+<span class="font-metric-tabular text-metric-tabular text-secondary font-bold">{{ .MesSaldoHM }} neste mês</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: {{ .TetoPct }}%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">{{ .TetoPct }}% do teto semestral de {{ .TetoLabel }}</span>
+</div>
+</div>
+<!-- KPI 2: Projeção de Fechamento -->
+<div class="relative overflow-hidden bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Projeção Fechamento Ciclo</span>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-time-mobile text-display-time-mobile font-semibold text-primary tracking-tight">{{ .ProjecaoHM }}</span>
+</div>
+</div>
+<div class="p-space-xs rounded-xl bg-primary-fixed/50 text-on-primary-fixed">
+<span class="material-symbols-outlined text-[24px]">trending_up</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">{{ .ProjecaoLabel }}</span>
+<span class="font-label-sm text-label-sm font-semibold text-primary">Margem Segura</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: {{ .ProjecaoPct }}%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Teto acordado de 30h não será ultrapassado</span>
+</div>
+</div>
+<!-- KPI 3: Prazo de Expiração & CCT -->
+<div class="relative overflow-hidden bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-tertiary/5 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Prazo de Expiração (CCT)</span>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-time-mobile text-display-time-mobile font-semibold text-tertiary tracking-tight">{{ .VencDias }} dias</span>
+</div>
+</div>
+<div class="p-space-xs rounded-xl bg-tertiary-fixed/60 text-on-tertiary-fixed">
+<span class="material-symbols-outlined text-[24px]">notification_important</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-tertiary">Vencimento: {{ .DueLabel }}</span>
+<span class="font-metric-tabular text-body-sm text-on-surface-variant">{{ .VencFolgas }} Folgas</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: {{ .VencPct }}%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate" title="Planeje até 2 folgas p/ evitar pagamento em folha c/ 50%">Evite conversão em folha c/ acréscimo 50%</span>
+</div>
+</div>
+<!-- KPI 4: Horas Compensadas no Ano -->
+<div class="relative overflow-hidden bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-container/5 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Compensadas no Ano</span>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-time-mobile text-display-time-mobile font-semibold text-on-surface tracking-tight">{{ .CompensadoAnoHM }}</span>
+</div>
+</div>
+<div class="p-space-xs rounded-xl bg-surface-container text-on-surface">
+<span class="material-symbols-outlined text-[24px]">task_alt</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm font-semibold text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span> {{ .FolgasAno }} folgas usufruídas
+          </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Zero desconto</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-on-surface-variant h-full rounded-full" style="width: 100%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Taxa de aproveitamento de 100%</span>
+</div>
+</div>
+</div>
+<!-- Main Asymmetric Grid (70% / 30%) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mt-space-lg">
+<!-- LEFT COLUMN (70% - lg:col-span-8 or col-span-8 / 4 in 12-col) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Chart: Evolução Mensal do Saldo & Compensações -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Evolução do Saldo no Semestre</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Comparativo de Horas Extras geradas vs. Horas Compensadas por mês</span>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">H. Extras Acumuladas</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Compensações</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-1 bg-outline rounded-full"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Saldo Líquido</span>
+</div>
+</div>
+</div>
+<!-- Inline SVG Visualization -->
+<div class="relative w-full h-64 mt-space-xs flex flex-col justify-end">
+<svg class="w-full h-full overflow-visible" fill="none" preserveaspectratio="none" viewbox="0 0 740 220">
+<!-- Subtle Grid Horizontal Lines -->
+<line stroke="#eaedff" stroke-dasharray="3 3" stroke-width="1" x1="0" x2="740" y1="20" y2="20"></line>
+<line stroke="#eaedff" stroke-dasharray="3 3" stroke-width="1" x1="0" x2="740" y1="70" y2="70"></line>
+<line stroke="#eaedff" stroke-dasharray="3 3" stroke-width="1" x1="0" x2="740" y1="120" y2="120"></line>
+<line stroke="#eaedff" stroke-width="1.5" x1="0" x2="740" y1="170" y2="170"></line>
+<!-- Bars per Month -->
+{{ range .ChartMonths }}
+<rect fill="#004ac6" fill-opacity="0.85" height="{{ .ExtraH }}" rx="4" width="22" x="{{ .ExtraX }}" y="{{ .ExtraY }}"></rect>
+<rect fill="#006c49" fill-opacity="0.85" height="{{ .CompH }}" rx="4" width="22" x="{{ .CompX }}" y="{{ .CompY }}"></rect>
+{{ end }}
+<!-- Trend Line for Net Accumulated Hours -->
+<path d="M{{ range .ChartMonths }} {{ .LineX }} {{ .LineY }}{{ end }}" fill="none" stroke="#2563eb" stroke-linecap="round" stroke-width="3"></path>
+<!-- Nodes on Trend Line -->
+{{ range .ChartMonths }}{{ if .Current }}<circle cx="{{ .LineX }}" cy="{{ .LineY }}" fill="#2563eb" r="5" stroke="#ffffff" stroke-width="2.5"></circle>{{ else }}<circle cx="{{ .LineX }}" cy="{{ .LineY }}" fill="#ffffff" r="4" stroke="#2563eb" stroke-width="2.5"></circle>{{ end }}
+{{ end }}
+</svg>
+<!-- Month Label Row -->
+<div class="flex justify-between items-center px-6 pt-space-xs border-none text-on-surface-variant font-label-md text-label-md">
+{{ range .ChartMonths }}<span class="w-16 text-center{{ if .Current }} font-bold text-primary{{ end }}">{{ .Label }}{{ if .Current }} (Atual){{ end }}</span>
+{{ end }}</div>
+</div>
+<div class="flex items-center justify-between p-space-sm rounded-xl bg-surface-container-low mt-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">insights</span>
+<span>Média diária: <strong>{{ .MediaHM }}</strong>. Compensação planejada sugerida para os próximos 15 dias.</span>
+</div>
+<button class="text-primary font-label-sm font-semibold hover:underline flex items-center gap-1" type="button">
+            Ver detalhes analíticos <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Extrato Detalhado de Lançamentos de Banco de Horas -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Extrato de Lançamentos</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Histórico auditável e em conformidade com o Art. 59 da CLT</span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-low p-1 rounded-xl">
+<a href="/banco-horas" class="px-space-sm py-1 rounded-lg {{ if eq .Filtrando "" }}text-on-surface bg-surface-container-lowest font-semibold shadow-xs{{ else }}text-on-surface-variant hover:text-on-surface font-medium{{ end }}">Todos</a>
+<a href="/banco-horas?tipo=cred" class="px-space-sm py-1 rounded-lg {{ if eq .Filtrando "cred" }}text-on-surface bg-surface-container-lowest font-semibold shadow-xs{{ else }}text-on-surface-variant hover:text-on-surface font-medium{{ end }}">Créditos</a>
+<a href="/banco-horas?tipo=deb" class="px-space-sm py-1 rounded-lg {{ if eq .Filtrando "deb" }}text-on-surface bg-surface-container-lowest font-semibold shadow-xs{{ else }}text-on-surface-variant hover:text-on-surface font-medium{{ end }}">Débitos</a>
+<a href="/banco-horas?tipo=comp" class="px-space-sm py-1 rounded-lg {{ if eq .Filtrando "comp" }}text-on-surface bg-surface-container-lowest font-semibold shadow-xs{{ else }}text-on-surface-variant hover:text-on-surface font-medium{{ end }}">Folgas &amp; Comp.</a></div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider bg-surface-container-low/60 rounded-xl">
+<th class="py-space-sm px-space-md rounded-l-xl">Data</th>
+<th class="py-space-sm px-space-md">Descrição &amp; Evento</th>
+<th class="py-space-sm px-space-md">Tipo</th>
+<th class="py-space-sm px-space-md text-right">Variação</th>
+<th class="py-space-sm px-space-md text-right">Saldo Parcial</th>
+<th class="py-space-sm px-space-md rounded-r-xl">Validação Jurídica / RH</th>
+</tr>
+</thead>
+<tbody class="divide-none text-body-md">
+{{ range .Lancamentos }}
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-space-md px-space-md font-metric-tabular text-metric-tabular font-medium text-on-surface">
+{{ .Day }}
+<span class="block text-body-sm text-on-surface-variant font-normal">{{ .Weekday }}{{ if .Today }} • Hoje{{ end }}</span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md font-semibold text-on-surface">{{ .Descricao }}</span>
+<span class="font-body-sm text-on-surface-variant">{{ .Detalhe }}</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full {{ .KindCls }} font-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">{{ .KindIcon }}</span> {{ .KindLabel }}
+</span>
+</td>
+<td class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular font-bold {{ if .DeltaNeg }}text-tertiary{{ else }}text-secondary{{ end }}">
+{{ .DeltaHM }}
+</td>
+<td class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular {{ if .SaldoPos }}text-secondary{{ else }}text-error{{ end }} font-semibold">
+{{ .SaldoAfter }}
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full {{ .StatusCls }} font-label-sm font-medium">
+<span class="material-symbols-outlined text-[14px]">{{ .StatusIcon }}</span> {{ .Status }}
+</span>
+</td>
+</tr>
+{{ else }}
+<tr><td colspan="6" class="py-8 px-space-md text-center font-body-md text-body-md text-on-surface-variant">Nenhum lançamento no ciclo para este filtro.</td></tr>
+{{ end }}
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination Controls -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-space-xs text-on-surface-variant font-body-sm">
+<span>Mostrando <strong>{{ .LancCount }}</strong> de <strong>{{ .LancTotal }}</strong> lançamentos no ciclo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Últimos lançamentos do ciclo semestral</span>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (30% - lg:col-span-4) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Widget: Simulador Inteligente de Folga / Ponte -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md relative overflow-hidden">
+<div class="flex items-center gap-space-xs">
+<div class="p-2 rounded-xl bg-primary-fixed text-primary">
+<span class="material-symbols-outlined text-[20px]">calculate</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Simulador de Folga</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Planeje sua compensação sem impactar metas</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-sm bg-surface-container-low p-space-md rounded-xl">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Quanto tempo você deseja abater?</label>
+<!-- Quick Choice Buttons -->
+<div class="grid grid-cols-3 gap-space-xs">
+<button class="choice-btn py-space-xs px-1 rounded-lg text-center bg-primary text-on-primary font-label-sm font-semibold transition-all" id="btn-option-8h" type="button">
+              1 Dia útil<br/><span class="font-metric-tabular font-normal text-[10px]">(8h 00m)</span>
+</button>
+<button class="choice-btn py-space-xs px-1 rounded-lg text-center bg-surface-container-lowest text-on-surface font-label-sm font-semibold hover:bg-surface-container transition-all" id="btn-option-4h" type="button">
+              Meio Período<br/><span class="font-metric-tabular font-normal text-[10px] text-on-surface-variant">(4h 00m)</span>
+</button>
+<button class="choice-btn py-space-xs px-1 rounded-lg text-center bg-surface-container-lowest text-on-surface font-label-sm font-semibold hover:bg-surface-container transition-all" id="btn-option-16h" type="button">
+              Ponte Feriado<br/><span class="font-metric-tabular font-normal text-[10px] text-on-surface-variant">(16h 00m)</span>
+</button>
+</div>
+<!-- Custom Slider for Hours -->
+<div class="flex flex-col gap-1 mt-space-xs">
+<div class="flex justify-between items-center text-on-surface-variant font-label-sm">
+<span>Ajuste fino manual</span>
+<span class="font-metric-tabular text-on-surface font-bold" id="slider-display">8 horas</span>
+</div>
+<input class="w-full accent-primary bg-surface-container h-2 rounded-lg cursor-pointer" id="hours-slider" max="18" min="1" step="1" type="range" value="8"/>
+</div>
+</div>
+<!-- Dynamic Simulation Output Box -->
+<div class="bg-secondary-container/20 p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Saldo Atual</span>
+<span class="font-metric-tabular text-body-md text-on-surface font-semibold">{{ .SaldoHM }}</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dedução Simulada</span>
+<span class="font-metric-tabular text-body-md text-tertiary font-semibold" id="deduction-val">-08h 00m</span>
+</div>
+<div class="h-[1px] bg-outline-variant/30 my-1"></div>
+<div class="flex justify-between items-baseline">
+<span class="font-label-md text-label-md text-on-secondary-container font-bold">Saldo Restante Previsto:</span>
+<span class="font-display-time-mobile text-[24px] leading-tight text-secondary font-bold" id="projected-remaining">+10h 20m</span>
+</div>
+<span class="font-body-sm text-[11px] text-on-secondary-container leading-tight mt-1">
+            Status: Perfeito! Seu saldo continua positivo e dentro da margem de segurança.
+          </span>
+</div>
+<!-- Date Selection Input -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Data pretendida para a compensação:</label>
+<div class="flex items-center bg-surface-container-low px-space-md py-space-xs rounded-xl">
+<span class="material-symbols-outlined text-[20px] text-outline mr-space-xs">calendar_today</span>
+<input class="bg-transparent text-on-surface font-metric-tabular text-body-md focus:outline-none w-full" type="date" value="{{ .NextMonthISO }}"/>
+</div>
+</div>
+<!-- CTA to Submit Request -->
+<button class="w-full py-space-sm px-space-md rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold shadow-md hover:bg-primary-container transition-all flex items-center justify-center gap-space-xs active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px]">send</span>
+<span>Enviar Solicitação ao Gestor</span>
+</button>
+</div>
+<!-- Legal Accordion / CCT & CLT Compliance Box -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[22px] text-secondary">gavel</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Diretrizes Legais &amp; CCT</h3>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm font-semibold">
+            Válido
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          O regime de banco de horas da organização está fundamentado no <strong>Art. 59, § 2º e § 5º da Consolidação das Leis do Trabalho (CLT)</strong> e homologado pelo Sindicato da Categoria (Acordo 2024/2025).
+        </p>
+<div class="flex flex-col gap-space-sm">
+<!-- Rule 1 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[18px] text-primary mt-0.5">timer</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Limite Máximo Diário</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Não é permitida a execução de mais de 2 horas extras por jornada de trabalho.</span>
+</div>
+</div>
+<!-- Rule 2 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[18px] text-tertiary mt-0.5">update</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Ciclo Semestral de Fechamento</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">As horas devem ser compensadas no prazo de até 6 meses. O ciclo atual expira em 30 de Novembro de 2024.</span>
+</div>
+</div>
+<!-- Rule 3 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[18px] text-secondary mt-0.5">payments</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Adicional Legal de 50%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Horas residuais não compensadas na data de expiração serão quitadas na folha de pagamento subsequente com acréscimo de 50% (ou 100% aos domingos/feriados).</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1 text-[12px]">
+<span class="material-symbols-outlined text-[16px] text-outline">description</span>
+<span>CCT Reg. Nº 48291/2024</span>
+</div>
+<a data-amarra-skip class="text-primary font-label-sm font-semibold hover:underline flex items-center gap-0.5" href="#">
+            Download PDF CCT <span class="material-symbols-outlined text-[14px]">north_east</span>
+</a>
+</div>
+</div>
+<!-- Quick Tips Card with Visual Richness -->
+<div class="relative overflow-hidden bg-primary p-space-lg rounded-2xl text-on-primary shadow-md flex flex-col justify-between">
+<div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex flex-col gap-space-xs relative z-10">
+<div class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-white/20 text-on-primary font-label-sm font-semibold w-fit">
+<span class="material-symbols-outlined text-[14px]">tips_and_updates</span>
+            Dica de Gestão do Tempo
+          </div>
+<h4 class="font-headline-md text-headline-md font-bold mt-1 text-on-primary">Aproveite a próxima emenda!</h4>
+<p class="font-body-sm text-body-sm text-on-primary-container leading-relaxed">
+            Programe sua folga compensatória antes do vencimento do ciclo para aproveitar o crédito sem correr risco de conversão em folha.
+          </p>
+</div>
+<button class="mt-space-md py-space-xs px-space-md rounded-xl bg-surface-container-lowest text-primary font-label-md text-label-md font-bold hover:bg-surface transition-all flex items-center justify-center gap-space-xs w-fit shadow-xs" type="button">
+<span>Programar Folga Prolongada</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Interactive Modal / Slide-over for Solicitação de Folga (Hidden by default, triggered via JS) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200" id="requestModal">
+<div class="bg-surface-container-lowest w-full max-w-lg mx-space-md p-space-lg rounded-2xl shadow-xl flex flex-col gap-space-md transform scale-95 transition-transform duration-200" id="requestModalContent">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="p-2 rounded-xl bg-primary-fixed text-primary">
+<span class="material-symbols-outlined text-[22px]">event_available</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Solicitar Folga Compensatória</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Submeta para aprovação com até 48h de antecedência</span>
+</div>
+</div>
+<button class="p-space-xs rounded-full hover:bg-surface-container text-on-surface-variant" id="closeRequestModal" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Tipo de Compensação</label>
+<select class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none">
+<option>Dia Útil Completo (8h 00m)</option>
+<option>Meio Período - Matutino (4h 00m)</option>
+<option>Meio Período - Vespertino (4h 00m)</option>
+<option>Ponte / Emenda de Feriado (16h 00m)</option>
+<option>Horário Flexível Customizado</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Data da Folga</label>
+<input class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none font-metric-tabular" type="date" value="{{ .TodayISO }}"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Horas a Deduzir</label>
+<input class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none font-metric-tabular" readonly="" type="text" value="08:00"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Justificativa / Observação (Opcional)</label>
+<textarea class="bg-surface-container-low p-space-sm rounded-xl text-body-md text-on-surface focus:outline-none placeholder:text-outline resize-none" placeholder="Ex: Compensação antecipada do plantão do dia 10/10 com alinhamento da squad de engenharia..." rows="3"></textarea>
+</div>
+<div class="p-space-sm rounded-xl bg-surface-container flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+<span class="material-symbols-outlined text-[20px] text-secondary">check_circle</span>
+<span>Seu saldo atual de <strong>{{ .SaldoHM }}</strong> é suficiente para cobrir esta solicitação.</span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm mt-space-xs">
+<button class="px-space-md py-space-sm rounded-xl bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" id="cancelModalBtn" type="button">
+          Cancelar
+        </button>
+<button class="px-space-lg py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold shadow-md hover:bg-primary-container transition-all" id="confirmModalBtn" type="button">
+          Protocolar Solicitação
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Ensure "Banco de Horas" is visually selected in Sidebar
+  document.addEventListener("DOMContentLoaded", () => {
+    const navLinks = document.querySelectorAll('aside nav a');
+    navLinks.forEach(link => {
+      if (link.getAttribute('data-path') === 'banco-de-horas') {
+        link.classList.add('bg-primary-container', 'text-on-primary-container', 'font-semibold', 'shadow-sm');
+        link.classList.remove('text-on-surface-variant');
+      } else {
+        link.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-semibold', 'shadow-sm');
+        link.classList.add('text-on-surface-variant');
+      }
+    });
+
+    // Modal Interactions
+    const openBtn = document.getElementById('openRequestModal');
+    const closeBtn = document.getElementById('closeRequestModal');
+    const cancelBtn = document.getElementById('cancelModalBtn');
+    const confirmBtn = document.getElementById('confirmModalBtn');
+    const modal = document.getElementById('requestModal');
+    const modalContent = document.getElementById('requestModalContent');
+
+    function showModal() {
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modalContent.classList.remove('scale-95');
+      modalContent.classList.add('scale-100');
+    }
+
+    function hideModal() {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modalContent.classList.add('scale-95');
+      modalContent.classList.remove('scale-100');
+    }
+
+    if (openBtn) openBtn.addEventListener('click', showModal);
+    if (closeBtn) closeBtn.addEventListener('click', hideModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', hideModal);
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', () => {
+        confirmBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Processando...';
+        setTimeout(() => {
+          hideModal();
+          confirmBtn.innerHTML = 'Protocolar Solicitação';
+          alert('Solicitação de folga enviada com sucesso ao gestor!');
+        }, 600);
+      });
+    }
+
+    // Interactive Hours Simulator
+    const slider = document.getElementById('hours-slider');
+    const sliderDisplay = document.getElementById('slider-display');
+    const deductionVal = document.getElementById('deduction-val');
+    const projectedRemaining = document.getElementById('projected-remaining');
+    const btn8h = document.getElementById('btn-option-8h');
+    const btn4h = document.getElementById('btn-option-4h');
+    const btn16h = document.getElementById('btn-option-16h');
+    const choiceButtons = [btn8h, btn4h, btn16h];
+
+    const currentTotalMinutes = {{ .SaldoMinutos }};
+
+    function updateSimulation(hours) {
+      const deductionMinutes = hours * 60;
+      const remainingMinutes = currentTotalMinutes - deductionMinutes;
+      const remH = Math.floor(remainingMinutes / 60);
+      const remM = remainingMinutes % 60;
+
+      slider.value = hours;
+      sliderDisplay.textContent = hours + ' hora' + (hours > 1 ? 's' : '');
+      deductionVal.textContent = '-' + String(hours).padStart(2, '0') + 'h 00m';
+      projectedRemaining.textContent = '+' + String(remH).padStart(2, '0') + 'h ' + String(remM).padStart(2, '0') + 'm';
+    }
+
+    function setActiveBtn(activeBtn) {
+      choiceButtons.forEach(btn => {
+        if (!btn) return;
+        btn.classList.remove('bg-primary', 'text-on-primary');
+        btn.classList.add('bg-surface-container-lowest', 'text-on-surface');
+      });
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-surface-container-lowest', 'text-on-surface');
+        activeBtn.classList.add('bg-primary', 'text-on-primary');
+      }
+    }
+
+    if (slider) {
+      slider.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        updateSimulation(val);
+        if (val === 8) setActiveBtn(btn8h);
+        else if (val === 4) setActiveBtn(btn4h);
+        else if (val === 16) setActiveBtn(btn16h);
+        else setActiveBtn(null);
+      });
+    }
+
+    if (btn8h) {
+      btn8h.addEventListener('click', () => {
+        setActiveBtn(btn8h);
+        updateSimulation(8);
+      });
+    }
+
+    if (btn4h) {
+      btn4h.addEventListener('click', () => {
+        setActiveBtn(btn4h);
+        updateSimulation(4);
+      });
+    }
+
+    if (btn16h) {
+      btn16h.addEventListener('click', () => {
+        setActiveBtn(btn16h);
+        updateSimulation(16);
+      });
+    }
+
+    // Filter Buttons Visual Toggle
+    const filterBtns = document.querySelectorAll('#filter-all, #filter-cred, #filter-deb, #filter-comp');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-xs');
+          b.classList.add('text-on-surface-variant');
+        });
+        btn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-xs');
+        btn.classList.remove('text-on-surface-variant');
+      });
+    });
+  });
+</script></main></div>
+</div>
+{{ end }}

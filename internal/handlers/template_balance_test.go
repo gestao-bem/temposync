@@ -32,6 +32,7 @@ func TestPages_BalancedDivTags(t *testing.T) {
 	dash := NewDashboardHandler(views, s, site, cat, cfg)
 	esp := NewEspelhoHandler(views, s, site, cat, cfg)
 	met := NewMetricasHandler(views, s, site, cat, cfg)
+	banco := NewBancoHorasHandler(views, s, site, cat, cfg)
 
 	cases := []struct {
 		name string
@@ -45,6 +46,7 @@ func TestPages_BalancedDivTags(t *testing.T) {
 		{"dashboard", dash.ServeHTTP, true},
 		{"espelho", esp.ServeHTTP, true},
 		{"metricas", met.ServeHTTP, true},
+		{"banco-horas", banco.ServeHTTP, true},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
