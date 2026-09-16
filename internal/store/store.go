@@ -34,6 +34,10 @@ type Store interface {
 	CreateRequest(userID int64, kind string, day time.Time, minutes int, reason string) (int64, error)
 	ListRequests(userID int64) ([]models.Request, error)
 	DecideRequest(userID, requestID int64, status string) error
+	ListPosts() ([]models.Post, error)
+	PostBySlug(slug string) (models.Post, error)
+	SubscribeNewsletter(email string) (bool, error)
+	CountNewsletter() (int64, error)
 	GetSettings(userID int64) (map[string]string, error)
 	SetSettings(userID int64, kv map[string]string) error
 	DeleteSettings(userID int64) error

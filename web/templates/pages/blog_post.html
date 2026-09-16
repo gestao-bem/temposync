@@ -1,0 +1,58 @@
+{{ define "content" }}
+<div id="amarra-main" data-testid="temposync-blog-post">
+<header class="w-full bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+<div class="h-20 max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop flex items-center justify-between gap-space-md">
+<a href="/blog" class="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span class="font-label-md text-label-md">Voltar ao blog</span>
+</a>
+<a href="/" class="flex items-center gap-space-sm">
+<img alt="TempoSync" class="h-8 w-auto object-contain" src="/static/img/stitch/logo.png" />
+</a>
+<a href="/signup" class="inline-flex items-center px-space-md py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all">Começar grátis</a>
+</div>
+</header>
+<main class="w-full bg-surface min-h-[calc(100vh-80px)]">
+<div class="max-w-[820px] mx-auto px-margin md:px-margin-tablet py-space-xl">
+{{ if .NotFound }}
+<div class="rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm text-center flex flex-col items-center gap-space-sm">
+<span class="material-symbols-outlined text-[48px] text-outline">search_off</span>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface">Artigo não encontrado</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">O endereço <strong>/blog/{{ .Slug }}</strong> não corresponde a nenhum artigo publicado.</p>
+<a href="/blog" class="mt-space-sm px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all">Ver todos os artigos</a>
+</div>
+{{ else }}
+<article class="flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wider font-semibold">{{ .Category }}</span>
+<span class="font-metric-tabular text-body-sm text-outline">{{ .Post.ReadMin }} min de leitura</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl font-bold text-on-surface tracking-tight leading-tight">{{ .Post.Title }}</h1>
+<div class="flex items-center gap-space-sm pb-space-md border-b border-surface-container-high">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-on-primary-fixed">{{ slice .Post.Author 0 1 }}</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">{{ .Post.Author }}</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Publicado em {{ .Post.PublishedAt.Format "02/01/2006" }}</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-md">
+{{ range .Paragraphs }}
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">{{ . }}</p>
+{{ end }}
+</div>
+<div class="mt-space-lg p-space-md rounded-2xl bg-primary-fixed/30 flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Previsão exata de saída, banco de horas e espelho em PDF</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Teste o TempoSync gratuitamente — sem cartão de crédito.</span>
+</div>
+<a href="/signup" class="inline-flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shrink-0">
+<span>Criar conta grátis</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</article>
+{{ end }}
+</div>
+</main>
+</div>
+{{ end }}
