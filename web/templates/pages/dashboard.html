@@ -1,14 +1,434 @@
 {{ define "content" }}
-<div class="w-full max-w-4xl mx-auto border border-copper/45 bg-ink/70 p-6 md:p-7 shadow-[10px_10px_0_0_rgba(201,137,58,0.22)]">
-  <div class="mb-5 pb-4 border-b border-foam/10">
-    <h2 class="font-serif text-2xl text-foam">{{ t "dashboard.title" }}</h2>
-  </div>
-  <div class="grid gap-4 sm:grid-cols-2 mb-6">
-    <.stat label="{{ t "dashboard.contacts" }}" value="{{ .TotalContacts }}" />
-    <.stat label="{{ t "dashboard.env" }}" value="{{ .Env }}" />
-  </div>
-  <.form action="/logout" method="post">
-    <.button type="submit">{{ t "auth.logout" }}</.button>
-  </.form>
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between p-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-xs"><img alt="TempoSync Logo" class="h-8 w-auto object-contain" src="/static/img/stitch/logo.png"/><div class="flex flex-col"><span class="font-headline-md text-headline-md text-primary tracking-tight font-bold">TempoSync</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Controle de Jornada</span></div></div><div class="h-[1px] w-full bg-surface-container-highest/60"></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl bg-primary-container text-on-primary-container font-semibold shadow-sm" data-path="dashboard-e-ponto-diario" href="/dashboard"><span class="material-symbols-outlined text-[20px]">schedule</span><span class="font-label-md text-label-md">Dashboard &amp; Ponto Diário</span></a><a data-amarra-skip class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="espelho-de-ponto-e-relatorios" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Espelho de Ponto &amp; Relatórios</span></a><a data-amarra-skip class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="analise-e-metricas" href="#"><span class="material-symbols-outlined text-[20px]">query_stats</span><span class="font-label-md text-label-md">Análise &amp; Métricas</span></a><a data-amarra-skip class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="banco-de-horas" href="#"><span class="material-symbols-outlined text-[20px]">timelapse</span><span class="font-label-md text-label-md">Banco de Horas</span></a><a data-amarra-skip class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-150" data-path="configuracoes-de-jornada" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span class="font-label-md text-label-md">Configurações de Jornada</span></a></nav></div><div class="flex flex-col gap-space-sm pt-space-md border-t border-surface-container-highest/60"><div class="flex items-center justify-between px-space-xs"><div class="flex items-center gap-space-xs"><span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant">Nuvem sincronizada</span></div><span class="material-symbols-outlined text-secondary text-[16px]">cloud_done</span></div><div class="flex items-center justify-between px-space-xs text-outline"><span class="font-label-sm text-label-sm">Versão 2.4.0 (Enterprise)</span><span class="font-label-sm text-label-sm font-metric-tabular">STABLE</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)] z-40 px-gutter-desktop"><div class="h-20 w-full flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex flex-col"><span class="font-headline-md text-headline-md font-semibold text-on-surface">{{ .TodayLong }}</span><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[15px] text-on-surface-variant">save_as</span><span class="font-metric-tabular text-metric-tabular text-on-surface-variant">{{ .NowClock }} • UTC-3</span></div></div><div class="h-8 w-[1px] bg-surface-container-highest"></div><div class="inline-flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-secondary-container/40 text-on-secondary-container"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">Em expediente</span></div></div><div class="flex items-center gap-space-md"><button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-[0_4px_12px_rgba(0,74,198,0.2)] active:scale-95" type="submit" form="punch-form"><span class="material-symbols-outlined text-[18px]">fingerprint</span><span>Registrar Ponto</span></button><button aria-label="Notificações" class="relative p-space-sm rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span></button><div class="h-8 w-[1px] bg-surface-container-highest"></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="/static/img/stitch/avatar-demo.jpg"/><div class="flex flex-col text-left"><span class="font-label-md text-label-md font-bold text-on-surface leading-tight">{{ .UserName }}</span><span class="font-body-sm text-body-sm text-on-surface-variant leading-tight">{{ .UserEmail }}</span></div></div></div></div></header><main id="amarra-main" data-testid="temposync-dashboard" class="w-full pt-20 px-gutter-desktop min-h-screen bg-surface"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Welcome & Ambient Header Banner -->
+<section class="w-full flex flex-col md:flex-row md:items-center justify-between gap-space-md py-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">
+          {{ .Greeting }}, {{ .UserName }}! <span class="inline-block animate-bounce text-headline-lg">👋</span>
+</h1>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase font-bold tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          Jornada {{ .Percent }}% Concluída
+        </span>
 </div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Sua jornada de hoje está bem encaminhada. Faltam exatamente <strong class="text-on-surface font-semibold font-metric-tabular">{{ .RemainingHM }}</strong> para bater sua meta contratual de 8h líquidas.
+      </p>
+</div>
+<!-- Smart Insight Pill Badge -->
+<div class="flex items-center gap-space-sm bg-surface-container-high px-space-md py-space-sm rounded-2xl shadow-sm self-start md:self-auto">
+<div class="w-8 h-8 rounded-xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">lightbulb</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold uppercase tracking-wider">Dica Inteligente</span>
+<span class="font-body-sm text-body-sm text-on-surface">
+          Intervalo compensado: saída prevista às <strong class="text-primary font-semibold font-metric-tabular">{{ .ForecastClock }}</strong>
+</span>
+</div>
+</div>
+</section>
+<!-- Main Hero Console: Two-Column Bento Layout -->
+<section class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg mt-space-sm">
+<!-- Left Panel: Clocking Deck & Immediate Punch Trigger (7 Cols) -->
+<div class="xl:col-span-7 flex flex-col justify-between p-space-xl bg-surface-container-lowest rounded-3xl shadow-sm relative overflow-hidden">
+<!-- Ambient Glow Behind Clock -->
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Top Row: Status Badges & Work Mode Selector -->
+<div class="flex items-center justify-between gap-space-sm flex-wrap z-10">
+<div class="flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-secondary-container/50 text-on-secondary-container">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+</span>
+<span class="font-label-md text-label-md font-bold uppercase tracking-wide">
+            {{ if .HasPunches }}Em Expediente • {{ .WorkedHM }}{{ else }}Aguardando primeira batida{{ end }}
+          </span>
+</div>
+<!-- Work Mode Switcher -->
+<div class="flex items-center bg-surface-container-low p-1 rounded-full text-on-surface-variant">
+<button class="flex items-center gap-1.5 px-space-md py-1 rounded-full text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all" id="mode-home" type="button">
+<span class="material-symbols-outlined text-[16px]">home_work</span>
+<span>Home Office</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-1 rounded-full bg-surface-container-lowest text-primary font-bold shadow-sm font-label-sm text-label-sm transition-all" id="mode-office" type="button">
+<span class="material-symbols-outlined text-[16px]">corporate_fare</span>
+<span>Escritório SP</span>
+</button>
+</div>
+</div>
+<!-- Live Digital Clock Face -->
+<div class="my-space-xl flex flex-col items-center justify-center text-center z-10">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-widest font-bold mb-space-xs">
+          Horário de Brasília • Sincronizado NTP.br
+        </span>
+<div class="flex items-baseline justify-center gap-1">
+<span class="font-display-time text-display-time text-on-surface tracking-tighter font-bold" id="digital-clock">14:28</span>
+<span class="font-metric-tabular text-headline-lg text-primary font-bold" id="digital-seconds">:15</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant mt-1">
+          Quarta-feira, 24 de Outubro de 2024
+        </span>
+</div>
+<!-- Quick Action Punch Triggers -->
+<div class="flex flex-col gap-space-sm z-10">
+<form id="punch-form" action="/dashboard/punch" method="post"><input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" /><button class="w-full h-16 rounded-2xl bg-primary text-on-primary hover:bg-primary-container active:scale-[0.99] transition-all shadow-[0_8px_20px_-4px_rgba(0,74,198,0.35)] flex items-center justify-center gap-space-sm group" id="primary-punch-btn" type="submit">
+<span class="material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform">fingerprint</span>
+<span class="font-headline-md text-headline-md font-bold tracking-tight">{{ .NextLabel }}</span>
+<span class="hidden sm:inline-block px-2 py-0.5 rounded bg-surface-container-lowest/20 font-label-sm text-label-sm text-on-primary">Espaço [␣]</span>
+</button></form>
+<!-- Fast Preset Sub-actions -->
+<div class="grid grid-cols-3 gap-space-sm mt-1">
+<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-tertiary">coffee</span>
+<span>Pausa Café</span>
+</button>
+<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">more_time</span>
+<span>Pausa Técnica</span>
+</button>
+<button class="py-2.5 px-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-error">logout</span>
+<span>Fim de Turno</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Panel: Smart Departure Forecast Module (5 Cols) -->
+<div class="xl:col-span-5 bg-gradient-to-br from-surface-container-high via-surface-container to-surface-container-low rounded-3xl p-space-xl flex flex-col justify-between shadow-sm relative overflow-hidden">
+<!-- Top Section: Header & Status Badge -->
+<div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">auto_graph</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">
+              Previsão de Saída
+            </h2>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-1 rounded-full bg-surface-container-lowest font-bold text-on-surface-variant">
+            Meta CLT: 08h00
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+          Calculado com base na entrada das 08:32 e intervalo de 01h05.
+        </p>
+</div>
+<!-- Departure Big Digit Display & Radial Progress Graphic -->
+<div class="my-space-lg flex items-center justify-between gap-space-md p-space-md bg-surface-container-lowest rounded-2xl shadow-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">
+            Horário Ideal Exato
+          </span>
+<span class="font-display-time text-display-time text-primary font-bold tracking-tighter">
+            {{ .ForecastClock }}
+          </span>
+<div class="flex items-center gap-1.5 text-secondary mt-0.5">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-label-sm text-label-sm font-bold">Jornada 100% cumprida sem deficit</span>
+</div>
+</div>
+<!-- Inline Visual SVG Progress Donut -->
+<div class="relative w-28 h-28 flex items-center justify-center shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle class="text-surface-container-highest" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="80.3" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center justify-center text-center">
+<span class="font-metric-tabular font-bold text-headline-sm text-on-surface">{{ .Percent }}%</span>
+<span class="font-label-sm text-[9px] text-on-surface-variant uppercase tracking-tight">{{ .WorkedHM }}/08h</span>
+</div>
+</div>
+</div>
+<!-- Departure Scenarios Interactive Pill Box -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">
+          Cenários de Saída Alternativos
+        </span>
+<div class="grid grid-cols-2 gap-space-xs">
+<!-- Minimum Departure with CLT Tolerance -->
+<div class="p-3 bg-surface-container-lowest/80 rounded-xl flex flex-col hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<span class="font-label-sm text-label-sm text-outline font-semibold">Tolerância CLT (-10m)</span>
+<div class="flex items-baseline justify-between mt-1">
+<span class="font-metric-tabular font-bold text-headline-sm text-on-surface">{{ .ForecastMinus10 }}</span>
+<span class="font-label-sm text-[10px] text-secondary font-bold">Válido</span>
+</div>
+</div>
+<!-- Overtime Scenario (+30m) -->
+<div class="p-3 bg-surface-container-lowest/80 rounded-xl flex flex-col hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<span class="font-label-sm text-label-sm text-outline font-semibold">Com Hora Extra (+30m)</span>
+<div class="flex items-baseline justify-between mt-1">
+<span class="font-metric-tabular font-bold text-headline-sm text-on-surface">{{ .ForecastPlus30 }}</span>
+<span class="font-label-sm text-[10px] text-tertiary font-bold">+ Banco</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Metric Statistics Cards Strip -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mt-space-lg">
+<!-- Card 1: Total Worked Today -->
+<div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Trabalhado Hoje</span>
+<div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+</div>
+</div>
+<div class="my-space-xs">
+<span class="font-headline-xl text-headline-xl font-bold font-metric-tabular text-on-surface">{{ .WorkedHM }}</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-1.5 rounded-full" style="width: {{ .Percent }}%;"></div>
+</div>
+</div>
+<!-- Card 2: Break Duration -->
+<div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Intervalo Almoço</span>
+<div class="w-8 h-8 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">restaurant</span>
+</div>
+</div>
+<div class="my-space-xs">
+<span class="font-headline-xl text-headline-xl font-bold font-metric-tabular text-on-surface">{{ .BreakHM }}</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary">info</span>
+<span>{{ .BreakNote }}</span>
+</div>
+</div>
+<!-- Card 3: Remaining Work Time -->
+<div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Tempo Restante</span>
+<div class="w-8 h-8 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">hourglass_top</span>
+</div>
+</div>
+<div class="my-space-xs">
+<span class="font-headline-xl text-headline-xl font-bold font-metric-tabular text-on-surface">{{ .RemainingHM }}</span>
+</div>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">update</span>
+<span>Previsto para 18:12</span>
+</div>
+</div>
+<!-- Card 4: Accumulated Bank Balance -->
+<div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Saldo Mês (Banco)</span>
+<div class="w-8 h-8 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+</div>
+</div>
+<div class="my-space-xs flex items-center gap-2">
+<span class="font-headline-xl text-headline-xl font-bold font-metric-tabular text-secondary">{{ .MonthBank }}</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">trending_up</span>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Acumulado positivo</span>
+<span class="font-bold text-secondary">Dentro da meta</span>
+</div>
+</div>
+</section>
+<!-- Daily Timeline & Weekly Status Bento Area -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mt-space-lg">
+<!-- Left: Chronological Daily Punches Timeline & Actions (8 Cols) -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-3xl p-space-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between flex-wrap gap-space-sm mb-space-lg">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">
+              Linha do Tempo de Hoje
+            </h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+              Registros verificados e com geolocalização aprovada
+            </span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">edit_calendar</span>
+<span>+ Adicionar Batida Esquecida</span>
+</button>
+</div>
+<!-- Vertical Connecting Timeline Checklist -->
+<div class="relative flex flex-col gap-space-lg pl-3">
+<div class="absolute left-6 top-3 bottom-6 w-0.5 bg-surface-container-highest"></div>
+{{ range .Timeline }}
+<div class="relative flex items-start gap-space-md z-10">
+<div class="w-7 h-7 rounded-full {{ if .Pending }}bg-primary-fixed text-primary animate-pulse{{ else }}bg-secondary text-on-secondary{{ end }} flex items-center justify-center ring-4 ring-surface-container-lowest shrink-0">
+<span class="material-symbols-outlined text-[16px]">{{ if .Pending }}schedule{{ else }}check{{ end }}</span>
+</div>
+<div class="flex-1 p-space-md {{ if .Pending }}bg-surface-container{{ else }}bg-surface-container-low{{ end }} rounded-2xl">
+<span class="font-label-sm text-label-sm uppercase tracking-wider {{ if .Pending }}text-primary font-bold{{ else }}text-outline font-semibold{{ end }}">{{ .Label }}</span>
+<p class="font-headline-md text-headline-md font-bold {{ if .Pending }}text-primary{{ else }}text-on-surface{{ end }} font-metric-tabular">{{ .Clock }}</p>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">{{ .Detail }}</span>
+</div>
+</div>
+{{ end }}
+{{ if not .Timeline }}
+<div class="relative z-10 p-space-md bg-surface-container rounded-2xl text-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Nenhuma batida hoje. Use o botão acima para registrar sua entrada.</span>
+</div>
+{{ end }}
+</div>
+<!-- Legal Footnote & Export Bar -->
+<div class="mt-space-lg pt-space-md flex items-center justify-between text-on-surface-variant text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
+<span>Portaria MTE 671/2021 em vigor • Assinatura Eletrônica SHA-256</span>
+</div>
+<button class="text-primary font-label-sm text-label-sm font-bold hover:underline flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">download</span>
+<span>Comprovante PDF</span>
+</button>
+</div>
+</div>
+<!-- Right: Weekly Balance Progression & Reminders Widget (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Weekly Micro Dashboard Card -->
+<div class="p-space-lg bg-surface-container-lowest rounded-3xl shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex flex-col">
+<h4 class="font-headline-md text-headline-md text-on-surface font-bold">Semana Atual</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">{{ .WeekRange }}</span>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-bold">
+            {{ .WeekTotal }}
+          </span>
+</div>
+<!-- Weekly Bars Visualization -->
+<div class="flex flex-col gap-space-sm">
+{{ range .WeekDays }}
+<div class="flex items-center justify-between {{ if .Done }}text-on-surface{{ else }}text-on-surface-variant opacity-60{{ end }}">
+<div class="flex items-center gap-2 w-16">
+<span class="font-label-md text-label-md {{ if .Today }}font-bold text-primary{{ else }}{{ if .Done }}font-bold{{ end }}{{ end }}">{{ .Short }}</span>
+<span class="material-symbols-outlined text-[16px] {{ if .Today }}text-primary{{ else }}{{ if .Done }}text-secondary{{ end }}{{ end }}">{{ if .Today }}sync{{ else }}{{ if .Done }}check_circle{{ else }}schedule{{ end }}{{ end }}</span>
+</div>
+<div class="flex-1 mx-space-sm bg-surface-container-high rounded-full h-2 overflow-hidden">
+<div class="{{ if .Today }}bg-primary{{ else }}{{ if .Done }}bg-secondary{{ else }}bg-surface-container-highest{{ end }}{{ end }} h-2 rounded-full" style="width: {{ .Pct }}%;"></div>
+</div>
+<span class="font-metric-tabular text-body-sm {{ if .Today }}text-primary font-bold{{ else }}{{ if .Done }}font-bold text-on-surface{{ end }}{{ end }}">{{ .HM }}</span>
+</div>
+{{ end }}
+</div>
+<!-- Active Notification & Sound Alert Card -->
+<div class="p-space-lg bg-surface-container-high rounded-3xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-xl bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-on-surface">Alerta de Saída Ativo</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant my-space-sm">
+          Você será notificado no navegador e aplicativo <strong class="text-on-surface">15 minutos antes</strong> do término previsto (às <span class="font-metric-tabular text-primary font-bold">{{ .ForecastAlert }}</span>).
+        </p>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-label-sm text-label-sm text-outline font-semibold">Som de lembrete</span>
+<button class="text-primary hover:text-on-surface font-label-sm text-label-sm font-bold flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span>Ajustar aviso</span>
+</button>
+</div>
+</div>
+<!-- Compliance Policy Micro-Banner -->
+<div class="p-space-md bg-surface-container-low rounded-2xl flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[24px] text-on-surface-variant">shield_lock</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">Segurança e Integridade</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant leading-tight">
+            Seus registros são criptografados e sincronizados com a Folha de Pagamento em tempo real.
+          </span>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Feedback Toast (Hidden by default, triggered on action) -->
+<div class="fixed bottom-6 right-6 bg-inverse-surface text-inverse-on-surface px-space-lg py-space-md rounded-2xl shadow-xl flex items-center gap-space-sm opacity-0 translate-y-4 pointer-events-none transition-all duration-300 z-50" id="punch-toast">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold">Ponto Registrado com Sucesso!</span>
+<span class="font-body-sm text-body-sm text-inverse-on-surface/80" id="toast-time">Quarta-feira às 14:28:15</span>
+</div>
+</div>
+<script>
+    // Realtime Clock simulation & micro-interactions
+    (function initTempoSync() {
+      const clockEl = document.getElementById('digital-clock');
+      const secEl = document.getElementById('digital-seconds');
+      const punchBtn = document.getElementById('primary-punch-btn');
+      const toast = document.getElementById('punch-toast');
+      const toastTime = document.getElementById('toast-time');
+      const modeHome = document.getElementById('mode-home');
+      const modeOffice = document.getElementById('mode-office');
+
+      function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        if (clockEl) clockEl.textContent = hours + ':' + minutes;
+        if (secEl) secEl.textContent = ':' + seconds;
+      }
+
+      setInterval(updateClock, 1000);
+      updateClock();
+
+      function triggerPunchFeedback() {
+        const now = new Date();
+        const timeStr = String(now.getHours()).padStart(2, '0') + ':' + 
+                        String(now.getMinutes()).padStart(2, '0') + ':' + 
+                        String(now.getSeconds()).padStart(2, '0');
+
+        if (toastTime) {
+          toastTime.textContent = 'Horário registrado: ' + timeStr;
+        }
+
+        if (toast) {
+          toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+          toast.classList.add('opacity-100', 'translate-y-0');
+
+          setTimeout(() => {
+            toast.classList.remove('opacity-100', 'translate-y-0');
+            toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+          }, 3500);
+        }
+      }
+
+      if (punchBtn) {
+        punchBtn.addEventListener('click', triggerPunchFeedback);
+      }
+
+      // Spacebar shortcut for instant punch
+      window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && e.target === document.body) {
+          e.preventDefault();
+          document.getElementById('punch-form').requestSubmit();
+        }
+      });
+
+      // Work mode switcher interactions
+      if (modeHome && modeOffice) {
+        modeHome.addEventListener('click', () => {
+          modeHome.className = 'flex items-center gap-1.5 px-space-md py-1 rounded-full bg-surface-container-lowest text-primary font-bold shadow-sm font-label-sm text-label-sm transition-all';
+          modeOffice.className = 'flex items-center gap-1.5 px-space-md py-1 rounded-full text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all';
+        });
+
+        modeOffice.addEventListener('click', () => {
+          modeOffice.className = 'flex items-center gap-1.5 px-space-md py-1 rounded-full bg-surface-container-lowest text-primary font-bold shadow-sm font-label-sm text-label-sm transition-all';
+          modeHome.className = 'flex items-center gap-1.5 px-space-md py-1 rounded-full text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all';
+        });
+      }
+    })();
+  </script>
+</div></main></div>
 {{ end }}

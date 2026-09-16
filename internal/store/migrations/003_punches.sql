@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS punches (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    happened_at DATETIME NOT NULL,
+    kind TEXT NOT NULL DEFAULT '',
+    note TEXT NOT NULL DEFAULT '',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_punches_user_day ON punches(user_id, happened_at);

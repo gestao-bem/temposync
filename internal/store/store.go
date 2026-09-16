@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/puppe1990/amarra-cais/pkg/cais/devlog"
 	"github.com/puppe1990/amarra-cais/pkg/cais/session"
@@ -25,6 +26,9 @@ type Store interface {
 	CountContacts() (int64, error)
 	FindUserByEmail(email string) (models.User, error)
 	CreateUser(email, passwordHash string) (int64, error)
+	FindUserByID(id int64) (models.User, error)
+	CreatePunch(userID int64, at time.Time, kind string) (int64, error)
+	ListPunches(userID int64, from, to time.Time) ([]models.Punch, error)
 	CreatePasswordResetToken(userID int64) (string, error)
 	FindPasswordResetUserID(token string) (int64, bool)
 	ResetPasswordWithToken(token, passwordHash string) error
