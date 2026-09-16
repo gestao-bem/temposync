@@ -38,8 +38,10 @@ func registerRoutes(r *cais.Router, deps Deps, cfg cais.Config) {
 	r.Post("/dashboard/punch/delete", middleware.RequireAuthFunc("/login", dashboard.PunchDelete))
 	r.Post("/dashboard/mode", middleware.RequireAuthFunc("/login", dashboard.ModePost))
 
-	blog := handlers.NewBlogHandler(deps.Views, deps.Site, deps.Catalog, cfg)
+	blog := handlers.NewBlogHandler(deps.Views, deps.Store, deps.Site, deps.Catalog, cfg)
 	r.Get("/blog", blog.ServeHTTP)
+	r.Get("/blog/{slug}", blog.Post)
+	r.Post("/blog/newsletter", blog.NewsletterPost)
 	espelho := handlers.NewEspelhoHandler(deps.Views, deps.Store, deps.Site, deps.Catalog, cfg)
 	r.Get("/espelho", middleware.RequireAuthFunc("/login", espelho.ServeHTTP))
 	r.Get("/espelho/export.csv", middleware.RequireAuthFunc("/login", espelho.ExportCSV))

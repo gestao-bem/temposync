@@ -27,7 +27,7 @@ func TestPages_BalancedDivTags(t *testing.T) {
 	}
 
 	home := NewHomeHandler(views, site, cat, cfg)
-	blog := NewBlogHandler(views, site, cat, cfg)
+	blog := NewBlogHandler(views, s, site, cat, cfg)
 	auth := NewAuthHandler(views, s, site, s.Sessions(), cfg, cat)
 	dash := NewDashboardHandler(views, s, site, cat, cfg)
 	esp := NewEspelhoHandler(views, s, site, cat, cfg)
