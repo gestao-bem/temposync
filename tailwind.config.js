@@ -69,6 +69,9 @@ module.exports = {
       spacing: {
         gutter: "1.25rem",
         "gutter-desktop": "1.75rem",
+        margin: "1rem",
+        "margin-tablet": "2rem",
+        "margin-desktop": "3rem",
         "space-xs": "0.25rem",
         "space-sm": "0.5rem",
         "space-md": "1rem",
