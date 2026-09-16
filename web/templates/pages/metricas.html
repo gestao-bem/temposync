@@ -5,17 +5,33 @@
 
   <script>
     (function initSidebarDrawer() {
-      const aside = document.querySelector('aside');
-      const btn = document.getElementById('btn-menu');
-      const backdrop = document.getElementById('sidebar-backdrop');
-      if (!aside || !btn || !backdrop) return;
+      if (window.__tsDrawerInit) return;
+      window.__tsDrawerInit = true;
       function setOpen(open) {
+        const aside = document.getElementById('app-sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (!aside) return;
         aside.classList.toggle('-translate-x-full', !open);
-        backdrop.classList.toggle('hidden', !open);
+        if (backdrop) backdrop.classList.toggle('hidden', !open);
       }
-      btn.addEventListener('click', () => setOpen(aside.classList.contains('-translate-x-full')));
-      backdrop.addEventListener('click', () => setOpen(false));
-      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+      function isOpen() {
+        const aside = document.getElementById('app-sidebar');
+        return aside ? !aside.classList.contains('-translate-x-full') : false;
+      }
+      // delegation: o morph do Drive troca o DOM e os elementos do header;
+      // resolver no clique evita listeners presos a nós órfãos.
+      document.addEventListener('click', (e) => {
+        const target = e.target instanceof Element ? e.target : null;
+        if (!target) return;
+        if (target.closest('#btn-menu')) {
+          setOpen(!isOpen());
+          return;
+        }
+        if (target.closest('#sidebar-backdrop')) setOpen(false);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setOpen(false);
+      });
     })();
   </script>
 <script>
