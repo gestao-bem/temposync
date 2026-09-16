@@ -107,9 +107,10 @@ func (h *BancoHorasHandler) ExportCSV(w http.ResponseWriter, r *http.Request) {
 	}}
 	for _, l := range lancs {
 		label, tipo := "Jornada excedente", "Crédito"
-		if l.Kind == "debito" {
+		switch l.Kind {
+		case "debito":
 			label, tipo = "Compensação de jornada reduzida", "Débito"
-		} else if l.Kind == "compensacao" {
+		case "compensacao":
 			label, tipo = "Folga / compensação de jornada", "Compensação"
 		}
 		rows = append(rows, []string{
