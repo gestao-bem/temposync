@@ -39,52 +39,15 @@ func (h *EspelhoHandler) ExportCSV(w http.ResponseWriter, r *http.Request) {
 			month = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, loc)
 		}
 	}
-	monthEnd := month.AddDate(0, 1, 0)
-	lastDay := monthEnd
-	if month.Year() == now.Year() && month.Month() == now.Month() {
-		lastDay = dayStart(now).Add(24 * time.Hour)
-	}
-
 	rows := [][]string{{
 		"Data", "Dia", "Entrada 1", "Intervalo Saída", "Intervalo Retorno",
 		"Saída 2", "Líquido", "Saldo", "Status",
 	}}
-	clk := func(t time.Time) string { return t.In(loc).Format("15:04") }
-	for d := month; d.Before(monthEnd); d = d.AddDate(0, 0, 1) {
-		if !isWorkday(d) || !d.Before(lastDay) {
-			continue
-		}
-		punches, err := h.store.ListPunches(uid, d, d.Add(24*time.Hour))
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		dia := ptWeekdaysShort[d.Weekday()]
-		if len(punches) == 0 {
-			rows = append(rows, []string{d.Format("02/01/2006"), dia, "--:--", "--:--", "--:--", "--:--", "--:--", "--:--", "Sem registro"})
-			continue
-		}
-		cells := []string{d.Format("02/01/2006"), dia}
-		for i := 0; i < 4; i++ {
-			if i < len(punches) {
-				cells = append(cells, clk(punches[i].HappenedAt))
-			} else {
-				cells = append(cells, "--:--")
-			}
-		}
-		worked := jornada.Worked(toJP(punches, loc), refFor(d, now))
-		bal := worked - jornada.Goal
-		status := "Jornada regular"
-		if bal > 10*time.Minute {
-			status = "Hora extra"
-		} else if bal < -10*time.Minute {
-			status = "Débito"
-		}
-		if d.Equal(dayStart(now)) && len(punches) < 4 {
-			status = "Em andamento"
-		}
-		rows = append(rows, append(cells,
-			jornada.FmtHM(worked), jornada.FmtSigned(bal), status))
+	for _, rep := range h.monthReport(uid, month, now, loc) {
+		rows = append(rows, []string{
+			rep.Date, rep.Weekday, rep.In1, rep.BrkOut, rep.BrkBack, rep.Out2,
+			rep.Liquid, rep.Balance, rep.Status,
+		})
 	}
 	writeCSV(w, "espelho-"+month.Format("2006-01")+".csv", rows)
 }

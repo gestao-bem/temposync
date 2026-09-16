@@ -42,6 +42,7 @@ func registerRoutes(r *cais.Router, deps Deps, cfg cais.Config) {
 	espelho := handlers.NewEspelhoHandler(deps.Views, deps.Store, deps.Site, deps.Catalog, cfg)
 	r.Get("/espelho", middleware.RequireAuthFunc("/login", espelho.ServeHTTP))
 	r.Get("/espelho/export.csv", middleware.RequireAuthFunc("/login", espelho.ExportCSV))
+	r.Get("/espelho/espelho.pdf", middleware.RequireAuthFunc("/login", espelho.ExportPDF))
 	r.Post("/espelho/ajustes", middleware.RequireAuthFunc("/login", espelho.AjustePost))
 	metricas := handlers.NewMetricasHandler(deps.Views, deps.Store, deps.Site, deps.Catalog, cfg)
 	r.Get("/metricas", middleware.RequireAuthFunc("/login", metricas.ServeHTTP))
