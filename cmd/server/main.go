@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io/fs"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/puppe1990/amarra-cais/pkg/amarra/view"
 	"github.com/puppe1990/amarra-cais/pkg/cais"
@@ -44,8 +47,14 @@ func main() {
 		Version:         boot.CaisVersion(),
 		PortShiftedFrom: shiftedFrom,
 	})
-	if err := a.Run(); err != nil {
-		log.Fatal(err)
+	// Graceful shutdown on SIGINT/SIGTERM (air sends SIGINT before each
+	// rebuild when send_interrupt is set) so the listener and sqlite close
+	// instead of lingering as a zombie holding :8080 and data/app.db (#77).
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	runErr := a.RunContext(ctx)
+	stop()
+	if runErr != nil {
+		log.Fatal(runErr)
 	}
 }
 

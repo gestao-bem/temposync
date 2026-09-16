@@ -3,7 +3,7 @@ module github.com/gestao-bem/temposync
 go 1.26.4
 
 require (
-	github.com/puppe1990/amarra-cais v0.5.2
+	github.com/puppe1990/amarra-cais v0.6.1
 	modernc.org/sqlite v1.53.0
 )
 

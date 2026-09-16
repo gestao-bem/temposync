@@ -69,7 +69,6 @@ func New(cfg cais.Config, deps Deps) (*App, error) {
 	}
 	r.Use(middleware.Recover)
 	r.Use(middleware.SecurityHeaders(cfg))
-	r.Use(NoStorePages)
 	r.StaticForEnv("/static", deps.StaticDir, cfg)
 
 	registerRoutes(r, deps, cfg)
