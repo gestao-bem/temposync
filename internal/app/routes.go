@@ -34,6 +34,9 @@ func registerRoutes(r *cais.Router, deps Deps, cfg cais.Config) {
 	r.Post("/logout", auth.LogoutPost)
 	r.Post("/locale", handlers.PostLocale(cfg))
 	r.Get("/dashboard", middleware.RequireAuthFunc("/login", dashboard.ServeHTTP))
+
+	blog := handlers.NewBlogHandler(deps.Views, deps.Site, deps.Catalog, cfg)
+	r.Get("/blog", blog.ServeHTTP)
 }
 
 func registerLiveViews(hub *live.Hub, deps Deps) {

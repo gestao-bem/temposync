@@ -21,6 +21,7 @@
 <a href="/" class="px-3 py-2 font-label-md text-label-md transition flex items-center gap-2 flex-shrink-0 {{ if eq .ActiveNav "home" }}text-primary{{ else }}text-on-surface-variant hover:text-on-surface{{ end }}">Home</a>
 <a href="/contact" class="px-3 py-2 font-label-md text-label-md transition flex items-center gap-2 flex-shrink-0 {{ if eq .ActiveNav "contact" }}text-primary{{ else }}text-on-surface-variant hover:text-on-surface{{ end }}">Contact</a>
 <a href="/dashboard" class="px-3 py-2 font-label-md text-label-md transition flex items-center gap-2 flex-shrink-0 {{ if eq .ActiveNav "dashboard" }}text-primary{{ else }}text-on-surface-variant hover:text-on-surface{{ end }}">Dashboard</a>
+<a href="/blog" class="px-3 py-2 font-label-md text-label-md transition flex items-center gap-2 flex-shrink-0 {{ if eq .ActiveNav "blog" }}text-primary{{ else }}text-on-surface-variant hover:text-on-surface{{ end }}">Blog</a>
 {{- end -}}
 {{ define "app" }}
 <!doctype html>
@@ -59,7 +60,7 @@
   </head>
   <body class="min-h-screen bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col justify-between">
     <div>
-      {{ if ne .ActiveNav "home" }}
+      {{ if and (ne .ActiveNav "home") (ne .ActiveNav "blog") }}
       <header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
         <div class="h-20 w-full max-w-[1280px] mx-auto px-gutter lg:px-gutter-desktop flex items-center justify-between gap-space-md">
           <a href="/" class="flex items-center gap-space-sm">
@@ -79,6 +80,7 @@
             <a data-amarra-skip href="/#conformidade" class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">Conformidade CLT</a>
             <a data-amarra-skip href="/#precos" class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">Preços</a>
             <a data-amarra-skip href="/#faq" class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">FAQ</a>
+            <a href="/blog" class="font-label-md text-label-md {{ if eq .ActiveNav "blog" }}text-primary font-semibold{{ else }}text-on-surface-variant hover:text-on-surface{{ end }} transition-colors">Blog</a>
           </nav>
           <div class="flex items-center gap-space-sm sm:gap-space-md">
             <a href="/login" class="hidden sm:inline-flex items-center px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors">Acessar Sistema</a>
@@ -99,7 +101,7 @@
       </nav>
       {{ end }}
       <div id="amarra-toast-host" aria-live="polite"></div>
-      {{ if eq .ActiveNav "home" }}
+      {{ if or (eq .ActiveNav "home") (eq .ActiveNav "blog") }}
       <.flash />
       {{ template "content" . }}
       {{ else }}
@@ -109,7 +111,7 @@
       </main>
       {{ end }}
     </div>
-    {{ if ne .ActiveNav "home" }}
+    {{ if and (ne .ActiveNav "home") (ne .ActiveNav "blog") }}
     <footer class="mt-auto border-t border-surface-container-high bg-surface-container-low py-6 text-center">
       <p class="inline-flex items-center gap-1 rounded-full bg-secondary-container px-3 py-1 font-label-sm text-label-sm text-on-secondary-container"><span class="material-symbols-outlined text-[16px]">verified</span> Certificação Portaria MTE 671 / REP-P</p>
       <p class="mt-2 text-body-sm text-body-sm text-on-surface-variant">© 2026 TempoSync · Controle de ponto inteligente</p>
