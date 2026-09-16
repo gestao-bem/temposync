@@ -134,9 +134,9 @@ func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	items := make([]timelineItem, 0, len(punches)+1)
 	for i, p := range punches {
-		label := punchLabels[i]
-		if i >= len(punchLabels) {
-			label = fmt.Sprintf("%dº Registro", i+1)
+		label := fmt.Sprintf("%dº Registro", i+1)
+		if i < len(punchLabels) {
+			label = punchLabels[i]
 		}
 		items = append(items, timelineItem{Label: label, Clock: jornada.FmtClockS(p.HappenedAt.In(now.Location())), Detail: "Confirmado • " + now.Location().String()})
 	}

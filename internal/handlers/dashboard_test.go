@@ -122,6 +122,38 @@ func TestDashboardHandler_forecastUsesSaoPauloClock(t *testing.T) {
 	}
 }
 
+func TestDashboardHandler_manyPunchesNoPanic(t *testing.T) {
+	h, s := newDashboardHandler(t)
+
+	uid, err := s.CreateUser("lucas@example.com", "hash")
+	if err != nil {
+		t.Fatal(err)
+	}
+	loc, err := time.LoadLocation("America/Sao_Paulo")
+	if err != nil {
+		t.Fatal(err)
+	}
+	nows := time.Now().In(loc)
+	day := time.Date(nows.Year(), nows.Month(), nows.Day(), 0, 0, 0, 0, loc)
+	for i := 0; i < 6; i++ {
+		if _, err := s.CreatePunch(uid, day.Add(time.Duration(8+i)*time.Hour), ""); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard", nil)
+	req = session.WithUserID(req, uid)
+	rr := httptest.NewRecorder()
+	h.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("status = %d, want 200", rr.Code)
+	}
+	if !strings.Contains(rr.Body.String(), "5º Registro") {
+		t.Errorf("missing overflow punch label")
+	}
+}
+
 func TestDashboardHandler_includesFlash(t *testing.T) {
 	h, s := newDashboardHandler(t)
 
