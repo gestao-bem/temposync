@@ -47,6 +47,8 @@ func TestHomeHandler_RendersHTML(t *testing.T) {
 		"Experimentar Grátis",
 		"Como Funciona",
 		"Acessar Sistema",
+		`href="/blog"`,
+		">Blog</a>",
 	} {
 		if !strings.Contains(body, want) {
 			t.Errorf("body missing %q", want)
