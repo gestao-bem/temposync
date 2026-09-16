@@ -326,3 +326,74 @@ func TestDashboard_PunchDelete_removesOwn(t *testing.T) {
 		t.Errorf("delete não removeu: %+v", punches)
 	}
 }
+
+func TestDashboard_ModePost_persists(t *testing.T) {
+	h, s := newDashboardHandler(t)
+
+	uid, err := s.CreateUser("lucas@example.com", "hash")
+	if err != nil {
+		t.Fatal(err)
+	}
+	form := url.Values{"mode": {"home"}}
+	req := httptest.NewRequest(http.MethodPost, "/dashboard/mode", strings.NewReader(form.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req = session.WithUserID(req, uid)
+	rr := httptest.NewRecorder()
+	h.ModePost(rr, req)
+
+	if rr.Code != http.StatusSeeOther {
+		t.Fatalf("status = %d, want 303", rr.Code)
+	}
+	got, err := s.GetSettings(uid)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got["work_mode"] != "home" {
+		t.Errorf("work_mode = %q", got["work_mode"])
+	}
+	// inválido é ignorado
+	form = url.Values{"mode": {"hack"}}
+	req = httptest.NewRequest(http.MethodPost, "/dashboard/mode", strings.NewReader(form.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req = session.WithUserID(req, uid)
+	h.ModePost(httptest.NewRecorder(), req)
+	got, _ = s.GetSettings(uid)
+	if got["work_mode"] != "home" {
+		t.Errorf("modo inválido não deve sobrescrever: %q", got["work_mode"])
+	}
+}
+
+func TestDashboard_RendersAlertData(t *testing.T) {
+	h, s := newDashboardHandler(t)
+
+	uid, err := s.CreateUser("lucas@example.com", "hash")
+	if err != nil {
+		t.Fatal(err)
+	}
+	loc, _ := time.LoadLocation("America/Sao_Paulo")
+	nows := time.Now().In(loc)
+	day := time.Date(nows.Year(), nows.Month(), nows.Day(), 0, 0, 0, 0, loc)
+	if _, err := s.CreatePunch(uid, day.Add(8*time.Hour), "entrada"); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.SetSettings(uid, map[string]string{"alert_lead": "30", "work_mode": "office"}); err != nil {
+		t.Fatal(err)
+	}
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard", nil)
+	req = session.WithUserID(req, uid)
+	rr := httptest.NewRecorder()
+	h.ServeHTTP(rr, req)
+
+	body := rr.Body.String()
+	for _, want := range []string{
+		`id="punch-alert-data"`,
+		`data-lead="30"`,
+		`data-master="true"`,
+		`data-mode="office"`,
+	} {
+		if !strings.Contains(body, want) {
+			t.Errorf("body missing %q", want)
+		}
+	}
+}

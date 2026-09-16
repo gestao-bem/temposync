@@ -36,6 +36,7 @@ func registerRoutes(r *cais.Router, deps Deps, cfg cais.Config) {
 	r.Get("/dashboard", middleware.RequireAuthFunc("/login", dashboard.ServeHTTP))
 	r.Post("/dashboard/punch", middleware.RequireAuthFunc("/login", dashboard.PunchPost))
 	r.Post("/dashboard/punch/delete", middleware.RequireAuthFunc("/login", dashboard.PunchDelete))
+	r.Post("/dashboard/mode", middleware.RequireAuthFunc("/login", dashboard.ModePost))
 
 	blog := handlers.NewBlogHandler(deps.Views, deps.Site, deps.Catalog, cfg)
 	r.Get("/blog", blog.ServeHTTP)

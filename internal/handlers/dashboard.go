@@ -196,6 +196,28 @@ func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		breakNote = fmt.Sprintf("Recomendado: 01h00 (+%dm na saída)", int((brk - time.Hour).Minutes()))
 	}
 
+	settings, _ := h.store.GetSettings(uid)
+	alertMaster, alertTolerance := true, true
+	if v, ok := settings["alert_master"]; ok {
+		alertMaster = v == "on" || v == "true" || v == "1"
+	}
+	if v, ok := settings["alert_tolerance"]; ok {
+		alertTolerance = v == "on" || v == "true" || v == "1"
+	}
+	alertLead := 15
+	if v, ok := settings["alert_lead"]; ok {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 60 {
+			alertLead = n
+		}
+	}
+	workMode := "office"
+	if v, ok := settings["work_mode"]; ok && (v == "home" || v == "office") {
+		workMode = v
+	}
+	if hasForecast {
+		forecastAlert = jornada.FmtClock(forecast.Add(-time.Duration(alertLead) * time.Minute))
+	}
+
 	firstName := strings.Split(user.Email, "@")[0]
 	writeView(w, r, h.views, h.cfg, "app", "dashboard", amarraData(r, h.site, map[string]any{
 		"Title":           h.catalog.T("dashboard.title"),
@@ -223,6 +245,10 @@ func (h *DashboardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		"ForecastAlert":   forecastAlert,
 		"FirstEntry":      firstEntry,
 		"BreakCompact":    breakCompact,
+		"AlertMaster":     alertMaster,
+		"AlertTolerance":  alertTolerance,
+		"AlertLead":       alertLead,
+		"WorkMode":        workMode,
 		"Timeline":        items,
 		"WeekDays":        week,
 		"WeekTotal":       jornada.FmtSigned(weekTotal),
@@ -350,6 +376,30 @@ func (h *DashboardHandler) PunchPost(w http.ResponseWriter, r *http.Request) {
 		msg = fmt.Sprintf("Pausa registrada às %s", at.Format("15:04:05"))
 	}
 	flash.Set(w, "notice", msg, h.cfg.CookieSecure())
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+}
+
+// ModePost persiste o modo de trabalho (home | office) do usuário.
+func (h *DashboardHandler) ModePost(w http.ResponseWriter, r *http.Request) {
+	uid, ok := session.UserID(r)
+	if !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	if err := httpx.ParseFormOrJSON(r); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	mode := strings.TrimSpace(r.FormValue("mode"))
+	if mode != "home" && mode != "office" {
+		http.Error(w, "modo inválido", http.StatusUnprocessableEntity)
+		return
+	}
+	if err := h.store.SetSettings(uid, map[string]string{"work_mode": mode}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	flash.Set(w, "notice", "Modo de trabalho atualizado", h.cfg.CookieSecure())
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
