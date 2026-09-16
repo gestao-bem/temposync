@@ -83,3 +83,28 @@ func TestAuth_LoginPost_validCredentials_redirects(t *testing.T) {
 		t.Error("login must set cais_flash cookie via flash.Set")
 	}
 }
+
+func TestAuth_Login_rendersTempoSyncScreen(t *testing.T) {
+	h, _ := newAuthHandler(t)
+
+	req := httptest.NewRequest(http.MethodGet, "/login", nil)
+	rr := httptest.NewRecorder()
+	h.Login(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d", rr.Code, http.StatusOK)
+	}
+	body := rr.Body.String()
+	for _, want := range []string{
+		`data-testid="temposync-login"`,
+		"Simulação de Expediente Hoje",
+		"18:12",
+		`action="/login"`,
+		`name="csrf_token"`,
+		"Esqueceu a senha?",
+	} {
+		if !strings.Contains(body, want) {
+			t.Errorf("body missing %q", want)
+		}
+	}
+}

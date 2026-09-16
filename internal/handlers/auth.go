@@ -52,8 +52,9 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		email = "demo@example.com"
 	}
 	h.renderAuth(w, r, "login", map[string]any{
-		"Title": h.catalog.T("auth.login_title"),
-		"Email": email,
+		"Title":     h.catalog.T("auth.login_title"),
+		"ActiveNav": "login",
+		"Email":     email,
 	}, 0)
 }
 
@@ -68,9 +69,10 @@ func (h *AuthHandler) LoginPost(w http.ResponseWriter, r *http.Request) {
 	user, err := h.store.FindUserByEmail(email)
 	if err != nil || !session.VerifyPassword(user.PasswordHash, password) {
 		h.renderAuth(w, r, "login", map[string]any{
-			"Title":  h.catalog.T("auth.login_title"),
-			"Email":  email,
-			"Errors": validate.FieldErrors{"email": h.catalog.T("auth.invalid_credentials")},
+			"Title":     h.catalog.T("auth.login_title"),
+			"ActiveNav": "login",
+			"Email":     email,
+			"Errors":    validate.FieldErrors{"email": h.catalog.T("auth.invalid_credentials")},
 		}, http.StatusUnprocessableEntity)
 		return
 	}

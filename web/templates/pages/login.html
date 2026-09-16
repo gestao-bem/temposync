@@ -1,19 +1,379 @@
 {{ define "content" }}
-<div class="flex items-center justify-center px-4 py-16">
-<div class="w-full max-w-md mx-auto border border-copper/45 bg-ink/70 p-6 md:p-7 shadow-[10px_10px_0_0_rgba(201,137,58,0.22)]">
-  <h2 class="font-serif text-2xl text-foam">{{ t "auth.login_title" }}</h2>
-  <.form action="/login" method="post">
-    <.input name="email" type="email" label="Email" value="{{ .Email }}" error="{{ fieldError .Errors "email" }}" />
-    <.password name="password" label="{{ t "auth.password_label" }}" error="{{ fieldError .Errors "password" }}" autocomplete="current-password" required="required" />
-    <.button type="submit">{{ t "auth.login_submit" }}</.button>
-  </.form>
-  <p class="mt-4 text-center text-sm text-foam/60 space-y-1">
-    <span class="block">
-      {{ t "auth.signup_prompt" }}
-      <a class="text-copper hover:text-foam" href="/signup">{{ t "auth.signup_title" }}</a>
-    </span>
-    <a class="text-copper hover:text-foam" href="/forgot-password">{{ t "auth.forgot_password" }}</a>
-  </p>
-</div>
-</div>
+<header class="w-full z-20 bg-surface/80 backdrop-blur-xl">
+  <div class="w-full max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop h-16 flex items-center justify-between">
+    <a class="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="/">
+      <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+      <span class="font-label-md text-label-md">Voltar ao portal</span>
+    </a>
+    <div class="flex items-center gap-space-sm">
+      <img alt="TempoSync" class="h-8 w-auto object-contain" src="/static/img/stitch/logo-login.png" />
+      <span class="font-headline-md text-headline-md font-bold tracking-tight text-on-surface hidden sm:inline-block">TempoSync</span>
+    </div>
+    <div class="flex items-center gap-space-xs text-secondary bg-surface-container-high px-space-sm py-1 rounded-full">
+      <span class="material-symbols-outlined text-[16px]">lock</span>
+      <span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Ambiente Seguro</span>
+    </div>
+  </div>
+</header>
+<main id="amarra-main" data-testid="temposync-login" class="w-full flex-1 flex flex-col items-center justify-center px-margin md:px-margin-tablet lg:px-margin-desktop py-space-lg">
+  <div class="flex flex-col w-full max-w-[1240px] mx-auto my-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-stretch">
+      <div class="lg:col-span-6 flex flex-col justify-between p-space-lg lg:p-space-xl bg-surface-container-low rounded-xl shadow-sm relative overflow-hidden">
+        <div class="absolute -top-24 -left-24 w-80 h-80 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-secondary-container/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col gap-space-md">
+          <div class="inline-flex items-center gap-space-xs px-3 py-1 bg-surface-container-highest/80 text-primary font-label-sm text-label-sm uppercase tracking-wider rounded-full w-fit shadow-sm">
+            <span class="material-symbols-outlined text-[15px] text-primary">auto_schedule</span>
+            <span>Controle Inteligente &amp; Previsão de Saída</span>
+          </div>
+          <h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-tight">
+            Tenha precisão total da sua jornada <span class="text-primary">sem estresse</span> com o RH.
+          </h1>
+          <p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+            Previsão exata de saída considerando tolerâncias da CLT (Art. 58), intervalos reais de almoço e banco de horas 100% transparente.
+          </p>
+          <div class="mt-space-md bg-surface-container-lowest p-space-lg rounded-xl shadow-md flex flex-col gap-space-md">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-space-xs">
+                <span class="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-secondary -ml-3"></span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">Simulação de Expediente Hoje</span>
+              </div>
+              <span class="px-2 py-0.5 bg-surface-container text-on-surface-variant font-metric-tabular text-body-sm rounded">
+                08:42:15 decorridos
+              </span>
+            </div>
+            <div class="bg-surface-container-low p-space-md rounded-lg flex items-center justify-between">
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Horário de Saída Projetado</span>
+                <div class="flex items-baseline gap-space-xs">
+                  <span class="font-display-time text-display-time text-primary font-bold tracking-tight">18:12</span>
+                  <span class="font-label-md text-label-md text-secondary font-semibold">(Exato)</span>
+                </div>
+              </div>
+              <div class="flex flex-col items-end gap-space-xs">
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-surface-container-highest text-primary font-label-sm text-label-sm rounded-full font-semibold">
+                  <span class="material-symbols-outlined text-[14px]">verified</span>
+                  8h cumpridas
+                </span>
+                <span class="font-label-sm text-label-sm text-on-secondary-fixed-variant bg-secondary-container px-2 py-0.5 rounded">
+                  Dentro CLT Art. 58 (±10min)
+                </span>
+              </div>
+            </div>
+            <div class="grid grid-cols-4 gap-2 pt-space-xs">
+              <div class="bg-surface-container p-2 rounded text-center">
+                <span class="font-label-sm text-label-sm text-on-surface-variant block">Entrada</span>
+                <span class="font-metric-tabular text-body-md font-semibold text-on-surface">09:04</span>
+              </div>
+              <div class="bg-surface-container p-2 rounded text-center">
+                <span class="font-label-sm text-label-sm text-on-surface-variant block">Almoço Id.</span>
+                <span class="font-metric-tabular text-body-md font-semibold text-on-surface">12:15</span>
+              </div>
+              <div class="bg-surface-container p-2 rounded text-center">
+                <span class="font-label-sm text-label-sm text-on-surface-variant block">Almoço Vt.</span>
+                <span class="font-metric-tabular text-body-md font-semibold text-on-surface">13:23</span>
+              </div>
+              <div class="bg-primary-fixed p-2 rounded text-center">
+                <span class="font-label-sm text-label-sm text-on-primary-fixed-variant font-semibold block">Saída Prev.</span>
+                <span class="font-metric-tabular text-body-md font-bold text-primary">18:12</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-space-sm bg-surface-container-lowest/80 backdrop-blur p-space-md rounded-lg shadow-sm flex items-start gap-space-md">
+            <div class="w-11 h-11 rounded-full bg-primary-container text-on-primary font-bold flex items-center justify-center shrink-0 text-body-lg shadow-sm">
+              LS
+            </div>
+            <div class="flex flex-col gap-1 min-w-0">
+              <div class="flex items-center gap-1 text-tertiary">
+                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="font-label-sm text-label-sm text-on-surface-variant ml-1 font-semibold">5.0 / 5.0</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface italic line-clamp-2">
+                “Mudou completamente a rotina da nossa equipe. Bato meu ponto sem medo de errar a tolerância de almoço ou perder hora extra.”
+              </p>
+              <span class="font-label-sm text-label-sm text-on-surface-variant">
+                — <strong class="text-on-surface">Lucas Silva</strong>, Engenheiro de Software na Nubex Tech
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="relative z-10 pt-space-lg mt-space-lg flex flex-wrap items-center justify-between gap-y-3 gap-x-space-md text-on-surface-variant font-label-sm text-label-sm">
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px] text-secondary">gavel</span>
+            <span>Portaria MTE nº 671/2021</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px] text-primary">verified</span>
+            <span>Padrão ICP-Brasil</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px] text-secondary">lock</span>
+            <span>Criptografia SHA-256</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px] text-primary">policy</span>
+            <span>100% LGPD Compliant</span>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-6 bg-surface-container-lowest p-space-lg sm:p-space-xl rounded-xl shadow-md flex flex-col justify-between">
+        <div>
+          <div class="flex flex-col gap-1 pb-space-md">
+            <div class="flex items-center justify-between mb-space-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+                  <span class="material-symbols-outlined text-[20px]">timelapse</span>
+                </span>
+                <span class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">TempoSync</span>
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-surface-container text-on-surface-variant font-label-sm text-label-sm rounded-full">
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                Portal de Registro
+              </span>
+            </div>
+            <h2 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight" id="formTitle">
+              Bem-vindo de volta ao TempoSync
+            </h2>
+            <p class="font-body-md text-body-md text-on-surface-variant" id="formSubtitle">
+              Acesse seu espelho de ponto diário, previsões e banco de horas.
+            </p>
+          </div>
+          <div class="grid grid-cols-2 p-1 bg-surface-container-low rounded-lg mb-space-lg text-center select-none">
+            <button class="py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 bg-surface-container-lowest text-primary shadow-sm font-bold flex items-center justify-center gap-2" id="tabSignIn" onclick="switchAuthTab('signin')" type="button">
+              <span class="material-symbols-outlined text-[18px]">login</span>
+              Entrar
+            </button>
+            <button class="py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-2" id="tabSignUp" onclick="switchAuthTab('signup')" type="button">
+              <span class="material-symbols-outlined text-[18px]">person_add</span>
+              Criar Conta
+              <span class="bg-secondary text-on-secondary px-1.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Grátis</span>
+            </button>
+          </div>
+          <div class="flex flex-col gap-2.5 mb-space-md">
+            <button class="w-full h-11 px-4 bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded flex items-center justify-center gap-3 transition-colors shadow-sm" type="button">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"></path>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"></path>
+              </svg>
+              <span>Continuar com Google Workspace</span>
+            </button>
+            <div class="grid grid-cols-2 gap-2.5">
+              <button class="h-10 px-3 bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded flex items-center justify-center gap-2 transition-colors" type="button">
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 23 23">
+                  <path d="M1 1h10v10H1z" fill="#f35325"></path>
+                  <path d="M12 1h10v10H12z" fill="#81bc06"></path>
+                  <path d="M1 12h10v10H1z" fill="#05a6f0"></path>
+                  <path d="M12 12h10v10H12z" fill="#ffba08"></path>
+                </svg>
+                <span>Microsoft 365</span>
+              </button>
+              <button class="h-10 px-3 bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded flex items-center justify-center gap-2 transition-colors" type="button">
+                <span class="material-symbols-outlined text-[18px] text-primary">domain</span>
+                <span>SSO Corporativo</span>
+              </button>
+            </div>
+          </div>
+          <div class="relative flex items-center justify-center my-space-md">
+            <div class="w-full h-px bg-surface-container"></div>
+            <span class="absolute bg-surface-container-lowest px-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+              ou continue com seu e-mail
+            </span>
+          </div>
+          <form class="flex flex-col gap-space-md" id="authForm" action="/login" method="post" onsubmit="return syncAuthSubmit(event);">
+            <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" />
+            <input type="hidden" name="password_confirmation" id="passwordConfirmInput" value="" />
+            <div class="hidden flex-col gap-1" id="fieldFullName">
+              <label class="font-label-md text-label-md text-on-surface font-semibold" for="fullName">Nome Completo</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px] pointer-events-none">person</span>
+                <input class="w-full h-11 pl-10 pr-4 bg-surface-container-low rounded font-body-md text-body-md text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" id="fullName" placeholder="Ex: Mariana Albuquerque" type="text" />
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="font-label-md text-label-md text-on-surface font-semibold" for="emailInput">E-mail corporativo ou pessoal</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px] pointer-events-none">mail</span>
+                <input class="w-full h-11 pl-10 pr-4 bg-surface-container-low rounded font-body-md text-body-md text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" id="emailInput" name="email" placeholder="colaborador@empresa.com.br" required="" type="email" value="{{ .Email }}" />
+              </div>
+              {{ with fieldError .Errors "email" }}<p class="font-body-sm text-body-sm text-error">{{ . }}</p>{{ end }}
+            </div>
+            <div class="hidden flex-col gap-1" id="fieldShiftType">
+              <label class="font-label-md text-label-md text-on-surface font-semibold" for="shiftType">Regime de Ponto CLT / PJ</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px] pointer-events-none">badge</span>
+                <select class="w-full h-11 pl-10 pr-8 bg-surface-container-low rounded font-body-md text-body-md text-on-surface focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none cursor-pointer" id="shiftType">
+                  <option value="clt-44">CLT Padrão 44h semanais (8h48/dia ou seg-sáb)</option>
+                  <option value="clt-40">CLT 40h semanais (8h seg-sex)</option>
+                  <option value="escala-12x36">Escala 12x36 Plantão</option>
+                  <option value="pj-flex">Prestador PJ / Horas Livres</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-3 text-on-surface-variant text-[20px] pointer-events-none">expand_more</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <div class="flex items-center justify-between">
+                <label class="font-label-md text-label-md text-on-surface font-semibold" for="passwordInput">Senha de Acesso</label>
+                <a class="font-label-sm text-label-sm text-primary hover:underline" href="/forgot-password" id="forgotPasswordLink">Esqueceu a senha?</a>
+              </div>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px] pointer-events-none">lock</span>
+                <input class="w-full h-11 pl-10 pr-11 bg-surface-container-low rounded font-body-md text-body-md text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" id="passwordInput" name="password" placeholder="Digite sua senha segura" required="" type="password" />
+                <button class="absolute right-3 text-on-surface-variant hover:text-on-surface focus:outline-none" onclick="togglePasswordVisibility()" type="button">
+                  <span class="material-symbols-outlined text-[20px]" id="passwordToggleIcon">visibility</span>
+                </button>
+              </div>
+              {{ with fieldError .Errors "password" }}<p class="font-body-sm text-body-sm text-error">{{ . }}</p>{{ end }}
+              <div class="hidden flex-col gap-1 mt-1.5" id="passwordStrengthBlock">
+                <div class="grid grid-cols-4 gap-1.5 h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+                  <div class="bg-secondary rounded-full"></div>
+                  <div class="bg-secondary rounded-full"></div>
+                  <div class="bg-secondary rounded-full"></div>
+                  <div class="bg-surface-dim rounded-full"></div>
+                </div>
+                <span class="font-label-sm text-label-sm text-secondary font-medium flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">shield</span> Segurança Alta: misture maiúsculas, números e símbolos
+                </span>
+              </div>
+            </div>
+            <div class="flex items-start gap-2 pt-1">
+              <input checked="" class="mt-1 w-4 h-4 rounded text-primary focus:ring-primary border-outline-variant cursor-pointer" id="rememberMe" type="checkbox" />
+              <label class="font-body-sm text-body-sm text-on-surface-variant cursor-pointer select-none" for="rememberMe" id="termsLabel">
+                Manter sessão ativa por 30 dias neste dispositivo de confiança.
+              </label>
+            </div>
+            <button class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold rounded-full shadow-md flex items-center justify-center gap-2 transition-all transform active:scale-[0.99]" id="submitBtn" type="submit">
+              <span id="submitBtnText">Entrar no TempoSync</span>
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </button>
+          </form>
+        </div>
+        <div class="pt-space-lg mt-space-md border-t-0 flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-label-sm text-label-sm">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            <span>Sistemas operacionais e sincronização ativa</span>
+          </div>
+          <a class="text-primary hover:underline font-semibold" href="#" id="alternativeToggleLink" onclick="toggleAuthAlternative(event)">
+            Não tem conta? Crie grátis
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    let currentAuthMode = 'signin';
+
+    function switchAuthTab(mode) {
+      currentAuthMode = mode;
+      const form = document.getElementById('authForm');
+      const tabSignIn = document.getElementById('tabSignIn');
+      const tabSignUp = document.getElementById('tabSignUp');
+      const formTitle = document.getElementById('formTitle');
+      const formSubtitle = document.getElementById('formSubtitle');
+      const fieldFullName = document.getElementById('fieldFullName');
+      const fieldShiftType = document.getElementById('fieldShiftType');
+      const passwordStrengthBlock = document.getElementById('passwordStrengthBlock');
+      const termsLabel = document.getElementById('termsLabel');
+      const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+      const submitBtnText = document.getElementById('submitBtnText');
+      const alternativeToggleLink = document.getElementById('alternativeToggleLink');
+
+      if (mode === 'signup') {
+        form.action = '/signup';
+        tabSignUp.className = 'py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 bg-surface-container-lowest text-primary shadow-sm font-bold flex items-center justify-center gap-2';
+        tabSignIn.className = 'py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-2';
+
+        formTitle.textContent = 'Comece a controlar sua jornada gratuitamente';
+        formSubtitle.textContent = 'Previsão instantânea de saída e espelho de ponto 100% legal em 1 minuto.';
+
+        fieldFullName.classList.remove('hidden');
+        fieldFullName.classList.add('flex');
+        fieldShiftType.classList.remove('hidden');
+        fieldShiftType.classList.add('flex');
+        passwordStrengthBlock.classList.remove('hidden');
+        passwordStrengthBlock.classList.add('flex');
+
+        forgotPasswordLink.classList.add('hidden');
+        termsLabel.innerHTML = 'Li e concordo com os <a data-amarra-skip href="#" class="text-primary underline">Termos de Uso</a> e <a data-amarra-skip href="#" class="text-primary underline">Política de Privacidade</a> segundo a Portaria 671 MTE.';
+        submitBtnText.textContent = 'Criar Minha Conta Grátis';
+        alternativeToggleLink.textContent = 'Já possui conta? Fazer Login';
+      } else {
+        form.action = '/login';
+        tabSignIn.className = 'py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 bg-surface-container-lowest text-primary shadow-sm font-bold flex items-center justify-center gap-2';
+        tabSignUp.className = 'py-2.5 px-space-md rounded font-label-md text-label-md transition-all duration-200 text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-2';
+
+        formTitle.textContent = 'Bem-vindo de volta ao TempoSync';
+        formSubtitle.textContent = 'Acesse seu espelho de ponto diário, previsões e banco de horas.';
+
+        fieldFullName.classList.add('hidden');
+        fieldFullName.classList.remove('flex');
+        fieldShiftType.classList.add('hidden');
+        fieldShiftType.classList.remove('flex');
+        passwordStrengthBlock.classList.add('hidden');
+        passwordStrengthBlock.classList.remove('flex');
+
+        forgotPasswordLink.classList.remove('hidden');
+        termsLabel.textContent = 'Manter sessão ativa por 30 dias neste dispositivo de confiança.';
+        submitBtnText.textContent = 'Entrar no TempoSync';
+        alternativeToggleLink.textContent = 'Não tem conta? Crie grátis';
+      }
+    }
+
+    function toggleAuthAlternative(event) {
+      event.preventDefault();
+      if (currentAuthMode === 'signin') {
+        switchAuthTab('signup');
+      } else {
+        switchAuthTab('signin');
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('passwordInput');
+      const toggleIcon = document.getElementById('passwordToggleIcon');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.textContent = 'visibility_off';
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.textContent = 'visibility';
+      }
+    }
+
+    function syncAuthSubmit() {
+      if (currentAuthMode === 'signup') {
+        document.getElementById('passwordConfirmInput').value = document.getElementById('passwordInput').value;
+      }
+      return true;
+    }
+  </script>
+</main>
+<footer class="w-full bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] py-space-md z-10">
+  <div class="w-full max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop flex flex-col md:flex-row items-center justify-between gap-space-md">
+    <div class="flex flex-wrap items-center justify-center md:justify-start gap-space-md">
+      <a data-amarra-skip class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Termos de Uso</a>
+      <span class="font-body-sm text-body-sm text-outline-variant">•</span>
+      <a data-amarra-skip class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacidade</a>
+      <span class="font-body-sm text-body-sm text-outline-variant">•</span>
+      <a data-amarra-skip class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Portaria MTE 671</a>
+    </div>
+    <div class="flex items-center gap-space-md">
+      <div class="flex items-center gap-space-xs text-on-surface-variant">
+        <span class="material-symbols-outlined text-[18px] text-secondary">verified_user</span>
+        <span class="font-label-sm text-label-sm">REP-P Certificado</span>
+      </div>
+      <div class="flex items-center gap-space-xs text-on-surface-variant">
+        <span class="material-symbols-outlined text-[18px] text-primary">shield</span>
+        <span class="font-label-sm text-label-sm">Criptografia SHA-256</span>
+      </div>
+    </div>
+    <div class="font-body-sm text-body-sm text-on-surface-variant text-center md:text-right">© 2024 TempoSync Tecnologia S.A.</div>
+  </div>
+</footer>
 {{ end }}
