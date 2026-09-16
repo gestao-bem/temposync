@@ -1,0 +1,140 @@
+{{ define "title" }}temposync{{ end }}
+{{ define "description" }}temposync — powered by Amarra{{ end }}{{- define "icon_sparkles_md" -}}
+<svg class="w-5 h-5 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+{{- end -}}
+{{- define "icon_home_nav" -}}
+<svg class="cais-nav-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+{{- end -}}
+{{- define "icon_message_nav" -}}
+<svg class="cais-nav-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+{{- end -}}
+{{- define "icon_chart_nav" -}}
+<svg class="cais-nav-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+{{- end -}}
+{{- define "icon_users_md" -}}
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+{{- end -}}
+{{- define "icon_shield_md" -}}
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+{{- end -}}
+{{- define "nav_links" -}}
+<a href="/" class="px-3 py-2 font-label-md text-label-md transition flex items-center gap-2 flex-shrink-0 {{ if eq .ActiveNav "home" }}text-primary{{ else }}text-on-surface-variant hover:text-on-surface{{ end }}">Home</a>
+<a href="/contact" class="px-3 py-2 font-label-md text-label-md transition flex items-center gap-2 flex-shrink-0 {{ if eq .ActiveNav "contact" }}text-primary{{ else }}text-on-surface-variant hover:text-on-surface{{ end }}">Contact</a>
+<a href="/dashboard" class="px-3 py-2 font-label-md text-label-md transition flex items-center gap-2 flex-shrink-0 {{ if eq .ActiveNav "dashboard" }}text-primary{{ else }}text-on-surface-variant hover:text-on-surface{{ end }}">Dashboard</a>
+{{- end -}}
+{{ define "app" }}
+<!doctype html>
+<html lang="{{ htmlLang }}" data-amarra-layout="app">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      try {
+        if (localStorage.getItem("amarra-theme") === "light") document.documentElement.classList.add("light");
+      } catch (e) {}
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
+    {{ if .CSRFToken }}<meta name="csrf-token" content="{{ .CSRFToken }}" />{{ end }}
+    <title>{{ if .Title }}{{ .Title }} · temposync{{ else }}temposync{{ end }}</title>
+    <meta name="description" content="temposync — powered by Amarra" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="temposync" />
+    <meta property="og:title" content="{{ if .Title }}{{ .Title }}{{ else }}temposync{{ end }}" />
+    <meta property="og:image" content="{{ absURL .Site.AppURL "/static/og.png" }}" />
+    <meta property="og:locale" content="{{ ogLocale }}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="manifest" href="/static/manifest.webmanifest" />
+    <meta name="theme-color" content="#004ac6" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="temposync" />
+    <link rel="apple-touch-icon" href="/static/icons/icon.png" />
+    <link rel="icon" href="/static/icons/icon.png" type="image/png" />
+    <script src="/static/js/amarra.js" defer></script>
+  </head>
+  <body class="min-h-screen bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col justify-between">
+    <div>
+      {{ if ne .ActiveNav "home" }}
+      <header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+        <div class="h-20 w-full max-w-[1280px] mx-auto px-gutter lg:px-gutter-desktop flex items-center justify-between gap-space-md">
+          <a href="/" class="flex items-center gap-space-sm">
+            <svg class="h-8 w-auto" viewBox="0 0 200 48" fill="none" aria-hidden="true">
+              <rect x="2" y="4" width="40" height="40" rx="12" fill="url(#brandGrad)" />
+              <circle cx="22" cy="24" r="13" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="60 15" opacity="0.9" />
+              <polyline points="22 17 22 24 27 27" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="22" cy="24" r="2.5" fill="#38BDF8" />
+              <defs><linearGradient id="brandGrad" x1="2" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#2563EB" /><stop offset="1" stop-color="#0EA5E9" /></linearGradient></defs>
+            </svg>
+            <span class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">TempoSync</span>
+          </a>
+          <nav class="hidden xl:flex items-center gap-space-lg">
+            <a href="/" class="font-label-md text-label-md {{ if eq .ActiveNav "home" }}text-primary font-semibold{{ else }}text-on-surface-variant hover:text-on-surface{{ end }} transition-colors">Início</a>
+            <a data-amarra-skip href="/#funcionalidades" class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">Funcionalidades</a>
+            <a data-amarra-skip href="/#como-funciona" class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">Como Funciona</a>
+            <a data-amarra-skip href="/#conformidade" class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">Conformidade CLT</a>
+            <a data-amarra-skip href="/#precos" class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">Preços</a>
+            <a data-amarra-skip href="/#faq" class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">FAQ</a>
+          </nav>
+          <div class="flex items-center gap-space-sm sm:gap-space-md">
+            <a href="/login" class="hidden sm:inline-flex items-center px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors">Acessar Sistema</a>
+            <a href="/signup" class="inline-flex items-center px-space-md py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-[0_4px_12px_rgba(0,74,198,0.2)]">Experimentar Grátis</a>
+            <a href="/dashboard" aria-label="Abrir painel" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></a>
+          </div>
+        </div>
+      </header>
+      <nav id="amarra-nav" class="bg-surface border-b border-surface-container-high fixed top-20 left-0 right-0 z-40">
+        <div class="max-w-[1280px] mx-auto px-gutter lg:px-gutter-desktop">
+          <!-- nav hook re-syncs active link after Drive morph (#27); SSR ActiveNav stays the first-paint default -->
+          <div amarra-hook="nav" data-amarra-nav-on="text-primary" data-amarra-nav-off="text-on-surface-variant hover:text-on-surface" class="flex gap-1 py-1 overflow-x-auto no-scrollbar">
+            <!-- cais:nav -->
+            {{ template "nav_links" . }}
+            <.locale-toggle current="{{ .Locale }}" />
+          </div>
+        </div>
+      </nav>
+      {{ end }}
+      <div id="amarra-toast-host" aria-live="polite"></div>
+      {{ if eq .ActiveNav "home" }}
+      <.flash />
+      {{ template "content" . }}
+      {{ else }}
+      <main id="amarra-main" class="flex-grow w-full px-4 sm:px-6 lg:px-8 pt-32 pb-5">
+        <.flash />
+        {{ template "content" . }}
+      </main>
+      {{ end }}
+    </div>
+    {{ if ne .ActiveNav "home" }}
+    <footer class="mt-auto border-t border-surface-container-high bg-surface-container-low py-6 text-center">
+      <p class="inline-flex items-center gap-1 rounded-full bg-secondary-container px-3 py-1 font-label-sm text-label-sm text-on-secondary-container"><span class="material-symbols-outlined text-[16px]">verified</span> Certificação Portaria MTE 671 / REP-P</p>
+      <p class="mt-2 text-body-sm text-body-sm text-on-surface-variant">© 2026 TempoSync · Controle de ponto inteligente</p>
+    </footer>
+    {{ end }}
+    {{ if eq .Site.Env "development" }}
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) { r.unregister(); });
+        });
+        if ("caches" in window) {
+          caches.keys().then(function (keys) {
+            keys.forEach(function (k) { caches.delete(k); });
+          });
+        }
+      }
+    </script>
+    {{ else }}
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/static/js/sw.js");
+      }
+    </script>
+    {{ end }}
+  </body>
+</html>
+{{ end }}
