@@ -6,3 +6,4 @@ tmp/
 .air/
 *.db
 .DS_Store
+.playwright-cli/
