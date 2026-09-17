@@ -1,0 +1,471 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - 'img "Logomarca moderna para app de ponto e controle de tempo chamado TempoSync / HoraCerta com ícone geométrico de relógio minimalista fundido a um raio ou checkmark de precisão azul e ciano.. Brand logo. - Primary color: #2563eb - Font: plusJakartaSans - Mode: light - Roundness: rounded-md" [ref=e7]'
+      - navigation [ref=e8]:
+        - link "Início" [ref=e9] [cursor=pointer]:
+          - /url: /
+        - link "Funcionalidades" [ref=e10] [cursor=pointer]:
+          - /url: /#funcionalidades
+        - link "Como Funciona" [ref=e11] [cursor=pointer]:
+          - /url: /#como-funciona
+        - link "Conformidade CLT" [ref=e12] [cursor=pointer]:
+          - /url: /#conformidade
+        - link "Preços" [ref=e13] [cursor=pointer]:
+          - /url: /#precos
+        - link "FAQ" [ref=e14] [cursor=pointer]:
+          - /url: /#faq
+        - link "Blog" [ref=e15] [cursor=pointer]:
+          - /url: /blog
+      - generic [ref=e16]:
+        - link "Acessar Sistema" [ref=e17] [cursor=pointer]:
+          - /url: /login
+        - link "Experimentar Grátis" [ref=e18] [cursor=pointer]:
+          - /url: /signup
+        - generic [ref=e20]: person
+  - main [ref=e21]:
+    - generic [ref=e23]:
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e31]: Controle de Ponto Inteligente com Previsão Exata de Saída
+          - heading "Nunca mais adivinhe a que horas bater o ponto para ir embora." [level=1] [ref=e32]
+          - paragraph [ref=e33]: O TempoSync recalcula automaticamente seu horário exato de saída com base nas batidas matinais e na duração real do seu almoço. Mantenha seu banco de horas positivo, sem cálculos mentais e 100% alinhado à Portaria 671 do MTE.
+          - generic [ref=e34]:
+            - link "Começar Gratuitamente arrow_forward" [ref=e35] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e36]: Começar Gratuitamente
+              - generic [ref=e37]: arrow_forward
+            - button "play_arrow Ver Demonstração Interativa" [ref=e38] [cursor=pointer]:
+              - generic [ref=e40]: play_arrow
+              - generic [ref=e41]: Ver Demonstração Interativa
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - img [ref=e44]
+              - img [ref=e45]
+              - img [ref=e46]
+              - generic [ref=e47]: +12k
+            - generic [ref=e48]:
+              - generic [ref=e49]:
+                - generic [ref=e50]:
+                  - generic [ref=e51]: star
+                  - generic [ref=e52]: star
+                  - generic [ref=e53]: star
+                  - generic [ref=e54]: star
+                  - generic [ref=e55]: star
+                - generic [ref=e56]: 4.9/5
+                - generic [ref=e57]: em satisfação
+              - paragraph [ref=e58]:
+                - generic [ref=e59]: verified_user
+                - text: Portaria MTE 671 / REP-P • Assinatura SHA-256
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - generic [ref=e67]: Console de Ponto
+            - generic [ref=e68]: Ao Vivo
+          - generic [ref=e70]:
+            - text: Hora Oficial de Brasília
+            - generic [ref=e71]: 22:17:28
+            - paragraph [ref=e72]: Quinta-feira, 24 de Outubro
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e76]: schedule
+              - generic [ref=e77]:
+                - generic [ref=e78]: Previsão Exata de Saída
+                - generic [ref=e79]:
+                  - generic [ref=e80]: 18:12
+                  - generic [ref=e81]: (8h diárias)
+            - generic [ref=e82]:
+              - generic [ref=e83]: Restam
+              - text: 02h 30m
+          - generic [ref=e85]:
+            - generic [ref=e86]: Progresso da Jornada (5h30 / 8h00)
+            - generic [ref=e87]: 68%
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - generic [ref=e92]: 1ª Entr.
+              - generic [ref=e93]: 08:32
+              - generic [ref=e94]: check_circle
+            - generic [ref=e95]:
+              - generic [ref=e96]: 1ª Saída
+              - generic [ref=e97]: 12:15
+              - generic [ref=e98]: check_circle
+            - generic [ref=e99]:
+              - generic [ref=e100]: 2ª Entr.
+              - generic [ref=e101]: 13:20
+              - generic [ref=e102]: check_circle
+            - generic [ref=e103]:
+              - generic [ref=e104]: Prev. Fim
+              - generic [ref=e105]: 18:12
+              - generic [ref=e106]: timer
+          - button "fingerprint Registrar Batida Agora" [ref=e107] [cursor=pointer]:
+            - generic [ref=e108]: fingerprint
+            - generic [ref=e109]: Registrar Batida Agora
+          - generic [ref=e110]:
+            - generic [ref=e112]: trending_up
+            - generic [ref=e113]:
+              - paragraph [ref=e114]: +18m no Banco
+              - paragraph [ref=e115]: Almoço de 01h05 ajustado
+      - generic [ref=e117]:
+        - paragraph [ref=e118]: Utilizado por profissionais de tecnologia, startups e empresas líderes no Brasil
+        - generic [ref=e119]:
+          - generic [ref=e120]: Nubank
+          - generic [ref=e121]: iFood
+          - generic [ref=e122]: Mercado Livre
+          - generic [ref=e123]: Stone
+          - generic [ref=e124]: QuintoAndar
+          - generic [ref=e125]: Loft
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]: Recursos Projetados para Você
+          - heading "Menos contas de cabeça. Mais tranquilidade ao fim do dia." [level=2] [ref=e129]
+          - paragraph [ref=e130]: Deixe de abrir a calculadora do celular para somar horas decimais. O TempoSync orquestra cada minuto trabalhado com precisão milimétrica.
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - generic [ref=e135]: alarm_on
+              - heading "Previsão Dinâmica de Saída" [level=3] [ref=e136]
+              - paragraph [ref=e137]: Compensação automática em tempo real. Se o almoço levou 52 minutos ou 1h15, o aplicativo calcula o minuto exato para você encerrar o expediente sem dever banco de horas.
+            - generic [ref=e138]:
+              - generic [ref=e139]: notifications_active
+              - generic [ref=e140]: Alerta push 15 min antes
+          - generic [ref=e141]:
+            - generic [ref=e142]:
+              - generic [ref=e144]: gavel
+              - heading "Espelho de Ponto Oficial" [level=3] [ref=e145]
+              - paragraph [ref=e146]: Emissão de relatórios prontos em PDF e Excel homologados na Portaria 671/2021 do MTE. Assinatura digital com hash SHA-256 e sem fraudes para apresentar ao seu RH.
+            - generic [ref=e147]:
+              - generic [ref=e148]: verified
+              - generic [ref=e149]: Arquivos AFD / AEJ nativos
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - generic [ref=e153]: account_balance_wallet
+              - heading "Banco de Horas Descomplicado" [level=3] [ref=e154]
+              - paragraph [ref=e155]: Acompanhamento claro de saldo positivo e negativo. Receba alertas antes que suas horas excedentes expirem segundo as regras do seu acordo coletivo de trabalho (CCT).
+            - generic [ref=e156]:
+              - generic [ref=e157]: hourglass_bottom
+              - generic [ref=e158]: Previsão de expiração de saldo
+          - generic [ref=e159]:
+            - generic [ref=e160]:
+              - generic [ref=e162]: self_improvement
+              - heading "Bem-Estar & Saúde Mental" [level=3] [ref=e163]
+              - paragraph [ref=e164]: Monitore a regularidade dos seus intervalos interjornada e intrajornada. Evite acúmulo excessivo de horas extras para preservar a sua qualidade de vida fora do trabalho.
+            - generic [ref=e165]:
+              - generic [ref=e166]: favorite
+              - generic [ref=e167]: Prevenção ativa de burnout
+      - generic [ref=e169]:
+        - generic [ref=e170]:
+          - text: Engenharia Simplificada
+          - heading "Como funciona o cálculo inteligente de saída?" [level=2] [ref=e171]
+          - paragraph [ref=e172]: Entenda o algoritmo que ajusta seus minutos e elimina o risco de advertências trabalhistas.
+        - generic [ref=e173]:
+          - generic [ref=e174]:
+            - generic [ref=e175]: "1"
+            - heading "Registro de Entrada" [level=3] [ref=e176]
+            - paragraph [ref=e177]:
+              - text: Você começou o expediente às
+              - strong [ref=e178]: 08:32
+              - text: (com 32 minutos além do horário padrão). O sistema não te penaliza; apenas anota a marcação inicial com precisão atômica.
+            - generic [ref=e179]:
+              - generic [ref=e180]: Marcação 1
+              - generic [ref=e181]: 08:32:15
+          - generic [ref=e182]:
+            - generic [ref=e183]: "2"
+            - heading "Pausa Flexível de Almoço" [level=3] [ref=e184]
+            - paragraph [ref=e185]:
+              - text: Você saiu às
+              - strong [ref=e186]: 12:15
+              - text: e voltou às
+              - strong [ref=e187]: 13:20
+              - text: (intervalo real de 01h05). O TempoSync absorve os 5 minutos excedentes sem quebrar o limite legal da CLT.
+            - generic [ref=e188]:
+              - generic [ref=e189]: Intervalo Total
+              - generic [ref=e190]: 01h 05m
+          - generic [ref=e191]:
+            - generic [ref=e192]: "3"
+            - heading "Previsão Certa & Alerta" [level=3] [ref=e193]
+            - paragraph [ref=e194]:
+              - text: "O TempoSync conclui a equação: 8 horas de jornada + 01h05 de pausa iniciada às 08:32 ="
+              - strong [ref=e195]: 18:12
+              - text: . Você recebe notificação no smartwatch e desktop.
+            - generic [ref=e196]:
+              - generic [ref=e197]: Saída Sem Débito
+              - generic [ref=e198]: 18:12
+      - generic [ref=e199]:
+        - generic [ref=e200]:
+          - generic [ref=e201]: Visão de Produto
+          - heading "Interface refinada, dados cristalinos" [level=2] [ref=e202]
+          - paragraph [ref=e203]: Alterne entre as visões do sistema e veja como sua rotina de trabalho ganha clareza imediata.
+          - generic [ref=e204]:
+            - button "Dashboard Diário" [ref=e205] [cursor=pointer]
+            - button "Espelho de Ponto (Portaria 671)" [ref=e206] [cursor=pointer]
+            - button "Banco & Métricas" [ref=e207] [cursor=pointer]
+        - generic [ref=e209]:
+          - generic [ref=e210]:
+            - generic [ref=e211]:
+              - generic [ref=e212]:
+                - heading "Folha Diária de Marcação" [level=4] [ref=e213]
+                - paragraph [ref=e214]: "Jornada contratada padrão: 08:00 horas diárias"
+              - generic [ref=e215]: CLT Normal
+            - table [ref=e217]:
+              - rowgroup [ref=e218]:
+                - row "Evento Horário Localização Status" [ref=e219]:
+                  - columnheader "Evento" [ref=e220]
+                  - columnheader "Horário" [ref=e221]
+                  - columnheader "Localização" [ref=e222]
+                  - columnheader "Status" [ref=e223]
+              - rowgroup [ref=e224]:
+                - row "1ª Entrada 08:32:04 São Paulo - SP (Home Office) check Validado" [ref=e225]:
+                  - cell "1ª Entrada" [ref=e226]: 1ª Entrada
+                  - cell "08:32:04" [ref=e228]
+                  - cell "São Paulo - SP (Home Office)" [ref=e229]
+                  - cell "check Validado" [ref=e230]:
+                    - generic [ref=e231]:
+                      - generic [ref=e232]: check
+                      - text: Validado
+                - row "Início Intervalo 12:15:10 São Paulo - SP check Validado" [ref=e233]:
+                  - cell "Início Intervalo" [ref=e234]: Início Intervalo
+                  - cell "12:15:10" [ref=e236]
+                  - cell "São Paulo - SP" [ref=e237]
+                  - cell "check Validado" [ref=e238]:
+                    - generic [ref=e239]:
+                      - generic [ref=e240]: check
+                      - text: Validado
+                - row "Fim Intervalo 13:20:45 São Paulo - SP check Validado" [ref=e241]:
+                  - cell "Fim Intervalo" [ref=e242]: Fim Intervalo
+                  - cell "13:20:45" [ref=e244]
+                  - cell "São Paulo - SP" [ref=e245]
+                  - cell "check Validado" [ref=e246]:
+                    - generic [ref=e247]:
+                      - generic [ref=e248]: check
+                      - text: Validado
+                - row "Previsão de Saída 18:12:00 Automático (TempoSync Engine) Estimado" [ref=e249]:
+                  - cell "Previsão de Saída" [ref=e250]: Previsão de Saída
+                  - cell "18:12:00" [ref=e252]
+                  - cell "Automático (TempoSync Engine)" [ref=e253]
+                  - cell "Estimado" [ref=e254]:
+                    - generic [ref=e255]: Estimado
+            - generic [ref=e256]:
+              - generic [ref=e257]: "Artigo 58 da CLT: Tolerância legal de 5 a 10 min aplicável."
+              - button "Solicitar Ajuste Manual" [ref=e258] [cursor=pointer]
+          - generic [ref=e259]:
+            - generic [ref=e260]:
+              - text: Balanço do Dia
+              - generic [ref=e261]:
+                - generic [ref=e262]: 05h 30m
+                - generic [ref=e263]: trabalhadas
+            - generic [ref=e264]:
+              - generic [ref=e265]:
+                - generic [ref=e266]: Distribuição do Tempo
+                - generic [ref=e267]: Jornada Ativa
+              - img [ref=e268]
+              - generic [ref=e273]:
+                - generic [ref=e274]: 08:32 (Início)
+                - generic [ref=e275]: 12:15 - 13:20 (Almoço)
+                - generic [ref=e276]: 18:12 (Meta)
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - generic [ref=e279]: Saldo previsto de hoje
+                - generic [ref=e280]: +00:00 (Exato)
+              - generic [ref=e281]:
+                - generic [ref=e282]: Intervalo cumprido
+                - generic [ref=e283]: 65 minutos (> 1h CLT)
+              - generic [ref=e284]:
+                - generic [ref=e285]: Autenticação Biométrica
+                - generic [ref=e286]:
+                  - generic [ref=e287]: lock
+                  - text: ICP-Brasil OK
+            - button "Exportar Relatório em PDF" [ref=e288] [cursor=pointer]
+      - generic [ref=e290]:
+        - generic [ref=e291]:
+          - text: Depoimentos Reais
+          - heading "A paz mental de não ter que calcular horas" [level=2] [ref=e292]
+          - paragraph [ref=e293]: Veja o que dizem os colaboradores e líderes que já aposentaram as planilhas manuais.
+        - generic [ref=e294]:
+          - generic [ref=e295]:
+            - generic [ref=e296]:
+              - generic [ref=e297]:
+                - generic [ref=e298]: star
+                - generic [ref=e299]: star
+                - generic [ref=e300]: star
+                - generic [ref=e301]: star
+                - generic [ref=e302]: star
+              - paragraph [ref=e303]: "“Eu perdia tempo todo santo dia abrindo a calculadora para somar: 'entrei 8h43, comi em 58 minutos... a que horas posso ir sem ficar negativo?'. O TempoSync resolveu isso no segundo dia de uso.”"
+            - generic [ref=e304]:
+              - img [ref=e305]
+              - generic [ref=e306]:
+                - heading "Rodrigo Mello" [level=4] [ref=e307]
+                - paragraph [ref=e308]: Dev Senior em Fintech Remota
+          - generic [ref=e309]:
+            - generic [ref=e310]:
+              - generic [ref=e311]:
+                - generic [ref=e312]: star
+                - generic [ref=e313]: star
+                - generic [ref=e314]: star
+                - generic [ref=e315]: star
+                - generic [ref=e316]: star
+              - paragraph [ref=e317]: “Como o sistema segue rigorosamente a Portaria 671, meu espelho de ponto nunca mais foi contestado pelo RH. O fechamento mensal agora dura literalmente 30 segundos com a exportação em PDF.”
+            - generic [ref=e318]:
+              - img [ref=e319]
+              - generic [ref=e320]:
+                - heading "Larissa Prado" [level=4] [ref=e321]
+                - paragraph [ref=e322]: Lead Product Designer
+          - generic [ref=e323]:
+            - generic [ref=e324]:
+              - generic [ref=e325]:
+                - generic [ref=e326]: star
+                - generic [ref=e327]: star
+                - generic [ref=e328]: star
+                - generic [ref=e329]: star
+                - generic [ref=e330]: star
+              - paragraph [ref=e331]: “Implantamos na nossa equipe de 25 engenheiros. O índice de atrasos ou saídas antes do horário caiu a zero, e a transparência do banco de horas eliminou qualquer ruído na empresa.”
+            - generic [ref=e332]:
+              - img [ref=e333]
+              - generic [ref=e334]:
+                - heading "Carlos Eduardo" [level=4] [ref=e335]
+                - paragraph [ref=e336]: Gerente de Engenharia
+      - generic [ref=e337]:
+        - generic [ref=e338]:
+          - generic [ref=e339]: Investimento Transparente
+          - heading "Planos simples para indivíduos e empresas" [level=2] [ref=e340]
+          - paragraph [ref=e341]: Comece gratuitamente e evolua conforme a necessidade da sua rotina profissional.
+        - generic [ref=e342]:
+          - generic [ref=e343]:
+            - generic [ref=e344]:
+              - text: Gratuito
+              - heading "Individual" [level=3] [ref=e345]
+              - paragraph [ref=e346]: Ideal para quem quer apenas saber a hora de ir embora sem planilhas.
+              - generic [ref=e347]: R$ 0 /para sempre
+              - list [ref=e348]:
+                - listitem [ref=e349]:
+                  - generic [ref=e350]: check_circle
+                  - generic [ref=e351]: Registro de ponto diário
+                - listitem [ref=e352]:
+                  - generic [ref=e353]: check_circle
+                  - generic [ref=e354]: Previsão automática de saída
+                - listitem [ref=e355]:
+                  - generic [ref=e356]: check_circle
+                  - generic [ref=e357]: Histórico dos últimos 30 dias
+                - listitem [ref=e358]:
+                  - generic [ref=e359]: remove
+                  - generic [ref=e360]: Alertas em Telegram/Slack
+                - listitem [ref=e361]:
+                  - generic [ref=e362]: remove
+                  - generic [ref=e363]: Assinatura digital ICP-Brasil
+            - button "Criar Conta Grátis" [ref=e364] [cursor=pointer]
+          - generic [ref=e365]:
+            - generic [ref=e366]: Mais Escolhido
+            - generic [ref=e367]:
+              - text: Profissional
+              - heading "TempoSync Pro" [level=3] [ref=e368]
+              - paragraph [ref=e369]: Para quem quer controle absoluto, relatórios para o RH e integração.
+              - generic [ref=e370]: R$ 14,90 /mês (no plano anual)
+              - list [ref=e371]:
+                - listitem [ref=e372]:
+                  - generic [ref=e373]: check_circle
+                  - generic [ref=e374]: Tudo do Plano Gratuito
+                - listitem [ref=e375]:
+                  - generic [ref=e376]: check_circle
+                  - generic [ref=e377]: Histórico e auditoria ilimitados
+                - listitem [ref=e378]:
+                  - generic [ref=e379]: check_circle
+                  - generic [ref=e380]: Espelho em PDF Portaria 671 MTE
+                - listitem [ref=e381]:
+                  - generic [ref=e382]: check_circle
+                  - generic [ref=e383]: Alertas 15 min antes no Slack e Telegram
+                - listitem [ref=e384]:
+                  - generic [ref=e385]: check_circle
+                  - generic [ref=e386]: Cálculo de DSR e adicional noturno
+            - button "Experimentar 14 Dias Grátis" [ref=e387] [cursor=pointer]
+          - generic [ref=e388]:
+            - generic [ref=e389]:
+              - text: Corporativo
+              - heading "Empresas & Times" [level=3] [ref=e390]
+              - paragraph [ref=e391]: Solução homologada REP-P para squads, gestores e departamentos de RH.
+              - generic [ref=e392]: R$ 9,90 /colaborador/mês
+              - list [ref=e393]:
+                - listitem [ref=e394]:
+                  - generic [ref=e395]: check_circle
+                  - generic [ref=e396]: Tudo do Plano Pro
+                - listitem [ref=e397]:
+                  - generic [ref=e398]: check_circle
+                  - generic [ref=e399]: Painel centralizado do gestor
+                - listitem [ref=e400]:
+                  - generic [ref=e401]: check_circle
+                  - generic [ref=e402]: Aprovação de justificativas e atestados
+                - listitem [ref=e403]:
+                  - generic [ref=e404]: check_circle
+                  - generic [ref=e405]: Exportação AFD / AEJ em lote
+                - listitem [ref=e406]:
+                  - generic [ref=e407]: check_circle
+                  - generic [ref=e408]: Suporte com SLA prioritário
+            - button "Falar com Especialista" [ref=e409] [cursor=pointer]
+      - generic [ref=e411]:
+        - generic [ref=e412]:
+          - text: Dúvidas Frequentes
+          - heading "Tudo o que você precisa saber" [level=2] [ref=e413]
+          - paragraph [ref=e414]: Perguntas comuns sobre conformidade legal, tolerâncias da CLT e segurança.
+        - generic [ref=e415]:
+          - button "O TempoSync substitui o relógio da minha empresa? expand_more" [ref=e417] [cursor=pointer]:
+            - generic [ref=e418]: O TempoSync substitui o relógio da minha empresa?
+            - generic [ref=e419]: expand_more
+          - button "Como funciona a tolerância de 5 minutos da CLT no app? expand_more" [ref=e421] [cursor=pointer]:
+            - generic [ref=e422]: Como funciona a tolerância de 5 minutos da CLT no app?
+            - generic [ref=e423]: expand_more
+          - button "Meus dados e registros de ponto estão seguros? expand_more" [ref=e425] [cursor=pointer]:
+            - generic [ref=e426]: Meus dados e registros de ponto estão seguros?
+            - generic [ref=e427]: expand_more
+          - button "Posso usar no regime híbrido ou 100% Home Office? expand_more" [ref=e429] [cursor=pointer]:
+            - generic [ref=e430]: Posso usar no regime híbrido ou 100% Home Office?
+            - generic [ref=e431]: expand_more
+      - generic [ref=e434]:
+        - generic [ref=e435]:
+          - generic [ref=e436]: Sem Cartão de Crédito
+          - heading "Pronto para ter total clareza da sua jornada de trabalho?" [level=2] [ref=e437]
+          - paragraph [ref=e438]: Junte-se a mais de 12.000 profissionais que encerram o expediente no horário exato, com banco de horas saudável e zero preocupação.
+        - generic [ref=e439]:
+          - link "Criar Conta Grátis Agora" [ref=e440] [cursor=pointer]:
+            - /url: "#"
+          - link "Agendar Demo Corporativa" [ref=e441] [cursor=pointer]:
+            - /url: "#"
+  - contentinfo [ref=e442]:
+    - generic [ref=e443]:
+      - generic [ref=e444]:
+        - generic [ref=e445]:
+          - 'img "Logomarca moderna para app de ponto e controle de tempo chamado TempoSync / HoraCerta com ícone geométrico de relógio minimalista fundido a um raio ou checkmark de precisão azul e ciano.. Brand logo. - Primary color: #2563eb - Font: plusJakartaSans - Mode: light - Roundness: rounded-md" [ref=e447]'
+          - paragraph [ref=e448]: Plataforma líder em controle de ponto inteligente, gestão humanizada de banco de horas e total conformidade com os padrões do Ministério do Trabalho e Emprego.
+          - generic [ref=e449]:
+            - generic [ref=e450]: verified
+            - text: Certificação Portaria MTE 671 / REP-P
+        - generic [ref=e451]:
+          - heading "Produto" [level=4] [ref=e452]
+          - navigation [ref=e453]:
+            - link "Recursos & Mobile" [ref=e454] [cursor=pointer]:
+              - /url: /#funcionalidades
+            - link "Geolocalização & Foto" [ref=e455] [cursor=pointer]:
+              - /url: /#como-funciona
+            - link "Planos Pessoais e Empresas" [ref=e456] [cursor=pointer]:
+              - /url: /#precos
+            - link "Teste Grátis 14 Dias" [ref=e457] [cursor=pointer]:
+              - /url: /signup
+        - generic [ref=e458]:
+          - heading "Conformidade & Suporte" [level=4] [ref=e459]
+          - navigation [ref=e460]:
+            - link "Legislação Portaria 671" [ref=e461] [cursor=pointer]:
+              - /url: /#conformidade
+            - link "Central de Ajuda (FAQ)" [ref=e462] [cursor=pointer]:
+              - /url: /#faq
+            - link "Criptografia e Assinatura Digital" [ref=e463] [cursor=pointer]:
+              - /url: "#"
+            - link "Fale com Especialistas" [ref=e464] [cursor=pointer]:
+              - /url: /contact
+        - generic [ref=e465]:
+          - heading "Legal" [level=4] [ref=e466]
+          - navigation [ref=e467]:
+            - link "Termos de Uso" [ref=e468] [cursor=pointer]:
+              - /url: "#"
+            - link "Política de Privacidade (LGPD)" [ref=e469] [cursor=pointer]:
+              - /url: "#"
+            - link "Arquivos Fiscais AFD / AEJ" [ref=e470] [cursor=pointer]:
+              - /url: "#"
+      - generic [ref=e471]:
+        - paragraph [ref=e472]: "© 2025 TempoSync Tecnologia S.A. Todos os direitos reservados. CNPJ: 00.000.000/0001-00."
+        - generic [ref=e474]: Sistemas Operacionais Normais (100% Uptime)

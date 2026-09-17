@@ -1,0 +1,142 @@
+- generic [ref=e3]:
+  - banner [ref=e1140]:
+    - generic [ref=e1141]:
+      - link "arrow_back Voltar ao portal" [ref=e1142] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e1143]: arrow_back
+        - generic [ref=e1144]: Voltar ao portal
+      - img "TempoSync" [ref=e1146]
+      - generic [ref=e1147]:
+        - generic [ref=e1148]: lock
+        - generic [ref=e1149]: Ambiente Seguro
+  - main [ref=e1150]:
+    - generic [ref=e1152]:
+      - generic [ref=e1153]:
+        - generic [ref=e1154]:
+          - generic [ref=e1155]:
+            - generic [ref=e1156]: auto_schedule
+            - generic [ref=e1157]: Controle Inteligente & Previsão de Saída
+          - heading "Tenha precisão total da sua jornada sem estresse com o RH." [level=1] [ref=e1158]
+          - paragraph [ref=e1159]: Previsão exata de saída considerando tolerâncias da CLT (Art. 58), intervalos reais de almoço e banco de horas 100% transparente.
+          - generic [ref=e1160]:
+            - generic [ref=e1161]:
+              - generic [ref=e1165]: Simulação de Expediente Hoje
+              - generic [ref=e1166]: 08:42:15 decorridos
+            - generic [ref=e1167]:
+              - generic [ref=e1168]:
+                - generic [ref=e1169]: Horário de Saída Projetado
+                - generic [ref=e1170]:
+                  - generic [ref=e1171]: 18:12
+                  - generic [ref=e1172]: (Exato)
+              - generic [ref=e1173]:
+                - generic [ref=e1174]:
+                  - generic [ref=e1175]: verified
+                  - text: 8h cumpridas
+                - generic [ref=e1176]: Dentro CLT Art. 58 (±10min)
+            - generic [ref=e1177]:
+              - generic [ref=e1178]:
+                - generic [ref=e1179]: Entrada
+                - text: 09:04
+              - generic [ref=e1180]:
+                - generic [ref=e1181]: Almoço Id.
+                - text: 12:15
+              - generic [ref=e1182]:
+                - generic [ref=e1183]: Almoço Vt.
+                - text: 13:23
+              - generic [ref=e1184]:
+                - generic [ref=e1185]: Saída Prev.
+                - text: 18:12
+          - generic [ref=e1186]:
+            - generic [ref=e1187]: LS
+            - generic [ref=e1188]:
+              - generic [ref=e1189]:
+                - generic [ref=e1190]: star
+                - generic [ref=e1191]: star
+                - generic [ref=e1192]: star
+                - generic [ref=e1193]: star
+                - generic [ref=e1194]: star
+                - generic [ref=e1195]: 5.0 / 5.0
+              - paragraph [ref=e1196]: “Mudou completamente a rotina da nossa equipe. Bato meu ponto sem medo de errar a tolerância de almoço ou perder hora extra.”
+              - generic [ref=e1197]:
+                - text: —
+                - strong [ref=e1198]: Lucas Silva
+                - text: ", Engenheiro de Software na Nubex Tech"
+        - generic [ref=e1199]:
+          - generic [ref=e1200]:
+            - generic [ref=e1201]: gavel
+            - generic [ref=e1202]: Portaria MTE nº 671/2021
+          - generic [ref=e1203]:
+            - generic [ref=e1204]: verified
+            - generic [ref=e1205]: Padrão ICP-Brasil
+          - generic [ref=e1206]:
+            - generic [ref=e1207]: lock
+            - generic [ref=e1208]: Criptografia SHA-256
+          - generic [ref=e1209]:
+            - generic [ref=e1210]: policy
+            - generic [ref=e1211]: 100% LGPD Compliant
+      - generic [ref=e1212]:
+        - generic [ref=e1213]:
+          - generic [ref=e1214]:
+            - generic [ref=e1215]:
+              - generic [ref=e1216]:
+                - generic [ref=e1218]: timelapse
+                - generic [ref=e1219]: TempoSync
+              - generic [ref=e1220]: Portal de Registro
+            - heading "Bem-vindo de volta ao TempoSync" [level=2] [ref=e1222]
+            - paragraph [ref=e1223]: Acesse seu espelho de ponto diário, previsões e banco de horas.
+          - generic [ref=e1224]:
+            - button "login Entrar" [ref=e1225] [cursor=pointer]:
+              - generic [ref=e1226]: login
+              - text: Entrar
+            - button "person_add Criar Conta Grátis" [ref=e1227] [cursor=pointer]:
+              - generic [ref=e1228]: person_add
+              - text: Criar Conta
+              - generic [ref=e1229]: Grátis
+          - generic [ref=e1230]:
+            - generic [ref=e1231]:
+              - generic [ref=e1232]: E-mail corporativo ou pessoal
+              - generic [ref=e1233]:
+                - generic: mail
+                - textbox "E-mail corporativo ou pessoal" [ref=e1234]:
+                  - /placeholder: colaborador@empresa.com.br
+                  - text: demo@example.com
+            - generic [ref=e1235]:
+              - generic [ref=e1236]:
+                - generic [ref=e1237]: Senha de Acesso
+                - link "Esqueceu a senha?" [ref=e1238] [cursor=pointer]:
+                  - /url: /forgot-password
+              - generic [ref=e1239]:
+                - generic: lock
+                - textbox "Senha de Acesso" [ref=e1240]:
+                  - /placeholder: Digite sua senha segura
+                - button "visibility" [ref=e1241] [cursor=pointer]:
+                  - generic [ref=e1242]: visibility
+            - generic [ref=e1243]:
+              - checkbox "Manter sessão ativa por 30 dias neste dispositivo de confiança." [checked] [ref=e1244] [cursor=pointer]
+              - generic [ref=e1245] [cursor=pointer]: Manter sessão ativa por 30 dias neste dispositivo de confiança.
+            - button "Entrar no TempoSync arrow_forward" [ref=e1246] [cursor=pointer]:
+              - generic [ref=e1247]: Entrar no TempoSync
+              - generic [ref=e1248]: arrow_forward
+        - generic [ref=e1249]:
+          - generic [ref=e1252]: Sistemas operacionais e sincronização ativa
+          - link "Não tem conta? Crie grátis" [ref=e1253] [cursor=pointer]:
+            - /url: "#"
+  - contentinfo [ref=e1254]:
+    - generic [ref=e1255]:
+      - generic [ref=e1256]:
+        - link "Termos de Uso" [ref=e1257] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e1258]: •
+        - link "Privacidade" [ref=e1259] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e1260]: •
+        - link "Portaria MTE 671" [ref=e1261] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e1262]:
+        - generic [ref=e1263]:
+          - generic [ref=e1264]: verified_user
+          - generic [ref=e1265]: REP-P Certificado
+        - generic [ref=e1266]:
+          - generic [ref=e1267]: shield
+          - generic [ref=e1268]: Criptografia SHA-256
+      - generic [ref=e1269]: © 2024 TempoSync Tecnologia S.A.

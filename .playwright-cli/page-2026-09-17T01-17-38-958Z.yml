@@ -1,0 +1,515 @@
+- generic [ref=e3]:
+  - complementary [ref=e602]:
+    - generic [ref=e603]:
+      - img "TempoSync Logo" [ref=e605]
+      - navigation [ref=e607]:
+        - link "schedule Dashboard & Ponto Diário" [ref=e608] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e609]: schedule
+          - generic [ref=e610]: Dashboard & Ponto Diário
+        - link "receipt_long Espelho de Ponto & Relatórios" [ref=e611] [cursor=pointer]:
+          - /url: /espelho
+          - generic [ref=e612]: receipt_long
+          - generic [ref=e613]: Espelho de Ponto & Relatórios
+        - link "query_stats Análise & Métricas" [ref=e614] [cursor=pointer]:
+          - /url: /metricas
+          - generic [ref=e615]: query_stats
+          - generic [ref=e616]: Análise & Métricas
+        - link "timelapse Banco de Horas" [ref=e617] [cursor=pointer]:
+          - /url: /banco-horas
+          - generic [ref=e618]: timelapse
+          - generic [ref=e619]: Banco de Horas
+        - link "tune Configurações de Jornada" [ref=e620] [cursor=pointer]:
+          - /url: /configuracoes
+          - generic [ref=e621]: tune
+          - generic [ref=e622]: Configurações de Jornada
+    - generic [ref=e623]:
+      - generic [ref=e624]:
+        - generic [ref=e627]: Nuvem sincronizada
+        - generic [ref=e628]: cloud_done
+      - generic [ref=e629]:
+        - generic [ref=e630]: Versão 2.4.0 (Enterprise)
+        - generic [ref=e631]: STABLE
+  - generic [ref=e632]:
+    - banner [ref=e633]:
+      - generic [ref=e634]:
+        - generic [ref=e635]:
+          - generic [ref=e636]:
+            - generic [ref=e637]: Quarta-feira, 16 de Setembro de 2026
+            - generic [ref=e638]:
+              - generic [ref=e639]: save_as
+              - generic [ref=e640]: 22:17:37 • UTC-3
+          - generic [ref=e644]: Em expediente
+        - generic [ref=e645]:
+          - button "fingerprint Registrar Ponto" [ref=e646] [cursor=pointer]:
+            - generic [ref=e647]: fingerprint
+            - generic [ref=e648]: Registrar Ponto
+          - button "Notificações" [ref=e649] [cursor=pointer]:
+            - generic [ref=e650]: notifications
+          - button "Profile demo demo@example.com expand_more" [ref=e654] [cursor=pointer]:
+            - img "Profile" [ref=e655]
+            - generic [ref=e656]:
+              - generic [ref=e657]: demo
+              - generic [ref=e658]: demo@example.com
+            - generic [ref=e659]: expand_more
+    - main [ref=e660]:
+      - generic [ref=e661]:
+        - generic [ref=e662]:
+          - generic [ref=e663]:
+            - generic [ref=e664]:
+              - heading "Boa noite, demo! 👋" [level=1] [ref=e665]:
+                - text: Boa noite, demo!
+                - generic [ref=e666]: 👋
+              - generic [ref=e667]: Jornada 45% Concluída
+            - paragraph [ref=e669]:
+              - text: Sua jornada de hoje está bem encaminhada. Faltam exatamente
+              - strong [ref=e670]: 04h 22m
+              - text: para bater sua meta contratual de 8h líquidas.
+          - generic [ref=e671]:
+            - generic [ref=e673]: lightbulb
+            - generic [ref=e674]:
+              - generic [ref=e675]: Dica Inteligente
+              - generic [ref=e676]:
+                - text: "Intervalo compensado: saída prevista às"
+                - strong [ref=e677]: 23:10
+        - generic [ref=e678]:
+          - generic [ref=e679]:
+            - generic [ref=e680]:
+              - generic [ref=e685]: Em Expediente • 03h 37m
+              - generic [ref=e686]:
+                - button "home_work Home Office" [ref=e688] [cursor=pointer]:
+                  - generic [ref=e689]: home_work
+                  - generic [ref=e690]: Home Office
+                - button "corporate_fare Escritório SP" [ref=e692] [cursor=pointer]:
+                  - generic [ref=e693]: corporate_fare
+                  - generic [ref=e694]: Escritório SP
+            - generic [ref=e695]:
+              - generic [ref=e696]: Horário de Brasília • Sincronizado NTP.br
+              - generic [ref=e697]:
+                - generic [ref=e698]: 22:17
+                - generic [ref=e699]: :38
+              - generic [ref=e700]: Quarta-feira, 24 de Outubro de 2024
+            - generic [ref=e701]:
+              - button "fingerprint Registrar Saída Espaço [␣]" [ref=e703] [cursor=pointer]:
+                - generic [ref=e704]: fingerprint
+                - generic [ref=e705]: Registrar Saída
+                - generic [ref=e706]: Espaço [␣]
+              - generic [ref=e707]:
+                - button "coffee Pausa Café" [ref=e708] [cursor=pointer]:
+                  - generic [ref=e709]: coffee
+                  - generic [ref=e710]: Pausa Café
+                - button "more_time Pausa Técnica" [ref=e711] [cursor=pointer]:
+                  - generic [ref=e712]: more_time
+                  - generic [ref=e713]: Pausa Técnica
+                - button "logout Fim de Turno" [ref=e714] [cursor=pointer]:
+                  - generic [ref=e715]: logout
+                  - generic [ref=e716]: Fim de Turno
+          - generic [ref=e717]:
+            - generic [ref=e718]:
+              - generic [ref=e719]:
+                - generic [ref=e720]:
+                  - generic [ref=e722]: auto_graph
+                  - heading "Previsão de Saída" [level=2] [ref=e723]
+                - generic [ref=e724]: "Meta CLT: 08h00"
+              - paragraph [ref=e725]: Calculado com base na entrada das 15:10 e intervalo de 00h00.
+            - generic [ref=e726]:
+              - generic [ref=e727]:
+                - generic [ref=e728]: Horário Ideal Exato
+                - generic [ref=e729]: 23:10
+                - generic [ref=e730]:
+                  - generic [ref=e731]: check_circle
+                  - generic [ref=e732]: Faltam 04h 22m para a meta
+              - generic [ref=e733]:
+                - img [ref=e734]
+                - generic [ref=e737]:
+                  - generic [ref=e738]: 45%
+                  - generic [ref=e739]: 03h 37m/08h
+            - generic [ref=e740]:
+              - generic [ref=e741]: Cenários de Saída Alternativos
+              - generic [ref=e742]:
+                - generic [ref=e743] [cursor=pointer]:
+                  - generic [ref=e744]: Tolerância CLT (-10m)
+                  - generic [ref=e745]:
+                    - generic [ref=e746]: 23:00
+                    - generic [ref=e747]: Válido
+                - generic [ref=e748] [cursor=pointer]:
+                  - generic [ref=e749]: Com Hora Extra (+30m)
+                  - generic [ref=e750]:
+                    - generic [ref=e751]: 23:40
+                    - generic [ref=e752]: + Banco
+        - generic [ref=e753]:
+          - generic [ref=e754]:
+            - generic [ref=e755]:
+              - generic [ref=e756]: Trabalhado Hoje
+              - generic [ref=e758]: timer
+            - generic [ref=e759]: 03h 37m
+          - generic [ref=e762]:
+            - generic [ref=e763]:
+              - generic [ref=e764]: Intervalo Almoço
+              - generic [ref=e766]: restaurant
+            - generic [ref=e767]: 00h 00m
+            - generic [ref=e768]:
+              - generic [ref=e769]: info
+              - generic [ref=e770]: "Intervalo padrão: 01h00"
+          - generic [ref=e771]:
+            - generic [ref=e772]:
+              - generic [ref=e773]: Tempo Restante
+              - generic [ref=e775]: hourglass_top
+            - generic [ref=e776]: 04h 22m
+            - generic [ref=e777]:
+              - generic [ref=e778]: update
+              - generic [ref=e779]: Previsto para 23:10
+          - generic [ref=e780]:
+            - generic [ref=e781]:
+              - generic [ref=e782]: Saldo Mês (Banco)
+              - generic [ref=e784]: account_balance_wallet
+            - generic [ref=e785]:
+              - generic [ref=e786]: "-02h 35m"
+              - generic [ref=e787]: trending_up
+            - generic [ref=e788]:
+              - generic [ref=e789]: Acumulado negativo
+              - generic [ref=e790]: Fora da meta
+        - generic [ref=e791]:
+          - generic [ref=e792]:
+            - generic [ref=e793]:
+              - generic [ref=e794]:
+                - generic [ref=e795]:
+                  - heading "Linha do Tempo de Hoje" [level=3] [ref=e796]
+                  - text: Registros verificados e com geolocalização aprovada
+                - group [ref=e797]:
+                  - generic "edit_calendar + Adicionar Batida Esquecida" [ref=e798] [cursor=pointer]:
+                    - generic [ref=e799]: edit_calendar
+                    - generic [ref=e800]: + Adicionar Batida Esquecida
+                  - option "Entrada" [selected]
+                  - option "Início do almoço"
+                  - option "Retorno do almoço"
+                  - option "Saída"
+              - generic [ref=e801]:
+                - generic [ref=e803]:
+                  - generic [ref=e805]: check
+                  - generic [ref=e806]:
+                    - text: 1º Registro • Entrada Manhã
+                    - paragraph [ref=e807]: 15:10:38
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e809] [cursor=pointer]:
+                    - generic [ref=e810]: delete
+                - generic [ref=e811]:
+                  - generic [ref=e813]: check
+                  - generic [ref=e814]:
+                    - text: 2º Registro • Início Almoço
+                    - paragraph [ref=e815]: 16:17:32
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e817] [cursor=pointer]:
+                    - generic [ref=e818]: delete
+                - generic [ref=e819]:
+                  - generic [ref=e821]: check
+                  - generic [ref=e822]:
+                    - text: 3º Registro • Retorno Almoço
+                    - paragraph [ref=e823]: 16:17:33
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e825] [cursor=pointer]:
+                    - generic [ref=e826]: delete
+                - generic [ref=e827]:
+                  - generic [ref=e829]: check
+                  - generic [ref=e830]:
+                    - text: 4º Registro • Saída Tarde
+                    - paragraph [ref=e831]: 16:17:33
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e833] [cursor=pointer]:
+                    - generic [ref=e834]: delete
+                - generic [ref=e835]:
+                  - generic [ref=e837]: check
+                  - generic [ref=e838]:
+                    - text: 5º Registro
+                    - paragraph [ref=e839]: 16:17:34
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e841] [cursor=pointer]:
+                    - generic [ref=e842]: delete
+                - generic [ref=e843]:
+                  - generic [ref=e845]: check
+                  - generic [ref=e846]:
+                    - text: 6º Registro
+                    - paragraph [ref=e847]: 18:41:47
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e849] [cursor=pointer]:
+                    - generic [ref=e850]: delete
+                - generic [ref=e851]:
+                  - generic [ref=e853]: check
+                  - generic [ref=e854]:
+                    - text: 7º Registro
+                    - paragraph [ref=e855]: 18:41:48
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e857] [cursor=pointer]:
+                    - generic [ref=e858]: delete
+                - generic [ref=e859]:
+                  - generic [ref=e861]: check
+                  - generic [ref=e862]:
+                    - text: 8º Registro
+                    - paragraph [ref=e863]: 18:41:49
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e865] [cursor=pointer]:
+                    - generic [ref=e866]: delete
+                - generic [ref=e867]:
+                  - generic [ref=e869]: check
+                  - generic [ref=e870]:
+                    - text: 9º Registro
+                    - paragraph [ref=e871]: 18:41:49
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e873] [cursor=pointer]:
+                    - generic [ref=e874]: delete
+                - generic [ref=e875]:
+                  - generic [ref=e877]: check
+                  - generic [ref=e878]:
+                    - text: 10º Registro
+                    - paragraph [ref=e879]: 18:41:50
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e881] [cursor=pointer]:
+                    - generic [ref=e882]: delete
+                - generic [ref=e883]:
+                  - generic [ref=e885]: check
+                  - generic [ref=e886]:
+                    - text: 11º Registro
+                    - paragraph [ref=e887]: 18:41:50
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e889] [cursor=pointer]:
+                    - generic [ref=e890]: delete
+                - generic [ref=e891]:
+                  - generic [ref=e893]: check
+                  - generic [ref=e894]:
+                    - text: 12º Registro
+                    - paragraph [ref=e895]: 18:41:50
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e897] [cursor=pointer]:
+                    - generic [ref=e898]: delete
+                - generic [ref=e899]:
+                  - generic [ref=e901]: check
+                  - generic [ref=e902]:
+                    - text: 13º Registro
+                    - paragraph [ref=e903]: 18:41:50
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e905] [cursor=pointer]:
+                    - generic [ref=e906]: delete
+                - generic [ref=e907]:
+                  - generic [ref=e909]: check
+                  - generic [ref=e910]:
+                    - text: 14º Registro
+                    - paragraph [ref=e911]: 18:41:59
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e913] [cursor=pointer]:
+                    - generic [ref=e914]: delete
+                - generic [ref=e915]:
+                  - generic [ref=e917]: check
+                  - generic [ref=e918]:
+                    - text: 15º Registro
+                    - paragraph [ref=e919]: 20:21:26
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e921] [cursor=pointer]:
+                    - generic [ref=e922]: delete
+                - generic [ref=e923]:
+                  - generic [ref=e925]: check
+                  - generic [ref=e926]:
+                    - text: Pausa Café • NR-17
+                    - paragraph [ref=e927]: 20:24:33
+                    - text: Pausa rápida que não deduz da jornada
+                  - button "delete" [ref=e929] [cursor=pointer]:
+                    - generic [ref=e930]: delete
+                - generic [ref=e931]:
+                  - generic [ref=e933]: check
+                  - generic [ref=e934]:
+                    - text: 16º Registro
+                    - paragraph [ref=e935]: 20:26:52
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e937] [cursor=pointer]:
+                    - generic [ref=e938]: delete
+                - generic [ref=e939]:
+                  - generic [ref=e941]: check
+                  - generic [ref=e942]:
+                    - text: 17º Registro
+                    - paragraph [ref=e943]: 20:26:54
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e945] [cursor=pointer]:
+                    - generic [ref=e946]: delete
+                - generic [ref=e947]:
+                  - generic [ref=e949]: check
+                  - generic [ref=e950]:
+                    - text: 18º Registro
+                    - paragraph [ref=e951]: 20:26:54
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e953] [cursor=pointer]:
+                    - generic [ref=e954]: delete
+                - generic [ref=e955]:
+                  - generic [ref=e957]: check
+                  - generic [ref=e958]:
+                    - text: 19º Registro
+                    - paragraph [ref=e959]: 20:26:55
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e961] [cursor=pointer]:
+                    - generic [ref=e962]: delete
+                - generic [ref=e963]:
+                  - generic [ref=e965]: check
+                  - generic [ref=e966]:
+                    - text: 20º Registro
+                    - paragraph [ref=e967]: 20:26:55
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e969] [cursor=pointer]:
+                    - generic [ref=e970]: delete
+                - generic [ref=e971]:
+                  - generic [ref=e973]: check
+                  - generic [ref=e974]:
+                    - text: 21º Registro
+                    - paragraph [ref=e975]: 20:26:55
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e977] [cursor=pointer]:
+                    - generic [ref=e978]: delete
+                - generic [ref=e979]:
+                  - generic [ref=e981]: check
+                  - generic [ref=e982]:
+                    - text: 22º Registro
+                    - paragraph [ref=e983]: 20:26:55
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e985] [cursor=pointer]:
+                    - generic [ref=e986]: delete
+                - generic [ref=e987]:
+                  - generic [ref=e989]: check
+                  - generic [ref=e990]:
+                    - text: 23º Registro
+                    - paragraph [ref=e991]: 20:26:56
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e993] [cursor=pointer]:
+                    - generic [ref=e994]: delete
+                - generic [ref=e995]:
+                  - generic [ref=e997]: check
+                  - generic [ref=e998]:
+                    - text: 24º Registro
+                    - paragraph [ref=e999]: 20:26:57
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1001] [cursor=pointer]:
+                    - generic [ref=e1002]: delete
+                - generic [ref=e1003]:
+                  - generic [ref=e1005]: check
+                  - generic [ref=e1006]:
+                    - text: 25º Registro
+                    - paragraph [ref=e1007]: 20:26:57
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1009] [cursor=pointer]:
+                    - generic [ref=e1010]: delete
+                - generic [ref=e1011]:
+                  - generic [ref=e1013]: check
+                  - generic [ref=e1014]:
+                    - text: 26º Registro
+                    - paragraph [ref=e1015]: 20:26:57
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1017] [cursor=pointer]:
+                    - generic [ref=e1018]: delete
+                - generic [ref=e1019]:
+                  - generic [ref=e1021]: check
+                  - generic [ref=e1022]:
+                    - text: 27º Registro
+                    - paragraph [ref=e1023]: 20:26:57
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1025] [cursor=pointer]:
+                    - generic [ref=e1026]: delete
+                - generic [ref=e1027]:
+                  - generic [ref=e1029]: check
+                  - generic [ref=e1030]:
+                    - text: 28º Registro
+                    - paragraph [ref=e1031]: 20:26:57
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1033] [cursor=pointer]:
+                    - generic [ref=e1034]: delete
+                - generic [ref=e1035]:
+                  - generic [ref=e1037]: check
+                  - generic [ref=e1038]:
+                    - text: 29º Registro
+                    - paragraph [ref=e1039]: 20:26:57
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1041] [cursor=pointer]:
+                    - generic [ref=e1042]: delete
+                - generic [ref=e1043]:
+                  - generic [ref=e1045]: check
+                  - generic [ref=e1046]:
+                    - text: 30º Registro
+                    - paragraph [ref=e1047]: 20:26:58
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1049] [cursor=pointer]:
+                    - generic [ref=e1050]: delete
+                - generic [ref=e1051]:
+                  - generic [ref=e1053]: check
+                  - generic [ref=e1054]:
+                    - text: 31º Registro
+                    - paragraph [ref=e1055]: 20:26:58
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1057] [cursor=pointer]:
+                    - generic [ref=e1058]: delete
+                - generic [ref=e1059]:
+                  - generic [ref=e1061]: check
+                  - generic [ref=e1062]:
+                    - text: 32º Registro
+                    - paragraph [ref=e1063]: 20:27:21
+                    - text: Confirmado • America/Sao_Paulo
+                  - button "delete" [ref=e1065] [cursor=pointer]:
+                    - generic [ref=e1066]: delete
+            - generic [ref=e1067]:
+              - generic [ref=e1068]:
+                - generic [ref=e1069]: verified_user
+                - generic [ref=e1070]: Portaria MTE 671/2021 em vigor • Assinatura Eletrônica SHA-256
+              - button "download Comprovante PDF" [ref=e1071] [cursor=pointer]:
+                - generic [ref=e1072]: download
+                - generic [ref=e1073]: Comprovante PDF
+          - generic [ref=e1074]:
+            - generic [ref=e1075]:
+              - generic [ref=e1076]:
+                - generic [ref=e1077]:
+                  - heading "Semana Atual" [level=4] [ref=e1078]
+                  - generic [ref=e1079]: 14 a 18 de Setembro
+                - generic [ref=e1080]: "-02h 35m"
+              - generic [ref=e1081]:
+                - generic [ref=e1082]:
+                  - generic [ref=e1083]:
+                    - generic [ref=e1084]: Seg
+                    - generic [ref=e1085]: schedule
+                  - generic [ref=e1087]: "--:--"
+                - generic [ref=e1088]:
+                  - generic [ref=e1089]:
+                    - generic [ref=e1090]: Ter
+                    - generic [ref=e1091]: schedule
+                  - generic [ref=e1093]: "--:--"
+                - generic [ref=e1094]:
+                  - generic [ref=e1095]:
+                    - generic [ref=e1096]: Qua
+                    - generic [ref=e1097]: sync
+                  - generic [ref=e1100]: 05h 24m
+                - generic [ref=e1101]:
+                  - generic [ref=e1102]:
+                    - generic [ref=e1103]: Qui
+                    - generic [ref=e1104]: schedule
+                  - generic [ref=e1106]: "--:--"
+                - generic [ref=e1107]:
+                  - generic [ref=e1108]:
+                    - generic [ref=e1109]: Sex
+                    - generic [ref=e1110]: schedule
+                  - generic [ref=e1112]: "--:--"
+            - generic [ref=e1113]:
+              - generic [ref=e1115]:
+                - generic [ref=e1117]: notifications_active
+                - generic [ref=e1118]: Alerta de Saída Ativo
+              - paragraph [ref=e1120]:
+                - text: Você será notificado no navegador e aplicativo
+                - strong [ref=e1121]: 15 minutos antes
+                - text: do término previsto (às 22:40).
+              - generic [ref=e1122]:
+                - generic [ref=e1123]: Som de lembrete
+                - button "tune Ajustar aviso" [ref=e1124] [cursor=pointer]:
+                  - generic [ref=e1125]: tune
+                  - generic [ref=e1126]: Ajustar aviso
+            - generic [ref=e1127]:
+              - generic [ref=e1128]: shield_lock
+              - generic [ref=e1129]:
+                - generic [ref=e1130]: Segurança e Integridade
+                - generic [ref=e1131]: Seus registros são criptografados e sincronizados com a Folha de Pagamento em tempo real.
+        - generic:
+          - generic:
+            - generic: done_all
+          - generic:
+            - generic: Ponto Registrado com Sucesso!
+            - generic: Quarta-feira às 14:28:15
