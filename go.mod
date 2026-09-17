@@ -4,7 +4,7 @@ go 1.26.4
 
 require (
 	github.com/go-pdf/fpdf v0.9.0
-	github.com/puppe1990/amarra-cais v0.6.1
+	github.com/puppe1990/amarra-cais v0.8.0
 	modernc.org/sqlite v1.53.0
 )
 
